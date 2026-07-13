@@ -190,13 +190,35 @@ export function rankProducts(type: ProductType, scores: ScoreMap): Product[] {
     .map((product) => {
       const total = Object.entries(product.scores).reduce((sum, [key, value]) => {
         return sum + (scores[key as ScoreKey] || 0) * (value || 0);
-      }, 0);
+      }, 0) + getProductAdjustment(product, scores);
 
       return { product, total };
     })
     .sort((a, b) => b.total - a.total)
     .slice(0, 3)
     .map(({ product }) => product);
+}
+
+function getProductAdjustment(product: Product, scores: ScoreMap): number {
+  const isFineHair = scores.fine >= 5 && scores.fine > scores.coarse;
+  const wantsMoistFinish = scores.moist >= 6;
+  const hasStrongDryness = scores.dry >= 8;
+
+  if (!isFineHair) return 0;
+
+  const isQurap = product.id.startsWith("qurap-wrapping-moist");
+
+  if (isQurap || product.id.startsWith("melt-moist")) {
+    return hasStrongDryness ? 18 : -70;
+  }
+
+  if (!wantsMoistFinish) return 0;
+
+  if (product.id.startsWith("the-answer-")) return 34;
+  if (product.id.startsWith("plus-eau-repair")) return 55;
+  if (product.id.startsWith("unlabel-kr-control")) return 12;
+
+  return 0;
 }
 
 const shampooTreatmentPairs: Record<string, string> = {
