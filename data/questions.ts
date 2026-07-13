@@ -40,7 +40,7 @@ export const questions: DiagnosisQuestion[] = [
   },
   {
     id: "wet-stretch",
-    title: "抜けた髪を1本取り、濡らして\n両端を持ってゆっくり引っ張ると\nどうなりますか？",
+    title: "抜けた髪を1本取り、濡らして両端を持って\nゆっくり引っ張るとどうなりますか？",
     hint: "ダメージの出やすさを確認します。",
     options: [
       { label: "すぐに切れる", scores: { damage: 5, dry: 2 } },

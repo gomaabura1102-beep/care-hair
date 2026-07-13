@@ -42,25 +42,35 @@ img {
 }
 
 .jp-question-title--manual {
+  font-size: clamp(1rem, 4vw, 2.25rem);
+  line-height: 1.45;
   white-space: pre-line;
   text-wrap: pretty;
 }
 
 .jp-question-title--single {
-  font-size: clamp(0.88rem, 3.7vw, 2.25rem);
+  font-size: clamp(0.72rem, 2.65vw, var(--single-title-max, 2.25rem));
   line-height: 1.45;
   white-space: nowrap;
 }
 
 @media (min-width: 640px) {
+  .jp-question-title--manual {
+    font-size: clamp(1.25rem, 3.5vw, 2.25rem);
+  }
+
   .jp-question-title--single {
-    font-size: clamp(1.25rem, 3.1vw, 2.25rem);
+    font-size: clamp(1rem, 2.3vw, var(--single-title-max, 2.25rem));
   }
 }
 
 @media (min-width: 768px) {
+  .jp-question-title--manual {
+    line-height: 1.38;
+  }
+
   .jp-question-title--single {
-    font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+    font-size: clamp(1.1rem, 2vw, var(--single-title-max, 2.25rem));
     line-height: 1.38;
   }
 }
