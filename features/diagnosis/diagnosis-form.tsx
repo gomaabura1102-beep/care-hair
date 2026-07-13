@@ -22,7 +22,7 @@ export function DiagnosisForm() {
   const [current, setCurrent] = useState(0);
   const question = questions[current];
   const hasManualTitleBreak = question.title.includes("\n");
-  const singleLineTitleMaxRem = Math.min(2.25, Math.max(1.05, 48 / question.title.length));
+  const singleLineTitleMaxRem = Math.min(2.25, Math.max(0.95, 46 / question.title.length));
   const progress = ((current + 1) / questions.length) * 100;
 
   const defaultValues = useMemo<FormValues>(
