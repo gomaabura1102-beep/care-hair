@@ -63,7 +63,8 @@ export default function HomePage() {
           <div className="max-w-3xl rounded-brand bg-white/80 md:bg-transparent">
             <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-green">Hair care diagnosis</p>
             <h1 className="text-balance text-4xl font-medium leading-[1.12] sm:text-5xl md:text-8xl md:leading-[1.08]">
-              あなたに、本当に合うヘアケアを。
+              <span className="block">本当に合う</span>
+              <span className="block">ヘアケアを。</span>
             </h1>
             <p className="mt-7 max-w-2xl text-base leading-8 text-ink/75 md:text-xl">
               Care Hairは、男子高校生の髪質・悩み・頭皮状態に合わせて、市販で買いやすいシャンプーとトリートメントを提案する診断サービスです。
