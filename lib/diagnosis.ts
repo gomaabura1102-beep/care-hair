@@ -201,12 +201,20 @@ export function rankProducts(type: ProductType, scores: ScoreMap): Product[] {
 
 function getProductAdjustment(product: Product, scores: ScoreMap): number {
   const isFineHair = scores.fine >= 5 && scores.fine > scores.coarse;
+  const isCoarseHair = scores.coarse >= 5 && scores.coarse >= scores.fine;
   const wantsMoistFinish = scores.moist >= 6;
   const hasStrongDryness = scores.dry >= 8;
+  const hasSevereDrynessOrDamage = scores.dry >= 11 || scores.damage >= 10;
+  const isQurap = product.id.startsWith("qurap-wrapping-moist");
+
+  if (isCoarseHair && wantsMoistFinish) {
+    if (isQurap) return hasSevereDrynessOrDamage ? 78 : 28;
+    if (product.id.startsWith("the-answer-ss")) return hasSevereDrynessOrDamage ? 42 : 74;
+    if (product.id.startsWith("plus-eau-repair")) return 24;
+    return 0;
+  }
 
   if (!isFineHair) return 0;
-
-  const isQurap = product.id.startsWith("qurap-wrapping-moist");
 
   if (isQurap || product.id.startsWith("melt-moist")) {
     return hasStrongDryness ? 18 : -70;
