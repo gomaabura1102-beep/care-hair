@@ -79,9 +79,9 @@ export function calculateScores(answers: number[][]): ScoreMap {
 export function getDiagnosisResult(answers: number[][]): DiagnosisResult {
   const scores = calculateScores(answers);
   const hairBody =
-    scores.coarse >= scores.fine && scores.coarse >= scores.normal
+    scores.coarse >= 5 && scores.coarse >= scores.fine
       ? "硬毛・剛毛"
-      : scores.fine >= scores.normal
+      : scores.fine >= 5 && scores.fine > scores.coarse
         ? "細毛・軟毛"
         : "普通毛";
   const hairShape = scores.curly > scores.straight ? "くせ毛・うねり毛" : "直毛寄り";
@@ -163,9 +163,9 @@ const adviceMaster: Record<string, DiagnosisAdvice> = {
 
 function getDiagnosisAdvices(scores: ScoreMap): DiagnosisAdvice[] {
   const bodyAdvice =
-    scores.coarse >= scores.fine && scores.coarse >= scores.normal
+    scores.coarse >= 5 && scores.coarse >= scores.fine
       ? adviceMaster.coarse
-      : scores.fine >= scores.normal
+      : scores.fine >= 5 && scores.fine > scores.coarse
         ? adviceMaster.fine
         : adviceMaster.normal;
 

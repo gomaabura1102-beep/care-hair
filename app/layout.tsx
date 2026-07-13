@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description:
     "Care Hairは、男子高校生が自分に合った市販シャンプー・トリートメントを見つけるためのヘアケア診断サービスです。",
   openGraph: {
-    title: "Care Hair | 本当にあうヘアケアを。",
+    title: "Care Hair | 本当に合うヘアケアを。",
     description: "髪質・悩み・頭皮状態に合わせて、買いやすい市販ヘアケア商品を提案します。",
     type: "website",
     locale: "ja_JP"

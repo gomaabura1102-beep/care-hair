@@ -17,7 +17,7 @@ export const questions: DiagnosisQuestion[] = [
     hint: "指通りや表面のざらつきを確認してください。",
     options: [
       { label: "表面がザラザラ・ゴワゴワしている", scores: { damage: 4, dry: 2, frizz: 2 } },
-      { label: "なめらかで指通りが良い", scores: { normal: 3, straight: 1 } }
+      { label: "なめらかで指通りが良い", scores: { normal: 1, straight: 1 } }
     ]
   },
   {
@@ -44,7 +44,7 @@ export const questions: DiagnosisQuestion[] = [
     hint: "ダメージの出やすさを確認します。",
     options: [
       { label: "すぐに切れる", scores: { damage: 5, dry: 2 } },
-      { label: "なかなか切れない", scores: { normal: 2, coarse: 1 } }
+      { label: "なかなか切れない", scores: { normal: 1 } }
     ]
   },
   {
@@ -52,7 +52,7 @@ export const questions: DiagnosisQuestion[] = [
     title: "雨の日や湿度が高い日に髪はどうなりますか？",
     hint: "湿気の日の広がり方を思い出してください。",
     options: [
-      { label: "あまり変化しない", scores: { straight: 3, normal: 1 } },
+      { label: "あまり変化しない", scores: { straight: 4 } },
       { label: "うねりや広がりが出る", scores: { curly: 4, frizz: 5, dry: 1 } }
     ]
   },
@@ -61,7 +61,7 @@ export const questions: DiagnosisQuestion[] = [
     title: "過去1年以内に、次の施術を受けたことがありますか？",
     hint: "カラー・ブリーチ・縮毛矯正・パーマの中で、当てはまる数を選んでください。",
     options: [
-      { label: "受けたことはない", scores: { normal: 1 } },
+      { label: "受けたことはない", scores: {} },
       { label: "1種類だけ受けた", scores: { damage: 2 } },
       { label: "2種類受けた", scores: { damage: 4, dry: 2 } },
       { label: "3種類以上受けた", scores: { damage: 7, dry: 3 } }
@@ -72,7 +72,7 @@ export const questions: DiagnosisQuestion[] = [
     title: "ヘアアイロンを使用する頻度を教えてください。",
     hint: "普段のスタイリング頻度を選んでください。",
     options: [
-      { label: "ほとんど使わない", scores: { normal: 1 } },
+      { label: "ほとんど使わない", scores: {} },
       { label: "週に数回使う", scores: { damage: 2, dry: 1 } },
       { label: "ほぼ毎日使う", scores: { damage: 5, dry: 2 } }
     ]
@@ -84,7 +84,7 @@ export const questions: DiagnosisQuestion[] = [
     options: [
       { label: "よくある", scores: { scalp: 8 } },
       { label: "ときどきある", scores: { scalp: 4 } },
-      { label: "ほとんどない", scores: { normal: 1 } }
+      { label: "ほとんどない", scores: {} }
     ]
   },
   {
@@ -107,7 +107,7 @@ export const questions: DiagnosisQuestion[] = [
     options: [
       { label: "パサつき", scores: { dry: 6, damage: 2 } },
       { label: "うねり・くせ毛", scores: { curly: 6, frizz: 2 } },
-      { label: "広がり", scores: { frizz: 6, dry: 2 } },
+      { label: "広がり", scores: { frizz: 2, dry: 1 } },
       { label: "ボリューム不足", scores: { fine: 3, volume: 6 } },
       { label: "ダメージ", scores: { damage: 6, dry: 2 } },
       { label: "フケ・かゆみ", scores: { scalp: 8 } },
