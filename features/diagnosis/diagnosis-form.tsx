@@ -44,7 +44,7 @@ export function DiagnosisForm() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl rounded-brand border border-line bg-white/95 p-5 shadow-brand sm:p-6 md:p-12">
+    <div className="mx-auto w-full max-w-4xl rounded-brand border border-line bg-white/95 p-5 shadow-brand sm:p-7 md:p-12">
       <div className="mb-8 h-2 overflow-hidden rounded-full bg-line" aria-label="診断の進捗">
         <div className="h-full rounded-full bg-green transition-all duration-500" style={{ width: `${progress}%` }} />
       </div>
@@ -66,8 +66,10 @@ export function DiagnosisForm() {
       </div>
 
       <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-green">Diagnosis</p>
-      <h1 className="text-balance text-2xl font-medium leading-snug sm:text-3xl md:text-5xl md:leading-tight">{question.title}</h1>
-      <p className="mt-4 text-muted">{question.hint}</p>
+      <h1 className="jp-question-title max-w-3xl text-2xl font-medium leading-[1.45] sm:text-3xl md:text-4xl md:leading-[1.38]">
+        {question.title}
+      </h1>
+      <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">{question.hint}</p>
 
       <Controller
         control={form.control}
@@ -82,7 +84,7 @@ export function DiagnosisForm() {
                   key={option.label}
                   type="button"
                   className={cn(
-                    "min-h-16 rounded-brand border border-line bg-white px-5 py-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-green hover:bg-soft",
+                    "min-h-16 rounded-brand border border-line bg-white px-5 py-4 text-left leading-7 transition duration-300 hover:-translate-y-0.5 hover:border-green hover:bg-soft sm:text-base",
                     selected && "border-green bg-sage/60"
                   )}
                   onClick={() => {

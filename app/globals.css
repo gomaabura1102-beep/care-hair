@@ -35,6 +35,13 @@ img {
   text-wrap: balance;
 }
 
+.jp-question-title {
+  line-break: strict;
+  overflow-wrap: normal;
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
+
 .noise {
   background-image:
     linear-gradient(rgba(255, 255, 255, .88), rgba(255, 255, 255, .88)),
