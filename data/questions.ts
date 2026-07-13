@@ -88,6 +88,18 @@ export const questions: DiagnosisQuestion[] = [
     ]
   },
   {
+    id: "finish",
+    title: "理想の仕上がりを教えてください。",
+    hint: "普段のセットや好みに近い質感を1つ選んでください。",
+    options: [
+      { label: "しっとりまとまる", scores: { moist: 7, dry: 2, frizz: 2 } },
+      { label: "ふんわり軽い", scores: { airy: 7, volume: 3, fine: 1 } },
+      { label: "さらさら指通りが良い", scores: { smooth: 7, straight: 2, normal: 1 } },
+      { label: "頭皮をすっきりさせたい", scores: { refresh: 7, scalp: 2, oily: 2 } },
+      { label: "ダメージを補修したい", scores: { repair: 7, damage: 3, dry: 1 } }
+    ]
+  },
+  {
     id: "concerns",
     title: "現在の髪の悩みを教えてください。",
     hint: "複数選択できます。選び終えたら次へ進んでください。",

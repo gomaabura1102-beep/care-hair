@@ -9,7 +9,12 @@ export type ScoreKey =
   | "damage"
   | "scalp"
   | "frizz"
-  | "volume";
+  | "volume"
+  | "moist"
+  | "airy"
+  | "smooth"
+  | "refresh"
+  | "repair";
 
 export type ScoreMap = Record<ScoreKey, number>;
 

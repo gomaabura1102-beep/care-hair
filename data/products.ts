@@ -18,7 +18,7 @@ export const products: Product[] = [
     ingredients: "保湿・補修成分をバランスよく配合",
     review: "軽さとまとまりの両方を求める人に向いています。",
     amazonUrl: amazon("プリュスオー メロウシャンプー"),
-    scores: { fine: 5, normal: 4, straight: 3, dry: 3, damage: 3, volume: 4 }
+    scores: { fine: 5, normal: 4, straight: 3, dry: 3, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
     id: "mememe-smooth-boost-shampoo",
@@ -35,7 +35,7 @@ export const products: Product[] = [
     ingredients: "髪表面をなめらかに整える保湿成分",
     review: "重さを出さずに指通りを整えたい人に合いやすいです。",
     amazonUrl: amazon("MEMEME スムースブースト シャンプー"),
-    scores: { fine: 6, normal: 2, straight: 2, volume: 6, dry: 2 }
+    scores: { fine: 6, normal: 2, straight: 2, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
     id: "sleek-balance-effect-shampoo",
@@ -52,7 +52,7 @@ export const products: Product[] = [
     ingredients: "うるおいと軽さを両立するケア成分",
     review: "初めて選ぶ一本としても使いやすい印象です。",
     amazonUrl: amazon("Sleek バランスエフェクト シャンプー"),
-    scores: { fine: 5, normal: 4, straight: 3, volume: 4, dry: 2 }
+    scores: { fine: 5, normal: 4, straight: 3, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
     id: "the-answer-shampoo",
@@ -69,7 +69,7 @@ export const products: Product[] = [
     ingredients: "補修・保湿成分を重視した処方",
     review: "まとまりと補修感を重視する人に選びやすい商品です。",
     amazonUrl: amazon("THE ANSWER シャンプー"),
-    scores: { normal: 6, coarse: 3, curly: 5, dry: 5, damage: 6, frizz: 4 }
+    scores: { normal: 6, coarse: 3, curly: 5, dry: 5, damage: 6, frizz: 4, moist: 4, smooth: 4, repair: 7 }
   },
   {
     id: "unlabel-kr-control-shampoo",
@@ -86,7 +86,7 @@ export const products: Product[] = [
     ingredients: "うねり・広がりを整える保湿成分",
     review: "まとまりは欲しいけれど重すぎる仕上がりが苦手な人に。",
     amazonUrl: amazon("アンレーベル KR コントロール シャンプー"),
-    scores: { normal: 6, curly: 5, frizz: 6, dry: 3 }
+    scores: { normal: 6, curly: 5, frizz: 6, dry: 3, moist: 4, smooth: 3 }
   },
   {
     id: "plus-eau-repair-shampoo",
@@ -103,7 +103,7 @@ export const products: Product[] = [
     ingredients: "補修成分と保湿成分を重視",
     review: "まとまりが欲しい人には頼りやすい候補です。",
     amazonUrl: amazon("プリュスオー リポアシャンプー"),
-    scores: { coarse: 6, dry: 6, damage: 6, frizz: 5 }
+    scores: { coarse: 6, dry: 6, damage: 6, frizz: 5, moist: 6, repair: 6, smooth: 2 }
   },
   {
     id: "qurap-wrapping-moist-shampoo",
@@ -120,7 +120,7 @@ export const products: Product[] = [
     ingredients: "うるおいを閉じ込める保湿成分",
     review: "湿気や乾燥でまとまらない髪に提案しやすいです。",
     amazonUrl: amazon("Qurap ラッピングモイスト シャンプー"),
-    scores: { coarse: 6, curly: 6, dry: 6, damage: 4, frizz: 6 }
+    scores: { coarse: 6, curly: 6, dry: 6, damage: 4, frizz: 6, moist: 7, repair: 4 }
   },
   {
     id: "the-answer-ss-shampoo",
@@ -137,7 +137,7 @@ export const products: Product[] = [
     ingredients: "補修系ケア成分と保湿成分",
     review: "硬い髪を扱いやすくしたい人向けです。",
     amazonUrl: amazon("THE ANSWER SS シャンプー"),
-    scores: { coarse: 6, dry: 5, damage: 6, frizz: 5 }
+    scores: { coarse: 6, dry: 5, damage: 6, frizz: 5, moist: 5, repair: 7 }
   },
   {
     id: "cow-moist-shampoo",
@@ -154,7 +154,7 @@ export const products: Product[] = [
     ingredients: "頭皮へのやさしさを考えた無添加系",
     review: "頭皮状態を優先したい人に向いています。",
     amazonUrl: amazon("カウブランド 無添加 うるおいケア シャンプー"),
-    scores: { scalp: 7, dry: 2, normal: 2 }
+    scores: { scalp: 7, dry: 2, normal: 2, refresh: 4, moist: 2 }
   },
   {
     id: "minon-shampoo",
@@ -171,7 +171,7 @@ export const products: Product[] = [
     ingredients: "頭皮トラブルを考えた薬用処方",
     review: "頭皮を優先して選びたいときに強い選択肢です。",
     amazonUrl: amazon("ミノン 薬用ヘアシャンプー"),
-    scores: { scalp: 7, normal: 2, dry: 2 }
+    scores: { scalp: 7, normal: 2, dry: 2, refresh: 5 }
   },
   {
     id: "muji-scalp-shampoo",
@@ -188,7 +188,7 @@ export const products: Product[] = [
     ingredients: "頭皮を整える植物由来成分",
     review: "すっきり感を求める人に向いています。",
     amazonUrl: amazon("無印良品 スカルプケア シャンプー"),
-    scores: { scalp: 6, oily: 5, normal: 2 }
+    scores: { scalp: 6, oily: 5, normal: 2, refresh: 7, airy: 2 }
   },
   {
     id: "melt-moist-shampoo",
@@ -205,7 +205,7 @@ export const products: Product[] = [
     ingredients: "保湿・補修成分",
     review: "まとまり感を求める癖毛の人に向いています。",
     amazonUrl: amazon("メルト モイスト シャンプー"),
-    scores: { curly: 6, dry: 6, frizz: 6, damage: 3 }
+    scores: { curly: 6, dry: 6, frizz: 6, damage: 3, moist: 7, smooth: 3, repair: 3 }
   },
   {
     id: "plus-eau-mellow-treatment",
@@ -222,7 +222,7 @@ export const products: Product[] = [
     ingredients: "保湿・補修成分をバランス配合",
     review: "軽さを残しながらケアしたい人向けです。",
     amazonUrl: amazon("プリュスオー メロウトリートメント"),
-    scores: { fine: 6, normal: 4, dry: 4, damage: 3, volume: 4 }
+    scores: { fine: 6, normal: 4, dry: 4, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
     id: "mememe-smooth-boost-treatment",
@@ -239,7 +239,7 @@ export const products: Product[] = [
     ingredients: "なめらかさを出す保湿成分",
     review: "軽い仕上がりを好む人に向いています。",
     amazonUrl: amazon("MEMEME スムースブースト トリートメント"),
-    scores: { fine: 6, volume: 6, dry: 2 }
+    scores: { fine: 6, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
     id: "sleek-balance-effect-treatment",
@@ -256,7 +256,7 @@ export const products: Product[] = [
     ingredients: "保湿ケア成分",
     review: "自然な清潔感を出したい人に向いています。",
     amazonUrl: amazon("Sleek バランスエフェクト トリートメント"),
-    scores: { fine: 5, normal: 4, volume: 4, dry: 2 }
+    scores: { fine: 5, normal: 4, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
     id: "plus-eau-repair-treatment",
@@ -273,7 +273,7 @@ export const products: Product[] = [
     ingredients: "補修・保湿成分",
     review: "毛先の乾燥が気になる人に選びやすいです。",
     amazonUrl: amazon("プリュスオー リポアトリートメント"),
-    scores: { normal: 5, coarse: 6, dry: 6, damage: 6, frizz: 4 }
+    scores: { normal: 5, coarse: 6, dry: 6, damage: 6, frizz: 4, moist: 6, repair: 6, smooth: 2 }
   },
   {
     id: "the-answer-treatment",
@@ -290,7 +290,7 @@ export const products: Product[] = [
     ingredients: "補修・保湿成分を重視",
     review: "迷ったときに選びやすいバランス型です。",
     amazonUrl: amazon("THE ANSWER トリートメント"),
-    scores: { normal: 6, curly: 5, dry: 5, damage: 6, frizz: 4 }
+    scores: { normal: 6, curly: 5, dry: 5, damage: 6, frizz: 4, moist: 4, smooth: 4, repair: 7 }
   },
   {
     id: "unlabel-kr-control-treatment",
@@ -307,7 +307,7 @@ export const products: Product[] = [
     ingredients: "保湿・うねりケア成分",
     review: "広がりを抑えたい人に向いています。",
     amazonUrl: amazon("アンレーベル KR コントロール トリートメント"),
-    scores: { normal: 6, curly: 5, frizz: 6, dry: 3 }
+    scores: { normal: 6, curly: 5, frizz: 6, dry: 3, moist: 4, smooth: 3 }
   },
   {
     id: "qurap-wrapping-moist-treatment",
@@ -324,7 +324,7 @@ export const products: Product[] = [
     ingredients: "髪を包み込む保湿成分",
     review: "毛量が多く広がりやすい人に提案しやすいです。",
     amazonUrl: amazon("Qurap ラッピングモイスト トリートメント"),
-    scores: { coarse: 6, curly: 6, dry: 6, damage: 4, frizz: 6 }
+    scores: { coarse: 6, curly: 6, dry: 6, damage: 4, frizz: 6, moist: 7, repair: 4 }
   },
   {
     id: "the-answer-ss-treatment",
@@ -341,7 +341,7 @@ export const products: Product[] = [
     ingredients: "補修成分と高保湿成分",
     review: "しっかりケアしたい硬毛向けです。",
     amazonUrl: amazon("THE ANSWER SS トリートメント"),
-    scores: { coarse: 6, dry: 5, damage: 6, frizz: 5 }
+    scores: { coarse: 6, dry: 5, damage: 6, frizz: 5, moist: 5, repair: 7 }
   },
   {
     id: "cow-moist-treatment",
@@ -358,7 +358,7 @@ export const products: Product[] = [
     ingredients: "低刺激を意識した保湿成分",
     review: "頭皮に不安がある人に選びやすいです。",
     amazonUrl: amazon("カウブランド 無添加 うるおいケア トリートメント"),
-    scores: { scalp: 7, dry: 2, normal: 2 }
+    scores: { scalp: 7, dry: 2, normal: 2, refresh: 4, moist: 2 }
   },
   {
     id: "minon-treatment",
@@ -375,7 +375,7 @@ export const products: Product[] = [
     ingredients: "頭皮ケアを考えた薬用処方",
     review: "頭皮優先の人に向いています。",
     amazonUrl: amazon("ミノン 薬用コンディショナー"),
-    scores: { scalp: 7, dry: 2, normal: 2 }
+    scores: { scalp: 7, dry: 2, normal: 2, refresh: 5 }
   },
   {
     id: "muji-scalp-treatment",
@@ -392,7 +392,7 @@ export const products: Product[] = [
     ingredients: "植物由来の整肌成分",
     review: "すっきり感を好む人に向いています。",
     amazonUrl: amazon("無印良品 スカルプケア コンディショナー"),
-    scores: { scalp: 6, oily: 5, normal: 2 }
+    scores: { scalp: 6, oily: 5, normal: 2, refresh: 7, airy: 2 }
   },
   {
     id: "melt-moist-treatment",
@@ -409,7 +409,7 @@ export const products: Product[] = [
     ingredients: "保湿・補修成分",
     review: "まとまりのある質感を求める人に。",
     amazonUrl: amazon("メルト モイスト トリートメント"),
-    scores: { curly: 6, dry: 6, frizz: 6, damage: 3 }
+    scores: { curly: 6, dry: 6, frizz: 6, damage: 3, moist: 7, smooth: 3, repair: 3 }
   }
 ];
 

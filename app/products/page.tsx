@@ -16,7 +16,7 @@ export default function ProductsPage() {
           <SectionHeading
             eyebrow="Product list"
             title="商品一覧"
-            lead="市販で買いやすい価格帯を中心に、髪質・悩み・頭皮状態に合わせて候補を整理しています。画像は後から差し替え可能です。"
+            lead="市販で買いやすい価格帯を中心に、髪質・悩み・頭皮状態に合わせて候補を整理しています。"
           />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (

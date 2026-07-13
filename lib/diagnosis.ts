@@ -14,7 +14,12 @@ export const scoreKeys: ScoreKey[] = [
   "damage",
   "scalp",
   "frizz",
-  "volume"
+  "volume",
+  "moist",
+  "airy",
+  "smooth",
+  "refresh",
+  "repair"
 ];
 
 export const emptyScores: ScoreMap = {
@@ -28,7 +33,12 @@ export const emptyScores: ScoreMap = {
   damage: 0,
   scalp: 0,
   frizz: 0,
-  volume: 0
+  volume: 0,
+  moist: 0,
+  airy: 0,
+  smooth: 0,
+  refresh: 0,
+  repair: 0
 };
 
 export function parseAnswers(value: string | null): number[][] {
