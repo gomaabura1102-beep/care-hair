@@ -38,9 +38,31 @@ img {
 .jp-question-title {
   line-break: strict;
   overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.jp-question-title--manual {
   white-space: pre-line;
   text-wrap: pretty;
-  word-break: auto-phrase;
+}
+
+.jp-question-title--single {
+  font-size: clamp(0.88rem, 3.7vw, 2.25rem);
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .jp-question-title--single {
+    font-size: clamp(1.25rem, 3.1vw, 2.25rem);
+  }
+}
+
+@media (min-width: 768px) {
+  .jp-question-title--single {
+    font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+    line-height: 1.38;
+  }
 }
 
 .noise {

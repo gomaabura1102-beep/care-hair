@@ -21,6 +21,7 @@ export function DiagnosisForm() {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const question = questions[current];
+  const hasManualTitleBreak = question.title.includes("\n");
   const progress = ((current + 1) / questions.length) * 100;
 
   const defaultValues = useMemo<FormValues>(
@@ -66,7 +67,14 @@ export function DiagnosisForm() {
       </div>
 
       <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-green">Diagnosis</p>
-      <h1 className="jp-question-title max-w-3xl text-2xl font-medium leading-[1.45] sm:text-3xl md:text-4xl md:leading-[1.38]">
+      <h1
+        className={cn(
+          "jp-question-title max-w-full font-medium",
+          hasManualTitleBreak
+            ? "jp-question-title--manual text-2xl leading-[1.45] sm:text-3xl md:text-4xl md:leading-[1.38]"
+            : "jp-question-title--single"
+        )}
+      >
         {question.title}
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">{question.hint}</p>
