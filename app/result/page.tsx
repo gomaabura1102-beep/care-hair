@@ -29,8 +29,12 @@ export default function ResultPage({ searchParams }: ResultPageProps) {
         <div className="mx-auto grid max-w-site gap-6 px-4 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-brand border border-line bg-white p-7 shadow-brand md:p-10">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-green">Your result</p>
-            <h1 className="text-balance text-3xl font-medium leading-tight md:text-5xl">
-              {result.hairBody}・{result.hairShape} / {result.condition}
+            <h1 className="space-y-2 text-3xl font-medium leading-tight md:text-5xl">
+              <span className="block">{result.hairBody}</span>
+              <span className="block text-2xl text-ink/80 md:text-4xl">{result.hairShape}</span>
+              {result.condition !== "バランス型" && (
+                <span className="block text-2xl text-green md:text-4xl">{result.condition}</span>
+              )}
             </h1>
             <p className="mt-6 text-muted">{result.feature}</p>
             <ScoreBars scores={result.scores} />

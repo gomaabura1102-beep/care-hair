@@ -18,14 +18,14 @@ const flow = [
 export default function HomePage() {
   return (
     <main className="pt-[var(--header-height)]">
-      <section className="relative flex min-h-[calc(94vh-var(--header-height))] items-end overflow-hidden bg-soft">
-        <div className="absolute inset-x-4 top-8 grid h-44 grid-cols-3 gap-3 sm:h-52 md:hidden">
+      <section className="relative flex min-h-[calc(100svh-var(--header-height))] items-start overflow-hidden bg-soft md:min-h-[calc(94vh-var(--header-height))] md:items-end">
+        <div className="absolute inset-x-4 top-6 grid h-36 grid-cols-3 gap-3 sm:h-44 md:hidden">
           {[
             "/products/qurap-wrapping-moist-shampoo.jpeg",
             "/products/the-answer-shampoo.png",
             "/products/plus-eau-mellow-shampoo.jpeg"
           ].map((src, index) => (
-            <div key={src} className={`relative overflow-hidden rounded-brand bg-white p-4 shadow-brand ${index === 1 ? "translate-y-6" : ""}`}>
+            <div key={src} className={`relative overflow-hidden rounded-brand bg-white p-4 shadow-brand ${index === 1 ? "translate-y-4" : ""}`}>
               <Image
                 src={src}
                 alt="Care Hairで紹介しているヘアケア商品"
@@ -58,11 +58,11 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/25" />
-        <div className="relative mx-auto w-full max-w-site px-4 pb-16 md:pb-24">
-          <FadeIn className="max-w-3xl">
+        <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-white/80 to-white md:bg-gradient-to-r md:from-white md:via-white/90 md:to-white/25" />
+        <div className="relative mx-auto w-full max-w-site px-4 pb-12 pt-64 sm:pt-72 md:pb-24 md:pt-0">
+          <div className="max-w-3xl rounded-brand bg-white/80 md:bg-transparent">
             <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-green">Hair care diagnosis</p>
-            <h1 className="text-balance text-5xl font-medium leading-[1.08] md:text-8xl">
+            <h1 className="text-balance text-4xl font-medium leading-[1.12] sm:text-5xl md:text-8xl md:leading-[1.08]">
               あなたに、本当に合うヘアケアを。
             </h1>
             <p className="mt-7 max-w-2xl text-base leading-8 text-ink/75 md:text-xl">
@@ -76,7 +76,7 @@ export default function HomePage() {
                 商品を見る
               </Link>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 

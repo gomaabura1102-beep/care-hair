@@ -56,7 +56,7 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-site items-center gap-12 px-4 md:grid-cols-2 md:gap-20">
           <FadeIn>
             <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-green">About us</p>
-            <h1 className="text-4xl font-medium leading-[1.18] sm:text-5xl lg:text-7xl">
+            <h1 className="text-4xl font-medium leading-[1.18] sm:text-5xl lg:text-6xl">
               <span className="block whitespace-nowrap">自分に合うものを、</span>
               <span className="block whitespace-nowrap">もっと簡単に。</span>
             </h1>
