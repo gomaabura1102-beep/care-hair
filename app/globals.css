@@ -38,6 +38,7 @@ img {
 .jp-question-title {
   line-break: strict;
   overflow-wrap: normal;
+  white-space: pre-line;
   text-wrap: pretty;
   word-break: auto-phrase;
 }

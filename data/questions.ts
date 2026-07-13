@@ -3,7 +3,7 @@ import type { DiagnosisQuestion } from "@/types/diagnosis";
 export const questions: DiagnosisQuestion[] = [
   {
     id: "hair-shape-paper",
-    title: "抜けた髪を1本、白い紙の上に置いたときの状態を教えてください。",
+    title: "抜けた髪を1本、白い紙の上に\n置いたときの状態を教えてください。",
     hint: "髪の形を見て、一番近いものを選んでください。",
     options: [
       { label: "うねりやねじれが目立つ", scores: { curly: 5, frizz: 2 } },
@@ -22,7 +22,7 @@ export const questions: DiagnosisQuestion[] = [
   },
   {
     id: "body",
-    title: "抜けた髪を1本持ち、片側だけを指でつまむと髪はどうなりますか？",
+    title: "抜けた髪を1本持ち、片側だけを\n指でつまむと髪はどうなりますか？",
     hint: "髪のハリや太さを判定します。",
     options: [
       { label: "しばらく横向きのまま立っている", scores: { coarse: 5 } },
@@ -31,7 +31,7 @@ export const questions: DiagnosisQuestion[] = [
   },
   {
     id: "curl-memory",
-    title: "抜けた髪を1本、指に10秒ほど巻き付けてから外すとどうなりますか？",
+    title: "抜けた髪を1本、指に10秒ほど\n巻き付けてから外すとどうなりますか？",
     hint: "形が残るかどうかを選んでください。",
     options: [
       { label: "すぐにまっすぐに戻る", scores: { straight: 4 } },
@@ -40,7 +40,7 @@ export const questions: DiagnosisQuestion[] = [
   },
   {
     id: "wet-stretch",
-    title: "抜けた髪を1本取り、濡らして両端を持ってゆっくり引っ張るとどうなりますか？",
+    title: "抜けた髪を1本取り、濡らして\n両端を持ってゆっくり引っ張ると\nどうなりますか？",
     hint: "ダメージの出やすさを確認します。",
     options: [
       { label: "すぐに切れる", scores: { damage: 5, dry: 2 } },
