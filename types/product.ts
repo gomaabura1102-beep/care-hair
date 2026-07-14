@@ -19,3 +19,22 @@ export type Product = {
   amazonUrl: string;
   scores: Partial<ScoreMap>;
 };
+
+export type ProductFeatureSet = {
+  scent: string;
+  finish: string;
+  foam: string;
+  character: string;
+};
+
+export type ProductReviewSummary = {
+  good: string;
+  concern: string;
+};
+
+export type ProductCareContent = {
+  recommendedFor: string[];
+  recommendReason: string;
+  features: ProductFeatureSet;
+  reviewSummary: ProductReviewSummary;
+};
