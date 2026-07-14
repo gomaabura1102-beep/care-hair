@@ -3,7 +3,7 @@ import { products } from "@/data/products";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://care-hair.example.com";
-  const pages = ["", "/diagnosis", "/products", "/reviews", "/contact", "/about"];
+  const pages = ["", "/diagnosis", "/products", "/about"];
 
   return [
     ...pages.map((path) => ({

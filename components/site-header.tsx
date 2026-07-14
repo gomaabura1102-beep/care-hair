@@ -9,8 +9,6 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/diagnosis", label: "診断" },
   { href: "/products", label: "商品一覧" },
-  { href: "/reviews", label: "口コミ" },
-  { href: "/contact", label: "お問い合わせ" },
   { href: "/about", label: "About" }
 ];
 
@@ -27,7 +25,7 @@ export function SiteHeader() {
           <span>Care Hair</span>
         </Link>
 
-        <div className="hidden items-center gap-6 text-sm text-ink/80 md:flex">
+        <div className="hidden items-center gap-8 text-sm text-ink/80 md:flex">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="transition hover:text-green">
               {link.label}

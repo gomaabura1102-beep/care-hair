@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Product } from "@/types/product";
 import { FadeIn } from "@/components/fade-in";
-import { ProductRadarChart } from "@/components/product-radar-chart";
 
 type ProductCardProps = {
   product: Product;
@@ -41,7 +40,6 @@ export function ProductCard({ product }: ProductCardProps) {
             <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-green transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
           <p className="mt-3 text-sm text-muted">{product.feature}</p>
-          <ProductRadarChart product={product} compact className="mt-5" />
           <p className="mt-5 font-semibold text-green">{product.price}</p>
         </div>
       </Link>
