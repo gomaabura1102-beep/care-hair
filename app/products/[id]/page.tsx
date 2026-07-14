@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import { products } from "@/data/products";
 import { buttonVariants } from "@/components/ui/button";
+import { ProductRadarChart } from "@/components/product-radar-chart";
 
 type ProductDetailPageProps = {
   params: {
@@ -84,6 +85,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 </div>
               ))}
             </div>
+
+            <ProductRadarChart product={product} className="mt-8 shadow-brand" />
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href={product.amazonUrl} target="_blank" rel="noopener noreferrer" className={buttonVariants()}>
