@@ -18,7 +18,7 @@ const flow = [
 export default function HomePage() {
   return (
     <main className="pt-[var(--header-height)]">
-      <section className="relative flex min-h-[calc(100svh-var(--header-height))] items-start overflow-hidden bg-soft md:min-h-[calc(94vh-var(--header-height))] md:items-end">
+      <section className="relative flex min-h-[calc(100svh-var(--header-height))] items-start overflow-hidden bg-soft md:min-h-[calc(94vh-var(--header-height))] md:items-center">
         <div className="absolute inset-x-4 top-6 grid h-36 grid-cols-3 gap-3 sm:h-44 md:hidden">
           {[
             "/products/qurap-wrapping-moist-shampoo.jpeg",
@@ -59,7 +59,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-white/80 to-white md:bg-gradient-to-r md:from-white md:via-white/90 md:to-white/25" />
-        <div className="relative mx-auto w-full max-w-site px-4 pb-12 pt-64 sm:pt-72 md:pb-24 md:pt-0">
+        <div className="relative mx-auto w-full max-w-site px-4 pb-12 pt-64 sm:pt-72 md:py-20">
           <div className="max-w-3xl rounded-brand bg-white/80 md:bg-transparent">
             <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-green">Hair care diagnosis</p>
             <h1 className="whitespace-nowrap text-[clamp(1.82rem,8.1vw,4.5rem)] font-medium leading-[1.12] sm:text-6xl md:text-8xl md:leading-[1.08]">

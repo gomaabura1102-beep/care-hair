@@ -55,6 +55,15 @@ img {
   white-space: normal;
 }
 
+@media (max-width: 639px) {
+  .jp-question-title--wet-stretch {
+    font-size: clamp(0.72rem, 3.6vw, 1.15rem);
+    overflow-wrap: normal;
+    text-wrap: wrap;
+    word-break: keep-all;
+  }
+}
+
 @media (min-width: 640px) {
   .jp-question-title--manual {
     font-size: clamp(1.25rem, 3.5vw, 2.25rem);

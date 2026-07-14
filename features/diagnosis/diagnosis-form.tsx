@@ -46,7 +46,7 @@ export function DiagnosisForm() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl rounded-brand border border-line bg-white/95 p-5 shadow-brand sm:p-7 md:p-12">
+    <div className="mx-auto w-full max-w-4xl rounded-brand border border-line bg-white/95 p-4 shadow-brand sm:p-7 md:p-12">
       <div className="mb-8 h-2 overflow-hidden rounded-full bg-line" aria-label="診断の進捗">
         <div className="h-full rounded-full bg-green transition-all duration-500" style={{ width: `${progress}%` }} />
       </div>
@@ -73,7 +73,8 @@ export function DiagnosisForm() {
           "jp-question-title max-w-full font-medium",
           hasManualTitleBreak
             ? "jp-question-title--manual"
-            : "jp-question-title--single"
+            : "jp-question-title--single",
+          question.id === "wet-stretch" && "jp-question-title--wet-stretch"
         )}
         style={
           hasManualTitleBreak
