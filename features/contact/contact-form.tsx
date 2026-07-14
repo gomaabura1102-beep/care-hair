@@ -74,7 +74,7 @@ export function ContactForm() {
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-green">Instagram</p>
         <h2 className="mt-3 text-2xl font-medium">Care Hair公式Instagram</h2>
         <p className="mt-4 leading-7 text-muted">
-          ヘアケアに関する情報やサービスの更新内容を、見やすくまとめて確認できます。
+          新しいお知らせや制作の様子はInstagramでも発信できます。質問や相談の導線としても使いやすい入口です。
         </p>
         <a
           href={instagramUrl}
