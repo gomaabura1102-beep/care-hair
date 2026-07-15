@@ -3,7 +3,13 @@
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { concernOptions, hairTypeOptions, hairTypeProducts, type ReviewHairType } from "@/data/review-form-options";
+import {
+  allReviewProducts,
+  concernOptions,
+  hairTypeOptions,
+  hairTypeProducts,
+  type ReviewHairType
+} from "@/data/review-form-options";
 import type { UserReview } from "@/data/reviews";
 
 type ProductReviewFormProps = {
@@ -16,7 +22,11 @@ export function ProductReviewForm({ onSubmitReview }: ProductReviewFormProps) {
   const [rating, setRating] = useState(5);
   const [sent, setSent] = useState(false);
 
-  const productOptions = useMemo(() => hairTypeProducts[hairType], [hairType]);
+  const recommendedProducts = useMemo(() => hairTypeProducts[hairType], [hairType]);
+  const otherProducts = useMemo(
+    () => allReviewProducts.filter((productName) => !recommendedProducts.includes(productName)),
+    [recommendedProducts]
+  );
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,7 +36,7 @@ export function ProductReviewForm({ onSubmitReview }: ProductReviewFormProps) {
       name: String(formData.get("name") || "匿名"),
       hairType,
       concerns,
-      product: String(formData.get("product") || productOptions[0]),
+      product: String(formData.get("product") || recommendedProducts[0]),
       rating,
       good: String(formData.get("good") || ""),
       concern: String(formData.get("concern") || "")
@@ -105,11 +115,20 @@ export function ProductReviewForm({ onSubmitReview }: ProductReviewFormProps) {
             name="product"
             className="min-h-12 rounded-brand border border-line bg-white px-4 font-normal outline-none transition focus:border-green"
           >
-            {productOptions.map((productName) => (
-              <option key={productName} value={productName}>
-                {productName}
-              </option>
-            ))}
+            <optgroup label="おすすめ">
+              {recommendedProducts.map((productName) => (
+                <option key={productName} value={productName}>
+                  {productName}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="その他の商品">
+              {otherProducts.map((productName) => (
+                <option key={productName} value={productName}>
+                  {productName}
+                </option>
+              ))}
+            </optgroup>
           </select>
         </label>
 

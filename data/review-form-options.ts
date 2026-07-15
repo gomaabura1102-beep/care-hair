@@ -29,3 +29,18 @@ export const hairTypeProducts: Record<ReviewHairType, string[]> = {
   dry: ["THE ANSWER", "プリュスオー リポア", "Qurap ラッピングモイスト"],
   scalp: ["カウブランド うるおい", "ミノン", "無印良品 スカルプ"]
 };
+
+export const allReviewProducts = [
+  "プリュスオー メロウ",
+  "MEMEME スムースブースト",
+  "Sleek バランスエフェクト",
+  "THE ANSWER",
+  "THE ANSWER SS",
+  "プリュスオー リポア",
+  "Qurap ラッピングモイスト",
+  "アンレーベル KR コントロール",
+  "メルト モイスト",
+  "カウブランド うるおい",
+  "ミノン",
+  "無印良品 スカルプ"
+];
