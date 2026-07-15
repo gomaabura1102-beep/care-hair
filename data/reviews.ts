@@ -24,7 +24,7 @@ export const initialReviews: UserReview[] = [
   },
   {
     id: "review-2",
-    name: "高校1年・S",
+    name: "高校2年・S",
     hairType: "normal",
     concerns: ["広がり", "くせ毛・うねり"],
     product: "THE ANSWER",
@@ -34,7 +34,7 @@ export const initialReviews: UserReview[] = [
   },
   {
     id: "review-3",
-    name: "高校3年・K",
+    name: "高校2年・K",
     hairType: "coarse",
     concerns: ["広がり", "ダメージ"],
     product: "THE ANSWER SS",
