@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
 
@@ -7,8 +8,14 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-line py-12 text-sm text-muted">
       <div className="mx-auto flex max-w-site flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between">
-        <Link href="/" className="font-semibold tracking-[0.08em] text-ink">
-          Care Hair
+        <Link href="/" className="block h-12 w-[132px]">
+          <Image
+            src="/care-hair-logo.png"
+            alt="Care Hair"
+            width={320}
+            height={210}
+            className="h-full w-full object-contain object-left"
+          />
         </Link>
         <div className="flex flex-wrap items-center gap-4">
           <p>Hair care diagnosis for high school students.</p>

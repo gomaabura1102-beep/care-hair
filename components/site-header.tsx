@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Menu, Sparkles, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -19,11 +20,15 @@ export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-white/85 backdrop-blur-xl">
       <nav className="mx-auto flex h-[var(--header-height)] max-w-site items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-3 font-semibold tracking-[0.08em]" onClick={() => setOpen(false)}>
-          <span className="grid h-8 w-8 place-items-center rounded-full border border-green text-green">
-            <Sparkles className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span>Care Hair</span>
+        <Link href="/" className="block h-12 w-[132px] sm:w-[154px]" onClick={() => setOpen(false)}>
+          <Image
+            src="/care-hair-logo.png"
+            alt="Care Hair"
+            width={320}
+            height={210}
+            priority
+            className="h-full w-full object-contain object-left"
+          />
         </Link>
 
         <div className="hidden items-center gap-8 text-sm text-ink/80 md:flex">
