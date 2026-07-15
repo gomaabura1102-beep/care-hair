@@ -9,6 +9,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/diagnosis", label: "診断" },
   { href: "/products", label: "商品一覧" },
+  { href: "/reviews", label: "口コミ" },
   { href: "/about", label: "About" }
 ];
 

@@ -86,8 +86,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 {[
                   ["香り", content.features.scent],
                   ["仕上がり", content.features.finish],
-                  ["泡立ち", content.features.foam],
-                  ["特徴", content.features.character]
+                  ["泡立ち", content.features.foam]
                 ].map(([label, value]) => (
                   <div key={label} className="grid gap-2 bg-white p-5 md:grid-cols-[140px_1fr]">
                     <b className="text-green">{label}</b>

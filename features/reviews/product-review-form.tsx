@@ -4,9 +4,15 @@ import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { concernOptions, hairTypeOptions, hairTypeProducts, type ReviewHairType } from "@/data/review-form-options";
+import type { UserReview } from "@/data/reviews";
 
-export function ProductReviewForm() {
+type ProductReviewFormProps = {
+  onSubmitReview?: (review: UserReview) => void;
+};
+
+export function ProductReviewForm({ onSubmitReview }: ProductReviewFormProps) {
   const [hairType, setHairType] = useState<ReviewHairType>("fine");
+  const [concerns, setConcerns] = useState<string[]>([]);
   const [rating, setRating] = useState(5);
   const [sent, setSent] = useState(false);
 
@@ -14,10 +20,30 @@ export function ProductReviewForm() {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    event.currentTarget.reset();
+    const formData = new FormData(event.currentTarget);
+    const review: UserReview = {
+      id: `review-${Date.now()}`,
+      name: String(formData.get("name") || "匿名"),
+      hairType,
+      concerns,
+      product: String(formData.get("product") || productOptions[0]),
+      rating,
+      good: String(formData.get("good") || ""),
+      concern: String(formData.get("concern") || "")
+    };
+
+    onSubmitReview?.(review);
     setHairType("fine");
+    setConcerns([]);
     setRating(5);
     setSent(true);
+    event.currentTarget.reset();
+  };
+
+  const toggleConcern = (concern: string) => {
+    setConcerns((current) =>
+      current.includes(concern) ? current.filter((item) => item !== concern) : [...current, concern]
+    );
   };
 
   return (
@@ -40,7 +66,10 @@ export function ProductReviewForm() {
           <select
             name="hairType"
             value={hairType}
-            onChange={(event) => setHairType(event.target.value as ReviewHairType)}
+            onChange={(event) => {
+              setHairType(event.target.value as ReviewHairType);
+              setSent(false);
+            }}
             className="min-h-12 rounded-brand border border-line bg-white px-4 font-normal outline-none transition focus:border-green"
           >
             {hairTypeOptions.map((option) => (
@@ -56,7 +85,14 @@ export function ProductReviewForm() {
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {concernOptions.map((concern) => (
               <label key={concern} className="flex items-center gap-3 text-sm text-muted">
-                <input name="concerns" type="checkbox" value={concern} className="h-4 w-4 accent-green" />
+                <input
+                  name="concerns"
+                  type="checkbox"
+                  value={concern}
+                  checked={concerns.includes(concern)}
+                  onChange={() => toggleConcern(concern)}
+                  className="h-4 w-4 accent-green"
+                />
                 {concern}
               </label>
             ))}
@@ -118,7 +154,7 @@ export function ProductReviewForm() {
         </label>
 
         <Button type="submit">口コミを送信する</Button>
-        {sent && <p className="text-sm text-green">入力内容を受け付けました。実運用時は保存先と接続してください。</p>}
+        {sent && <p className="text-sm text-green">口コミを追加しました。</p>}
       </form>
     </section>
   );
