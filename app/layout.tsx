@@ -11,6 +11,8 @@ const notoSansJp = Noto_Sans_JP({
   display: "swap"
 });
 
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID ?? "G-3P4Z4240B8";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://care-hair.example.com"),
   title: {
@@ -34,7 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ja">
       <body className={notoSansJp.className}>
-        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_ID} />
+        <GoogleAnalytics measurementId={googleAnalyticsId} />
         <SiteHeader />
         {children}
         <SiteFooter />
