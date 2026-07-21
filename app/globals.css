@@ -5,6 +5,23 @@
 :root {
   color-scheme: light;
   --header-height: 76px;
+  --primary: #1f5f8b;
+  --primary-dark: #174968;
+  --secondary: #eaf4f8;
+  --accent: #2a8fb8;
+  --accent-soft: #dff1f7;
+  --ink: #141612;
+  --muted: #6f746d;
+  --line: #e5e9ec;
+  --paper: #ffffff;
+  --soft: #f6f9fb;
+  --radius-card: 12px;
+  --radius-button: 999px;
+  --shadow-card: 0 18px 50px rgba(31, 95, 139, .1);
+  --shadow-hover: 0 24px 70px rgba(31, 95, 139, .16);
+  --space-card: 1.5rem;
+  --gap-card: 1.5rem;
+  --icon-size: 1.5rem;
 }
 
 * {
@@ -17,8 +34,8 @@ html {
 
 body {
   margin: 0;
-  background: #fff;
-  color: #141612;
+  background: var(--paper);
+  color: var(--ink);
   line-height: 1.8;
 }
 
@@ -27,8 +44,8 @@ img {
 }
 
 ::selection {
-  background: #dfe8df;
-  color: #141612;
+  background: var(--accent-soft);
+  color: var(--ink);
 }
 
 .text-balance {

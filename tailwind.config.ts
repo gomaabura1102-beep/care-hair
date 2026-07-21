@@ -5,19 +5,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#141612",
-        muted: "#6f746d",
-        line: "#e8e5de",
-        paper: "#ffffff",
-        soft: "#f6f4ef",
-        green: "#16372f",
-        sage: "#dfe8df"
+        ink: "var(--ink)",
+        muted: "var(--muted)",
+        line: "var(--line)",
+        paper: "var(--paper)",
+        soft: "var(--soft)",
+        green: "var(--primary)",
+        sage: "var(--secondary)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        accent: "var(--accent)"
       },
       borderRadius: {
-        brand: "8px"
+        brand: "var(--radius-card)"
       },
       boxShadow: {
-        brand: "0 18px 50px rgba(20, 22, 18, .08)"
+        brand: "var(--shadow-card)",
+        hover: "var(--shadow-hover)"
       },
       maxWidth: {
         site: "1200px"

@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ClipboardList, Instagram, Scissors, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, ClipboardList, Instagram, Scissors, Sparkles, TrendingUp } from "lucide-react";
 import { FadeIn } from "@/components/fade-in";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeading } from "@/components/section-heading";
+import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { featuredProducts } from "@/data/products";
+import { trendingProducts } from "@/data/product-insights";
 import { stylists } from "@/data/stylists";
 
 const flow = [
@@ -13,6 +15,19 @@ const flow = [
   { title: "悩みを追加", body: "パサつき、癖毛、広がり、頭皮のかゆみなどを反映します。" },
   { title: "スコア化", body: "細毛・普通毛・硬毛、直毛・癖毛、頭皮状態などを判定します。" },
   { title: "商品を提案", body: "診断結果に近いシャンプーとトリートメントをTOP3で表示します。" }
+];
+
+const trustItems = [
+  { icon: Scissors, title: "美容師監修", body: "現役美容師へのインタビューをもとに、髪質ごとの選び方を整理。" },
+  { icon: ClipboardList, title: "194人の中高生にアンケート実施", body: "商品選びで迷う理由や価格帯の感覚をサービス設計に反映。" },
+  { icon: CheckCircle2, title: "美容師と商品を選定", body: "市販で買いやすく、男子高校生でも続けやすい商品を中心に選定。" }
+];
+
+const benefitItems = [
+  "自分に合う商品が見つかる",
+  "無駄な買い物を減らせる",
+  "髪の悩みを改善できる",
+  "美容室でも相談しやすくなる"
 ];
 
 export default function HomePage() {
@@ -72,10 +87,53 @@ export default function HomePage() {
               <Link href="/diagnosis" className={buttonVariants({ size: "lg" })}>
                 診断を始める <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/products" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                商品を見る
+              <Link href="/search" className={buttonVariants({ variant: "outline", size: "lg" })}>
+                条件から探す
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-site px-4">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Trust"
+              title="安心して選べる理由"
+              lead="アンケートと美容師の視点を組み合わせ、男子高校生が迷わず選べる診断サービスとして設計しています。"
+            />
+          </FadeIn>
+          <div className="grid gap-5 md:grid-cols-3">
+            {trustItems.map((item) => (
+              <FadeIn key={item.title}>
+                <Card interactive>
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-secondary text-green">
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-7 text-xl font-semibold">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-muted">{item.body}</p>
+                </Card>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-soft py-20 md:py-28">
+        <div className="mx-auto max-w-site px-4">
+          <FadeIn>
+            <SectionHeading eyebrow="Benefits" title="Care Hairを使うメリット" />
+          </FadeIn>
+          <div className="grid gap-5 md:grid-cols-4">
+            {benefitItems.map((item, index) => (
+              <FadeIn key={item} delay={index * 0.04}>
+                <Card interactive className="min-h-48">
+                  <span className="text-sm font-semibold tracking-[0.14em] text-green">0{index + 1}</span>
+                  <h3 className="mt-8 text-xl font-semibold leading-snug">{item}</h3>
+                </Card>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
@@ -231,6 +289,35 @@ export default function HomePage() {
               自分に合う商品を診断する <Sparkles className="h-4 w-4" />
             </Link>
           </FadeIn>
+        </div>
+      </section>
+
+      <section className="bg-soft py-20 md:py-28">
+        <div className="mx-auto max-w-site px-4">
+          <FadeIn>
+            <SectionHeading
+              eyebrow="Trending"
+              title="今話題の商品"
+              lead="口コミ急上昇・今月人気・高校生人気など、今チェックされやすい商品をピックアップしています。"
+            />
+          </FadeIn>
+          <div className="grid gap-5 md:grid-cols-4">
+            {trendingProducts.map(({ product, label }, index) => (
+              <FadeIn key={product.id} delay={index * 0.04}>
+                <Card interactive>
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-green">{label}</span>
+                    <TrendingUp className="h-5 w-5 text-accent" />
+                  </div>
+                  <h3 className="text-lg font-semibold leading-snug">{product.name}</h3>
+                  <p className="mt-3 text-sm leading-7 text-muted">{product.fit}</p>
+                  <Link href={`/products/${product.id}`} className="mt-6 inline-flex text-sm font-semibold text-green underline-offset-4 hover:underline">
+                    詳しく見る
+                  </Link>
+                </Card>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
     </main>

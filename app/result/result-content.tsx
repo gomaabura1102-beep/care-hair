@@ -5,8 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
 import { ScoreBars } from "@/components/score-bars";
 import { SectionHeading } from "@/components/section-heading";
+import { Card, CardEyebrow } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { ShareResultCard } from "@/features/result/share-result-card";
 import { getDiagnosisResult, parseAnswers, rankPairedTreatments, rankProducts } from "@/lib/diagnosis";
+import type { ScoreMap } from "@/types/diagnosis";
 
 export function ResultContent() {
   const searchParams = useSearchParams();
@@ -14,6 +17,7 @@ export function ResultContent() {
   const result = getDiagnosisResult(answers);
   const shampoos = rankProducts("shampoo", result.scores);
   const treatments = rankPairedTreatments(shampoos, result.scores);
+  const features = getUserFeatures(result.scores);
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -66,11 +70,31 @@ export function ResultContent() {
               <Link href="/diagnosis" className={buttonVariants()}>
                 もう一度診断する
               </Link>
-              <Link href="/products" className={buttonVariants({ variant: "outline" })}>
-                商品一覧へ
+              <Link href="/search" className={buttonVariants({ variant: "outline" })}>
+                条件から探す
               </Link>
             </div>
           </div>
+        </div>
+        <div className="mx-auto mt-6 grid max-w-site gap-6 px-4 lg:grid-cols-[.9fr_1.1fr]">
+          <Card as="section">
+            <CardEyebrow>Your features</CardEyebrow>
+            <h2 className="mt-3 text-2xl font-semibold">あなたの特徴</h2>
+            <ul className="mt-5 grid gap-3 text-muted">
+              {features.map((feature) => (
+                <li key={feature} className="flex gap-3 leading-7">
+                  <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+          <ShareResultCard
+            hairBody={result.hairBody}
+            hairShape={result.hairShape}
+            shampoo={shampoos[0].name}
+            treatment={treatments[0].name}
+          />
         </div>
         <div className="mx-auto mt-6 max-w-site px-4">
           <div className="rounded-brand border border-line bg-white p-7 shadow-brand md:p-10">
@@ -104,7 +128,8 @@ export function ResultContent() {
 
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-site px-4">
-          <SectionHeading eyebrow="Top 3" title="おすすめシャンプー" />
+          <SectionHeading eyebrow="Top 3" title="おすすめ商品" lead="診断結果に近いシャンプーとトリートメントを表示しています。" />
+          <h3 className="mb-5 text-xl font-semibold">おすすめシャンプー</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {shampoos.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -125,4 +150,17 @@ export function ResultContent() {
       </section>
     </main>
   );
+}
+
+function getUserFeatures(scores: ScoreMap) {
+  const items = [
+    scores.dry >= 4 && "乾燥しやすい",
+    scores.frizz >= 4 && "広がりやすい",
+    scores.curly >= 4 && "湿気の影響を受けやすい",
+    scores.damage >= 4 && "指通りが悪くなりやすい",
+    scores.volume >= 4 && "根元がぺたんとしやすい",
+    scores.scalp >= 4 && "頭皮のかゆみやフケに注意したい"
+  ].filter(Boolean) as string[];
+
+  return items.length ? items : ["大きなダメージは少なく、毎日の基本ケアを続けやすい髪質です"];
 }

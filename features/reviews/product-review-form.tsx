@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardEyebrow } from "@/components/ui/card";
 import {
   allReviewProducts,
   concernOptions,
@@ -57,8 +58,8 @@ export function ProductReviewForm({ onSubmitReview }: ProductReviewFormProps) {
   };
 
   return (
-    <section className="mt-16 rounded-brand border border-line bg-white p-5 shadow-brand sm:p-8">
-      <p className="text-xs font-bold uppercase tracking-[0.18em] text-green">Review</p>
+    <Card as="section" className="mt-16">
+      <CardEyebrow>Review</CardEyebrow>
       <h2 className="mt-3 text-3xl font-medium">口コミを入力する</h2>
       <form className="mt-8 grid gap-5" onSubmit={submit}>
         <label className="grid gap-2 text-sm font-semibold text-ink">
@@ -175,6 +176,6 @@ export function ProductReviewForm({ onSubmitReview }: ProductReviewFormProps) {
         <Button type="submit">口コミを送信する</Button>
         {sent && <p className="text-sm text-green">口コミを追加しました。</p>}
       </form>
-    </section>
+    </Card>
   );
 }

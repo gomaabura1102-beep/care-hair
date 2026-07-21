@@ -9,8 +9,9 @@ import { cn } from "@/lib/utils";
 const links = [
   { href: "/", label: "Home" },
   { href: "/diagnosis", label: "診断" },
-  { href: "/products", label: "商品一覧" },
+  { href: "/search", label: "検索" },
   { href: "/reviews", label: "口コミ" },
+  { href: "/mypage", label: "マイページ" },
   { href: "/about", label: "About" }
 ];
 
@@ -18,7 +19,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-white/85 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-white/88 backdrop-blur-xl">
       <nav className="mx-auto flex h-[var(--header-height)] max-w-site items-center justify-between px-4">
         <Link href="/" className="block h-12 w-[132px] sm:w-[154px]" onClick={() => setOpen(false)}>
           <Image
@@ -31,7 +32,7 @@ export function SiteHeader() {
           />
         </Link>
 
-        <div className="hidden items-center gap-8 text-sm text-ink/80 md:flex">
+        <div className="hidden items-center gap-7 text-sm text-ink/80 md:flex">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="transition hover:text-green">
               {link.label}
