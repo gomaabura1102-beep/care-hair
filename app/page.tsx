@@ -83,6 +83,9 @@ export default function HomePage() {
             <p className="mt-7 max-w-2xl text-base leading-8 text-ink/75 md:text-xl">
               Care Hairは、男子高校生の髪質・悩み・頭皮状態に合わせて、市販で買いやすいシャンプーとトリートメントを提案する診断サービスです。
             </p>
+            <p className="mt-5 inline-flex rounded-full border border-accent/30 bg-white px-4 py-2 text-sm font-semibold text-green shadow-brand">
+              より正確に診断したい方は写真診断がおすすめです
+            </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link href="/diagnosis" className={buttonVariants({ size: "lg" })}>
                 診断を始める <ArrowRight className="h-4 w-4" />

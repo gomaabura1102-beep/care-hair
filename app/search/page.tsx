@@ -4,7 +4,7 @@ import { ProductSearch } from "@/features/search/product-search";
 
 export const metadata: Metadata = {
   title: "条件から探す",
-  description: "髪質・悩み・香り・ブランド・価格帯からCare Hairの商品候補を探せます。"
+  description: "髪質・悩み・香り・評価からCare Hairの商品候補を探せます。"
 };
 
 export default function SearchPage() {

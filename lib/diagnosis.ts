@@ -78,6 +78,10 @@ export function calculateScores(answers: number[][]): ScoreMap {
 
 export function getDiagnosisResult(answers: number[][]): DiagnosisResult {
   const scores = calculateScores(answers);
+  return getDiagnosisResultFromScores(scores);
+}
+
+export function getDiagnosisResultFromScores(scores: ScoreMap): DiagnosisResult {
   const hairBody =
     scores.coarse >= 5 && scores.coarse >= scores.fine
       ? "硬毛・剛毛"

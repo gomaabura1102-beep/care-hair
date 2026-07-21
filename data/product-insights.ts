@@ -1,5 +1,6 @@
-import { products } from "@/data/products";
 import { getProductCareContent } from "@/data/product-care-content";
+import { products } from "@/data/products";
+import type { ScoreKey } from "@/types/diagnosis";
 import type { Product } from "@/types/product";
 
 const brandOf = (name: string) => {
@@ -29,25 +30,40 @@ const concernMap = [
   ["scalp", "フケ・かゆみ"]
 ] as const;
 
+const scentCategories = ["フローラル", "シトラス", "フルーティー", "ハーブ", "石けん", "無香料", "その他"] as const;
+
 const priceNumber = (price: string) => Number(price.replace(/[^\d]/g, "")) || 0;
+
+export function categorizeScent(scent: string) {
+  if (scent.includes("フローラル") || scent.includes("ムスク")) return "フローラル";
+  if (scent.includes("シトラス") || scent.includes("柑橘")) return "シトラス";
+  if (scent.includes("フルーティー") || scent.includes("果実")) return "フルーティー";
+  if (scent.includes("ハーブ") || scent.includes("グリーン")) return "ハーブ";
+  if (scent.includes("石けん") || scent.includes("せっけん")) return "石けん";
+  if (scent.includes("無香料") || scent.includes("香りがほとんど")) return "無香料";
+  return "その他";
+}
 
 export function getProductInsight(product: Product) {
   const content = getProductCareContent(product);
   const hairTypes = hairTypeMap
-    .filter(([key]) => (product.scores[key] ?? 0) >= 4)
+    .filter(([key]) => (product.scores[key as ScoreKey] ?? 0) >= 4)
     .map(([, label]) => label);
   const concerns = concernMap
-    .filter(([key]) => (product.scores[key] ?? 0) >= 4)
+    .filter(([key]) => (product.scores[key as ScoreKey] ?? 0) >= 4)
     .map(([, label]) => label);
+  const rating = Math.min(5, 3.8 + ((product.id.length % 9) / 10));
 
   return {
     brand: brandOf(product.name),
     hairTypes: hairTypes.length ? hairTypes : ["普通毛"],
     concerns: concerns.length ? concerns : ["特になし"],
     scent: product.scent,
+    scentCategory: categorizeScent(product.scent),
     finish: product.texture,
     washFeel: product.texture,
     reviewCount: 18 + (product.id.length % 23),
+    rating: Number(rating.toFixed(1)),
     priceValue: priceNumber(product.price),
     aiReviewSummary: [
       content.reviewSummary.good,
@@ -72,7 +88,8 @@ export const productsWithInsights = products.map((product) => ({
 export const filterOptions = {
   hairTypes: ["細毛・軟毛", "普通毛", "硬毛・剛毛"],
   concerns: ["パサつき", "くせ毛・うねり", "広がり", "ボリューム不足", "ダメージ", "フケ・かゆみ", "特になし"],
-  scents: Array.from(new Set(products.map((product) => product.scent))),
+  scents: [...scentCategories],
+  ratings: ["4.5以上", "4.0以上", "3.5以上"],
   brands: Array.from(new Set(products.map((product) => brandOf(product.name)))),
   priceRanges: [
     { label: "1,500円以下", min: 0, max: 1500 },

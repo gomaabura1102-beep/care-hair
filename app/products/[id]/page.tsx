@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ProductReviewForm } from "@/features/reviews/product-review-form";
 import { products } from "@/data/products";
 import { getProductCareContent } from "@/data/product-care-content";
 import { getProductInsight } from "@/data/product-insights";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardEyebrow } from "@/components/ui/card";
-import { ProductReviewForm } from "@/features/reviews/product-review-form";
 
 type ProductDetailPageProps = {
   params: {
@@ -41,6 +41,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const product = products.find((item) => item.id === params.id);
 
   if (!product) notFound();
+
   const content = getProductCareContent(product);
   const insight = getProductInsight(product);
 

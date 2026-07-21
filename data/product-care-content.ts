@@ -4,8 +4,7 @@ import type { Product, ProductCareContent } from "@/types/product";
 const defaultContent = (product: Product): ProductCareContent => ({
   recommendedFor: [
     product.fit,
-    product.tags[0] ? `${product.tags[0]}が気になる人` : "自分に合う商品を探している人",
-    "市販商品から選びたい人"
+    product.tags[0] ? `${product.tags[0]}が気になる人` : "自分に合う商品を探している人"
   ],
   recommendReason:
     `${product.name}は、${product.fit}に向けて選びやすい商品です。診断で近い髪質や悩みが出た場合、${product.point}`,

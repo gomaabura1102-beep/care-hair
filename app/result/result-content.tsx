@@ -2,22 +2,47 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { ProductCard } from "@/components/product-card";
 import { ScoreBars } from "@/components/score-bars";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardEyebrow } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { ShareResultCard } from "@/features/result/share-result-card";
-import { getDiagnosisResult, parseAnswers, rankPairedTreatments, rankProducts } from "@/lib/diagnosis";
+import { calculateScores, getDiagnosisResultFromScores, parseAnswers, rankPairedTreatments, rankProducts, scoreKeys } from "@/lib/diagnosis";
 import type { ScoreMap } from "@/types/diagnosis";
+import type { HairPhotoAnalysis } from "@/types/photo-diagnosis";
 
 export function ResultContent() {
   const searchParams = useSearchParams();
   const answers = parseAnswers(searchParams.get("answers"));
-  const result = getDiagnosisResult(answers);
+  const [photoAnalysis, setPhotoAnalysis] = useState<HairPhotoAnalysis | null>(null);
+  const usesPhoto = searchParams.get("photo") === "1";
+  const result = useMemo(() => {
+    const scores = calculateScores(answers);
+    if (usesPhoto && photoAnalysis?.usable) {
+      scoreKeys.forEach((key) => {
+        scores[key] += photoAnalysis.scores[key] ?? 0;
+      });
+    }
+    return getDiagnosisResultFromScores(scores);
+  }, [answers, photoAnalysis, usesPhoto]);
   const shampoos = rankProducts("shampoo", result.scores);
   const treatments = rankPairedTreatments(shampoos, result.scores);
   const features = getUserFeatures(result.scores);
+
+  useEffect(() => {
+    if (!usesPhoto) return;
+
+    const stored = sessionStorage.getItem("care-hair-photo-analysis");
+    if (!stored) return;
+
+    try {
+      setPhotoAnalysis(JSON.parse(stored) as HairPhotoAnalysis);
+    } catch {
+      setPhotoAnalysis(null);
+    }
+  }, [usesPhoto]);
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -33,6 +58,11 @@ export function ResultContent() {
               )}
             </h1>
             <p className="mt-6 text-muted">{result.feature}</p>
+            {usesPhoto && (
+              <p className="mt-4 rounded-brand bg-secondary px-4 py-3 text-sm font-semibold text-green">
+                {photoAnalysis?.usable ? "写真診断の結果も反映しています。" : "写真から髪質を正確に判断できませんでした。質問内容のみで診断します。"}
+              </p>
+            )}
             <ScoreBars scores={result.scores} />
           </div>
           <div className="rounded-brand border border-line bg-white p-7 md:p-10">

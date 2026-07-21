@@ -71,7 +71,7 @@ export function ReviewPageContent() {
 
   const filteredReviews = useMemo(() => {
     const brandProducts = productsWithInsights.filter((item) => item.insight.brand === brand).map((item) => item.name);
-    const scentProducts = productsWithInsights.filter((item) => item.insight.scent === scent).map((item) => item.name);
+    const scentProducts = productsWithInsights.filter((item) => item.insight.scentCategory === scent).map((item) => item.name);
 
     const result = reviews.filter((review) => {
       const matchesHairType = hairType === all || hairTypeLabel[review.hairType] === hairType;

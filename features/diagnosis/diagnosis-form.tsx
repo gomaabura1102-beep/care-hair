@@ -10,6 +10,7 @@ import { questions } from "@/data/questions";
 import { encodeAnswers } from "@/lib/diagnosis";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { HairPhotoAnalysis } from "@/types/photo-diagnosis";
 
 const formSchema = z.object({
   answers: z.array(z.array(z.number())).length(questions.length)
@@ -17,7 +18,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function DiagnosisForm() {
+type DiagnosisFormProps = {
+  photoAnalysis?: HairPhotoAnalysis | null;
+};
+
+export function DiagnosisForm({ photoAnalysis }: DiagnosisFormProps) {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const question = questions[current];
@@ -42,6 +47,13 @@ export function DiagnosisForm() {
     }
 
     const values = form.getValues();
+    if (photoAnalysis?.usable) {
+      sessionStorage.setItem("care-hair-photo-analysis", JSON.stringify(photoAnalysis));
+      router.push(`/result?answers=${encodeAnswers(values.answers)}&photo=1`);
+      return;
+    }
+
+    sessionStorage.removeItem("care-hair-photo-analysis");
     router.push(`/result?answers=${encodeAnswers(values.answers)}`);
   };
 
