@@ -61,14 +61,16 @@ export default function HomePage() {
   return (
     <main className="overflow-hidden pb-24 pt-[var(--header-height)] md:pb-0">
       <section className="relative isolate min-h-[520px] overflow-hidden bg-[#eff7fb] sm:min-h-[580px] lg:min-h-[650px]">
-        <Image
-          src="/hero-care-hair.jpg"
-          alt="清潔感のあるヘアスタイルの男性"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[72%_center] sm:object-[68%_center] lg:object-center"
-        />
+        <div className="absolute inset-0 sm:left-auto sm:w-[64%] lg:w-[58%]">
+          <Image
+            src="/hero-home-user.jpg"
+            alt="料理を持つ短髪の男子"
+            fill
+            priority
+            sizes="(min-width: 1024px) 58vw, (min-width: 640px) 64vw, 100vw"
+            className="object-cover object-[66%_34%] sm:object-[62%_8%] lg:object-[65%_3%]"
+          />
+        </div>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.90)_38%,rgba(255,255,255,0.18)_72%,rgba(255,255,255,0.02)_100%)] sm:bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.90)_42%,rgba(255,255,255,0.10)_72%)]" />
         <div className="relative mx-auto flex min-h-[520px] max-w-site items-center px-5 py-14 sm:min-h-[580px] sm:px-8 lg:min-h-[650px]">
           <FadeIn className="w-[78%] max-w-[650px] sm:w-[60%] lg:w-[52%]">
@@ -203,6 +205,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <ProfessionalSupervisionSection />
+
       <section className="pb-20 pt-8 sm:pb-24 sm:pt-12">
         <div className="mx-auto max-w-site">
           <SectionTitle title="ヘアケアガイド" href="/about" />
@@ -235,55 +239,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-[#e8f0f4] bg-[#fbfdfe] py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-site px-4 lg:px-8">
-          <FadeIn>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#55a9da]">Professional supervision</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-[0.02em] text-[#15324a] sm:text-4xl lg:text-5xl">
-              美容師の意見を参考に設計
-            </h2>
-            <p className="mt-5 max-w-3xl text-sm leading-7 text-muted sm:text-base sm:leading-8">
-              美容師へのインタビューをもとに、髪質ごとの選び方と商品選定の基準を整理しました。
-            </p>
-          </FadeIn>
-
-          <div className="mt-10 grid gap-4 lg:mt-12 lg:grid-cols-3">
-            {stylists.map((stylist, index) => (
-              <FadeIn key={stylist.name} delay={index * 0.05}>
-                <article className="flex min-h-40 items-center gap-4 rounded-2xl border border-[#dfe9ef] bg-white p-5 shadow-[0_10px_28px_rgba(16,45,68,.05)] transition hover:-translate-y-1 hover:border-[#8dc8e8] hover:shadow-[0_16px_36px_rgba(42,143,184,.12)] sm:gap-5 sm:p-6">
-                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full bg-[#eff7fb] sm:h-28 sm:w-28">
-                    <Image
-                      src={stylist.image}
-                      alt={`${stylist.shop} ${stylist.name}`}
-                      fill
-                      sizes="112px"
-                      className="object-cover"
-                      style={{ objectPosition: "imagePosition" in stylist ? stylist.imagePosition : "center" }}
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[11px] font-bold uppercase tracking-[0.16em] text-[#2f83b4] sm:text-xs">
-                      {stylist.shop}
-                    </p>
-                    <h3 className="mt-2 text-xl font-semibold text-[#15324a] sm:text-2xl">{stylist.name}</h3>
-                    <p className="mt-1 text-sm text-muted">{stylist.role}</p>
-                  </div>
-                  <Link
-                    href={stylist.instagramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${stylist.name}さんのInstagram`}
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#dfe9ef] text-[#2f83b4] transition hover:border-[#55a9da] hover:bg-[#eff7fb]"
-                  >
-                    <Instagram className="h-5 w-5 stroke-[1.7]" />
-                  </Link>
-                </article>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-[#e1e9ee] bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_24px_rgba(16,45,68,.08)] backdrop-blur md:hidden" aria-label="ホームのメインメニュー">
         <MobileNavItem href="/" label="ホーム" icon={Home} active />
         <MobileNavItem href="/diagnosis" label="診断" icon={ClipboardList} />
@@ -291,6 +246,59 @@ export default function HomePage() {
         <MobileNavItem href="/mypage" label="マイページ" icon={UserRound} />
       </nav>
     </main>
+  );
+}
+
+function ProfessionalSupervisionSection() {
+  return (
+    <section className="border-t border-[#e8f0f4] bg-[#fbfdfe] py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-site px-4 lg:px-8">
+        <FadeIn>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#55a9da]">Professional supervision</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-[0.02em] text-[#15324a] sm:text-4xl lg:text-5xl">
+            美容師の意見を参考に設計
+          </h2>
+          <p className="mt-5 max-w-3xl text-sm leading-7 text-muted sm:text-base sm:leading-8">
+            美容師へのインタビューをもとに、髪質ごとの選び方と商品選定の基準を整理しました。
+          </p>
+        </FadeIn>
+
+        <div className="mt-10 grid gap-4 lg:mt-12 lg:grid-cols-3">
+          {stylists.map((stylist, index) => (
+            <FadeIn key={stylist.name} delay={index * 0.05}>
+              <article className="flex min-h-40 items-center gap-4 rounded-2xl border border-[#dfe9ef] bg-white p-5 shadow-[0_10px_28px_rgba(16,45,68,.05)] transition hover:-translate-y-1 hover:border-[#8dc8e8] hover:shadow-[0_16px_36px_rgba(42,143,184,.12)] sm:gap-5 sm:p-6">
+                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full bg-[#eff7fb] sm:h-28 sm:w-28">
+                  <Image
+                    src={stylist.image}
+                    alt={`${stylist.shop} ${stylist.name}`}
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                    style={{ objectPosition: "imagePosition" in stylist ? stylist.imagePosition : "center" }}
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[11px] font-bold uppercase tracking-[0.16em] text-[#2f83b4] sm:text-xs">
+                    {stylist.shop}
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-[#15324a] sm:text-2xl">{stylist.name}</h3>
+                  <p className="mt-1 text-sm text-muted">{stylist.role}</p>
+                </div>
+                <Link
+                  href={stylist.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${stylist.name}さんのInstagram`}
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#dfe9ef] text-[#2f83b4] transition hover:border-[#55a9da] hover:bg-[#eff7fb]"
+                >
+                  <Instagram className="h-5 w-5 stroke-[1.7]" />
+                </Link>
+              </article>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
