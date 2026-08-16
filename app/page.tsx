@@ -1,229 +1,282 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ClipboardList, Instagram, Scissors, Sparkles, TrendingUp } from "lucide-react";
+import {
+  ArrowRight,
+  ClipboardList,
+  Crown,
+  Droplets,
+  Home,
+  Instagram,
+  Search,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Star,
+  UserRound,
+  Waves,
+  Wind
+} from "lucide-react";
 import { FadeIn } from "@/components/fade-in";
-import { ProductCard } from "@/components/product-card";
-import { SectionHeading } from "@/components/section-heading";
-import { Card } from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
-import { featuredProducts } from "@/data/products";
-import { trendingProducts } from "@/data/product-insights";
+import { getProductInsight, trendingProducts } from "@/data/product-insights";
 import { stylists } from "@/data/stylists";
 
-const flow = [
-  { title: "髪の状態を選ぶ", body: "髪一本の形や手触りなど、家でも確認しやすい質問に答えます。" },
-  { title: "悩みを追加", body: "パサつき、癖毛、広がり、頭皮のかゆみなどを反映します。" },
-  { title: "スコア化", body: "細毛・普通毛・硬毛、直毛・癖毛、頭皮状態などを判定します。" },
-  { title: "商品を提案", body: "診断結果に近いシャンプーとトリートメントをTOP3で表示します。" }
+const quickActions = [
+  { href: "/diagnosis", label: "髪の状態を診断", icon: ClipboardList },
+  { href: "/search", label: "悩みから探す", icon: Search },
+  { href: "/search", label: "商品を探す", icon: ShoppingBag },
+  { href: "#ranking", label: "人気ランキング", icon: Crown }
 ];
 
-const trustItems = [
-  { icon: Scissors, title: "美容師監修", body: "現役美容師へのインタビューをもとに、髪質ごとの選び方を整理。" },
-  { icon: ClipboardList, title: "194人の中高生にアンケート実施", body: "商品選びで迷う理由や価格帯の感覚をサービス設計に反映。" },
-  { icon: CheckCircle2, title: "美容師と商品を選定", body: "市販で買いやすく、男子高校生でも続けやすい商品を中心に選定。" }
+const concerns = [
+  { label: "乾燥・パサつき", icon: Droplets },
+  { label: "ベタつき", icon: Waves },
+  { label: "抜け毛・薄毛", icon: Wind },
+  { label: "うねり・くせ毛", icon: Waves },
+  { label: "ダメージ", icon: Sparkles },
+  { label: "フケ・かゆみ", icon: ShieldCheck }
 ];
 
-const benefitItems = [
-  "自分に合う商品が見つかる",
-  "無駄な買い物を減らせる",
-  "髪の悩みを改善できる",
-  "美容室でも相談しやすくなる"
+const guides = [
+  {
+    href: "/about",
+    eyebrow: "CARE GUIDE",
+    title: "自分の髪質を知ることから、ヘアケアは始まります。",
+    image: "/stylists/keisuke-goto.jpeg"
+  },
+  {
+    href: "/diagnosis",
+    eyebrow: "DIAGNOSIS",
+    title: "11の質問で、今の髪に合うケアを見つける。",
+    image: "/hero-care-hair.jpg"
+  },
+  {
+    href: "/search",
+    eyebrow: "PRODUCTS",
+    title: "髪質と悩みから、市販の商品を比較できます。",
+    image: "/products/qurap-wrapping-moist-shampoo.jpeg"
+  }
 ];
 
 export default function HomePage() {
   return (
-    <main className="pt-[var(--header-height)]">
-      <section className="relative flex min-h-[calc(100svh-var(--header-height))] items-start overflow-hidden bg-soft md:min-h-[calc(94vh-var(--header-height))] md:items-center">
-        <div className="absolute inset-x-4 top-6 grid h-36 grid-cols-3 gap-3 sm:h-44 md:hidden">
-          {[
-            "/products/qurap-wrapping-moist-shampoo.jpeg",
-            "/products/the-answer-shampoo.png",
-            "/products/plus-eau-mellow-shampoo.jpeg"
-          ].map((src, index) => (
-            <div key={src} className={`relative overflow-hidden rounded-brand bg-white p-4 shadow-brand ${index === 1 ? "translate-y-4" : ""}`}>
-              <Image
-                src={src}
-                alt="Care Hairで紹介しているヘアケア商品"
-                fill
-                priority={index === 0}
-                sizes="33vw"
-                className="object-contain p-3"
-              />
-            </div>
+    <main className="overflow-hidden pb-24 pt-[var(--header-height)] md:pb-0">
+      <section className="relative isolate min-h-[520px] overflow-hidden bg-[#eff7fb] sm:min-h-[580px] lg:min-h-[650px]">
+        <Image
+          src="/hero-care-hair.jpg"
+          alt="清潔感のあるヘアスタイルの男性"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[72%_center] sm:object-[68%_center] lg:object-center"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.90)_38%,rgba(255,255,255,0.18)_72%,rgba(255,255,255,0.02)_100%)] sm:bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.90)_42%,rgba(255,255,255,0.10)_72%)]" />
+        <div className="relative mx-auto flex min-h-[520px] max-w-site items-center px-5 py-14 sm:min-h-[580px] sm:px-8 lg:min-h-[650px]">
+          <FadeIn className="w-[78%] max-w-[650px] sm:w-[60%] lg:w-[52%]">
+            <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.24em] text-primary sm:text-xs">
+              Hair care diagnosis
+            </p>
+            <h1 className="text-[clamp(2rem,7vw,4.8rem)] font-medium leading-[1.28] tracking-[0.02em] text-[#102d44]">
+              <span className="whitespace-nowrap">あなたの髪に、</span>
+              <br />
+              <span className="whitespace-nowrap"><span className="text-[#53a5d5]">最適なケア</span>を。</span>
+            </h1>
+            <p className="mt-6 max-w-lg text-sm leading-7 text-[#29485f] sm:text-base sm:leading-8 lg:text-lg">
+              髪質や悩みに合わせて、
+              <br className="sm:hidden" />
+              あなただけのヘアケアをご提案します。
+            </p>
+            <Link
+              href="/diagnosis"
+              className="mt-8 inline-flex min-h-14 w-full max-w-[340px] items-center justify-center gap-4 rounded-full bg-[#55a9da] px-7 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(42,143,184,.28)] transition hover:-translate-y-0.5 hover:bg-primary sm:text-base"
+            >
+              今すぐ診断をはじめる
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      <section className="relative z-10 -mt-4 sm:-mt-8">
+        <div className="mx-auto grid max-w-site grid-cols-2 gap-3 px-4 sm:grid-cols-4 sm:gap-4 lg:px-8">
+          {quickActions.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="group flex min-h-32 flex-col items-center justify-center rounded-2xl border border-[#e7eef3] bg-white px-3 text-center shadow-[0_10px_28px_rgba(16,45,68,.10)] transition hover:-translate-y-1 hover:border-[#8dc8e8] hover:shadow-[0_16px_36px_rgba(42,143,184,.16)] sm:min-h-36"
+            >
+              <item.icon className="h-8 w-8 stroke-[1.6] text-[#55a9da] transition group-hover:scale-110 sm:h-10 sm:w-10" />
+              <span className="mt-4 text-sm font-semibold text-[#15324a] sm:text-base">{item.label}</span>
+            </Link>
           ))}
         </div>
-        <div className="absolute inset-y-10 right-0 hidden w-[52vw] max-w-[720px] md:block">
-          <div className="grid h-full grid-cols-2 grid-rows-3 gap-4 pr-4 lg:pr-8">
-            {[
-              { src: "/products/qurap-wrapping-moist-shampoo.jpeg", className: "row-span-2" },
-              { src: "/products/the-answer-shampoo.png", className: "" },
-              { src: "/products/plus-eau-mellow-treatment.jpeg", className: "row-span-2" },
-              { src: "/products/mememe-smooth-boost-shampoo.jpeg", className: "" }
-            ].map((item, index) => (
-              <div key={item.src} className={`relative overflow-hidden rounded-brand border border-line bg-white p-6 shadow-brand ${item.className}`}>
-                <Image
-                  src={item.src}
-                  alt="Care Hairで紹介しているヘアケア商品"
-                  fill
-                  priority={index === 0}
-                  sizes="(min-width: 768px) 26vw, 50vw"
-                  className="object-contain p-6"
-                />
-              </div>
-            ))}
+      </section>
+
+      <section id="ranking" className="py-16 sm:py-20">
+        <div className="mx-auto max-w-site">
+          <SectionTitle title="おすすめ商品" href="/search" />
+          <div className="flex snap-x gap-4 overflow-x-auto px-4 pb-5 [scrollbar-width:none] sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4 lg:px-8 [&::-webkit-scrollbar]:hidden">
+            {trendingProducts.map(({ product, label }) => {
+              const insight = getProductInsight(product);
+
+              return (
+                <article
+                  key={product.id}
+                  className="w-[74vw] max-w-[290px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#e5edf2] bg-white shadow-[0_12px_32px_rgba(16,45,68,.08)] sm:w-auto sm:max-w-none"
+                >
+                  <Link href={`/products/${product.id}`} className="group block h-full">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#f1f7fa]">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 74vw"
+                        className="object-contain p-5 transition duration-500 group-hover:scale-105"
+                      />
+                      <span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-[11px] font-semibold text-primary shadow-sm">
+                        {label}
+                      </span>
+                    </div>
+                    <div className="p-5">
+                      <h2 className="line-clamp-2 min-h-12 text-base font-semibold leading-6 text-[#15324a]">{product.name}</h2>
+                      <p className="mt-1 line-clamp-1 text-xs text-muted">{product.fit}</p>
+                      <div className="mt-4 flex items-center gap-2 text-xs text-[#29485f]">
+                        <span className="flex text-[#55a9da]" aria-label={`${insight.rating}点`}>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className="h-3.5 w-3.5 fill-current" />
+                          ))}
+                        </span>
+                        <span>{insight.rating}</span>
+                        <span className="text-muted">({insight.reviewCount})</span>
+                      </div>
+                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#55a9da]">
+                        詳しく見る <ArrowRight className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </Link>
+                </article>
+              );
+            })}
           </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-white/80 to-white md:bg-gradient-to-r md:from-white md:via-white/90 md:to-white/25" />
-        <div className="relative mx-auto w-full max-w-site px-4 pb-12 pt-64 sm:pt-72 md:py-20">
-          <div className="max-w-3xl rounded-brand bg-white/80 md:bg-transparent">
-            <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-green">Hair care diagnosis</p>
-            <h1 className="whitespace-nowrap text-[clamp(1.82rem,8.1vw,4.5rem)] font-medium leading-[1.12] sm:text-6xl md:text-8xl md:leading-[1.08]">
-              本当に合うヘアケアを。
-            </h1>
-            <p className="mt-7 max-w-2xl text-base leading-8 text-ink/75 md:text-xl">
-              Care Hairは、男子高校生の髪質・悩み・頭皮状態に合わせて、市販で買いやすいシャンプーとトリートメントを提案する診断サービスです。
-            </p>
-            <p className="mt-5 inline-flex rounded-full border border-accent/30 bg-white px-4 py-2 text-sm font-semibold text-green shadow-brand">
-              より正確に診断したい方は写真診断がおすすめです
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link href="/diagnosis" className={buttonVariants({ size: "lg" })}>
-                診断を始める <ArrowRight className="h-4 w-4" />
+      </section>
+
+      <section className="border-y border-[#e8f0f4] bg-[#f8fbfd] py-14 sm:py-18">
+        <div className="mx-auto max-w-site">
+          <SectionTitle title="悩みから探す" href="/search" />
+          <div className="flex snap-x gap-5 overflow-x-auto px-4 pb-3 [scrollbar-width:none] lg:grid lg:grid-cols-6 lg:overflow-visible lg:px-8 [&::-webkit-scrollbar]:hidden">
+            {concerns.map((concern) => (
+              <Link
+                key={concern.label}
+                href="/search"
+                className="group flex w-24 shrink-0 snap-start flex-col items-center text-center sm:w-28 lg:w-auto"
+              >
+                <span className="grid h-20 w-20 place-items-center rounded-full border border-[#dceaf2] bg-white text-[#55a9da] shadow-[0_8px_24px_rgba(16,45,68,.06)] transition group-hover:-translate-y-1 group-hover:border-[#8dc8e8] sm:h-24 sm:w-24">
+                  <concern.icon className="h-9 w-9 stroke-[1.5]" />
+                </span>
+                <span className="mt-3 text-xs font-semibold leading-5 text-[#29485f] sm:text-sm">{concern.label}</span>
               </Link>
-              <Link href="/search" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                条件から探す
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-site px-4">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Trust"
-              title="安心して選べる理由"
-              lead="アンケートと美容師の視点を組み合わせ、男子高校生が迷わず選べる診断サービスとして設計しています。"
-            />
-          </FadeIn>
-          <div className="grid gap-5 md:grid-cols-3">
-            {trustItems.map((item) => (
-              <FadeIn key={item.title}>
-                <Card interactive>
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-secondary text-green">
-                    <item.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="mt-7 text-xl font-semibold">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted">{item.body}</p>
-                </Card>
-              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-soft py-20 md:py-28">
-        <div className="mx-auto max-w-site px-4">
+      <section className="py-10 sm:py-14">
+        <div className="mx-auto max-w-site px-4 lg:px-8">
           <FadeIn>
-            <SectionHeading eyebrow="Benefits" title="Care Hairを使うメリット" />
-          </FadeIn>
-          <div className="grid gap-5 md:grid-cols-4">
-            {benefitItems.map((item, index) => (
-              <FadeIn key={item} delay={index * 0.04}>
-                <Card interactive className="min-h-48">
-                  <span className="text-sm font-semibold tracking-[0.14em] text-green">0{index + 1}</span>
-                  <h3 className="mt-8 text-xl font-semibold leading-snug">{item}</h3>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 md:py-28">
-        <div className="mx-auto grid max-w-site items-center gap-12 px-4 md:grid-cols-2 md:gap-20">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Concept"
-              title="迷わず選べる髪質診断。"
-              lead="髪の太さ、くせ、乾燥、ダメージ、フケ・かゆみなどをスコア化し、悩みに近い商品をランキング形式で表示します。販売サイトではなく、比較・診断・紹介に特化したサービスです。"
-            />
-            <div className="grid overflow-hidden rounded-brand border border-line bg-line sm:grid-cols-3">
-              {[
-                ["200", "男子高校生へのアンケート"],
-                ["11", "スマホで答えやすい質問"],
-                ["¥2,000", "以内の商品を中心に紹介"]
-              ].map(([number, label]) => (
-                <div key={label} className="bg-white p-6">
-                  <strong className="block text-3xl font-medium text-green">{number}</strong>
-                  <span className="mt-3 block text-sm text-muted">{label}</span>
+            <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(110deg,#e8f6fc_0%,#f7fbfd_54%,#d7edf8_100%)] px-6 py-8 shadow-[0_16px_40px_rgba(42,143,184,.10)] sm:px-10 sm:py-10">
+              <div className="absolute -bottom-8 left-[48%] hidden h-36 w-36 rounded-full border border-[#83c6e7]/40 sm:block" />
+              <div className="relative grid gap-7 sm:grid-cols-[1fr_auto] sm:items-center">
+                <div>
+                  <p className="text-sm font-semibold text-[#3995c9]">3分であなたの髪質をチェック</p>
+                  <h2 className="mt-2 text-2xl font-semibold tracking-[0.03em] text-[#15324a] sm:text-3xl">無料パーソナル診断</h2>
+                  <p className="mt-2 text-sm text-[#466175]">あなたに合うケアと商品がわかります。</p>
                 </div>
-              ))}
+                <Link
+                  href="/diagnosis"
+                  className="inline-flex min-h-14 items-center justify-center gap-4 rounded-full bg-[#55a9da] px-8 font-semibold text-white shadow-[0_12px_26px_rgba(42,143,184,.24)] transition hover:-translate-y-0.5 hover:bg-primary"
+                >
+                  無料で診断する <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
             </div>
           </FadeIn>
-          <FadeIn>
-            <div className="grid grid-cols-2 gap-3 rounded-brand border border-line bg-line p-4 shadow-brand sm:p-5">
-              {[
-                { src: "/products/plus-eau-mellow-shampoo.jpeg", alt: "プリュスオー メロウシャンプー" },
-                { src: "/products/the-answer-shampoo.png", alt: "THE ANSWER シャンプー" },
-                { src: "/products/qurap-wrapping-moist-shampoo.jpeg", alt: "Qurap ラッピングモイスト シャンプー" },
-                { src: "/products/cow-moist-shampoo.jpeg", alt: "カウブランド 無添加 うるおいケア シャンプー" }
-              ].map((item) => (
-                <div key={item.src} className="relative aspect-square rounded-brand bg-white p-4">
+        </div>
+      </section>
+
+      <section className="pb-20 pt-8 sm:pb-24 sm:pt-12">
+        <div className="mx-auto max-w-site">
+          <SectionTitle title="ヘアケアガイド" href="/about" />
+          <div className="flex snap-x gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] md:grid md:grid-cols-3 md:overflow-visible lg:px-8 [&::-webkit-scrollbar]:hidden">
+            {guides.map((guide) => (
+              <Link
+                key={guide.title}
+                href={guide.href}
+                className="group grid w-[82vw] max-w-[340px] shrink-0 snap-start grid-cols-[112px_1fr] overflow-hidden rounded-2xl border border-[#e5edf2] bg-white shadow-[0_10px_28px_rgba(16,45,68,.07)] transition hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(42,143,184,.13)] md:w-auto md:max-w-none"
+              >
+                <div className="relative min-h-36 overflow-hidden bg-[#eff7fb]">
                   <Image
-                    src={item.src}
-                    alt={item.alt}
+                    src={guide.image}
+                    alt=""
                     fill
-                    sizes="(min-width: 768px) 22vw, 45vw"
-                    className="object-contain p-4"
+                    sizes="112px"
+                    className="object-cover transition duration-500 group-hover:scale-105"
                   />
                 </div>
-              ))}
-            </div>
-          </FadeIn>
+                <div className="flex flex-col justify-center p-4">
+                  <span className="text-[10px] font-bold tracking-[0.16em] text-[#55a9da]">{guide.eyebrow}</span>
+                  <h2 className="mt-2 text-sm font-semibold leading-6 text-[#15324a] sm:text-base">{guide.title}</h2>
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#55a9da]">
+                    読んでみる <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-site px-4">
+      <section className="border-t border-[#e8f0f4] bg-[#fbfdfe] py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-site px-4 lg:px-8">
           <FadeIn>
-            <SectionHeading
-              eyebrow="Supervision"
-              title="美容師の意見を参考に設計"
-              lead="美容師へのインタビューをもとに、髪質ごとの選び方と商品選定の基準を整理しました。"
-            />
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#55a9da]">Professional supervision</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[0.02em] text-[#15324a] sm:text-4xl lg:text-5xl">
+              美容師の意見を参考に設計
+            </h2>
+            <p className="mt-5 max-w-3xl text-sm leading-7 text-muted sm:text-base sm:leading-8">
+              美容師へのインタビューをもとに、髪質ごとの選び方と商品選定の基準を整理しました。
+            </p>
           </FadeIn>
-          <div className="grid gap-6 md:grid-cols-3">
-            {stylists.map((stylist) => (
-              <FadeIn key={stylist.name}>
-                <article className="rounded-brand border border-line bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-brand">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-soft sm:h-20 sm:w-20">
-                      <Image
-                        src={stylist.image}
-                        alt={`${stylist.shop} ${stylist.name}`}
-                        fill
-                        sizes="(min-width: 640px) 80px, 64px"
-                        className="object-cover"
-                        style={{ objectPosition: "imagePosition" in stylist ? stylist.imagePosition : "center" }}
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-bold uppercase tracking-[0.16em] text-green">{stylist.shop}</p>
-                      <h3 className="mt-2 text-xl font-semibold">{stylist.name}</h3>
-                      <p className="mt-1 text-sm text-muted">{stylist.role}</p>
-                    </div>
-                    <Link
-                      href={stylist.instagramUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${stylist.name}さんのInstagram`}
-                      className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line text-green transition hover:-translate-y-0.5 hover:border-green hover:bg-soft sm:h-11 sm:w-11"
-                    >
-                      <Instagram className="h-5 w-5" />
-                    </Link>
+
+          <div className="mt-10 grid gap-4 lg:mt-12 lg:grid-cols-3">
+            {stylists.map((stylist, index) => (
+              <FadeIn key={stylist.name} delay={index * 0.05}>
+                <article className="flex min-h-40 items-center gap-4 rounded-2xl border border-[#dfe9ef] bg-white p-5 shadow-[0_10px_28px_rgba(16,45,68,.05)] transition hover:-translate-y-1 hover:border-[#8dc8e8] hover:shadow-[0_16px_36px_rgba(42,143,184,.12)] sm:gap-5 sm:p-6">
+                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full bg-[#eff7fb] sm:h-28 sm:w-28">
+                    <Image
+                      src={stylist.image}
+                      alt={`${stylist.shop} ${stylist.name}`}
+                      fill
+                      sizes="112px"
+                      className="object-cover"
+                      style={{ objectPosition: "imagePosition" in stylist ? stylist.imagePosition : "center" }}
+                    />
                   </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[11px] font-bold uppercase tracking-[0.16em] text-[#2f83b4] sm:text-xs">
+                      {stylist.shop}
+                    </p>
+                    <h3 className="mt-2 text-xl font-semibold text-[#15324a] sm:text-2xl">{stylist.name}</h3>
+                    <p className="mt-1 text-sm text-muted">{stylist.role}</p>
+                  </div>
+                  <Link
+                    href={stylist.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${stylist.name}さんのInstagram`}
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#dfe9ef] text-[#2f83b4] transition hover:border-[#55a9da] hover:bg-[#eff7fb]"
+                  >
+                    <Instagram className="h-5 w-5 stroke-[1.7]" />
+                  </Link>
                 </article>
               </FadeIn>
             ))}
@@ -231,98 +284,47 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-soft py-20 md:py-28">
-        <div className="mx-auto max-w-site px-4">
-          <FadeIn>
-            <SectionHeading eyebrow="How it works" title="診断の流れ" />
-          </FadeIn>
-          <div className="grid gap-px overflow-hidden rounded-brand border border-line bg-line md:grid-cols-4">
-            {flow.map((item, index) => (
-              <FadeIn key={item.title} delay={index * 0.05} className="bg-white p-7">
-                <span className="text-sm font-semibold tracking-[0.14em] text-green">0{index + 1}</span>
-                <h3 className="mt-10 text-xl font-semibold">{item.title}</h3>
-                <p className="mt-3 text-sm text-muted">{item.body}</p>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-soft py-20 md:py-28">
-        <div className="mx-auto grid max-w-site gap-12 px-4 md:grid-cols-[0.9fr_1.1fr]">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Survey"
-              title="高校生のリアルな悩みから生まれたサービス。"
-              lead="どれを買えばいいか分からない、美容室で聞くのは少し恥ずかしい、高すぎる商品は続けにくい。Care Hairは、そうした声を出発点にしています。"
-            />
-          </FadeIn>
-          <div className="grid gap-4">
-            {[
-              { icon: ClipboardList, title: "約200人にアンケート", body: "髪の悩み、価格帯、商品選びで困るポイントを整理。" },
-              { icon: Scissors, title: "美容師インタビュー", body: "髪質ごとに見るべきポイントを聞き、診断ロジックに反映。" },
-              { icon: CheckCircle2, title: "市販商品に限定", body: "ドラッグストアや通販で買いやすい価格帯を中心に紹介。" }
-            ].map((item) => (
-              <FadeIn key={item.title}>
-                <div className="flex gap-5 rounded-brand border border-line bg-white p-6">
-                  <item.icon className="mt-1 h-6 w-6 shrink-0 text-green" />
-                  <div>
-                    <h3 className="text-lg font-semibold">{item.title}</h3>
-                    <p className="mt-1 text-sm text-muted">{item.body}</p>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-site px-4">
-          <FadeIn>
-            <SectionHeading eyebrow="Products" title="おすすめ商品を一部紹介" />
-          </FadeIn>
-          <div className="grid gap-6 md:grid-cols-3">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <FadeIn className="mt-10">
-            <Link href="/diagnosis" className={buttonVariants({ size: "lg" })}>
-              自分に合う商品を診断する <Sparkles className="h-4 w-4" />
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
-
-      <section className="bg-soft py-20 md:py-28">
-        <div className="mx-auto max-w-site px-4">
-          <FadeIn>
-            <SectionHeading
-              eyebrow="Trending"
-              title="今話題の商品"
-              lead="口コミ急上昇・今月人気・高校生人気など、今チェックされやすい商品をピックアップしています。"
-            />
-          </FadeIn>
-          <div className="grid gap-5 md:grid-cols-4">
-            {trendingProducts.map(({ product, label }, index) => (
-              <FadeIn key={product.id} delay={index * 0.04}>
-                <Card interactive>
-                  <div className="mb-5 flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-green">{label}</span>
-                    <TrendingUp className="h-5 w-5 text-accent" />
-                  </div>
-                  <h3 className="text-lg font-semibold leading-snug">{product.name}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted">{product.fit}</p>
-                  <Link href={`/products/${product.id}`} className="mt-6 inline-flex text-sm font-semibold text-green underline-offset-4 hover:underline">
-                    詳しく見る
-                  </Link>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+      <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-[#e1e9ee] bg-white/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_24px_rgba(16,45,68,.08)] backdrop-blur md:hidden" aria-label="ホームのメインメニュー">
+        <MobileNavItem href="/" label="ホーム" icon={Home} active />
+        <MobileNavItem href="/diagnosis" label="診断" icon={ClipboardList} />
+        <MobileNavItem href="/search" label="商品一覧" icon={ShoppingBag} />
+        <MobileNavItem href="/mypage" label="マイページ" icon={UserRound} />
+      </nav>
     </main>
+  );
+}
+
+function SectionTitle({ title, href }: { title: string; href: string }) {
+  return (
+    <div className="mb-6 flex items-center justify-between px-4 lg:px-8">
+      <h2 className="text-xl font-semibold tracking-[0.04em] text-[#15324a] sm:text-2xl">{title}</h2>
+      <Link href={href} className="inline-flex items-center gap-1 text-sm font-semibold text-[#55a9da] transition hover:text-primary">
+        すべて見る <ArrowRight className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+}
+
+function MobileNavItem({
+  href,
+  label,
+  icon: Icon,
+  active = false
+}: {
+  href: string;
+  label: string;
+  icon: typeof Home;
+  active?: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] font-semibold ${
+        active ? "text-[#55a9da]" : "text-[#6f7d87]"
+      }`}
+    >
+      <Icon className={`h-5 w-5 ${active ? "fill-[#55a9da] stroke-[#55a9da]" : "stroke-[1.7]"}`} />
+      {label}
+    </Link>
   );
 }
