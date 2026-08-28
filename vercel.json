@@ -1,16 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "care-hair.vercel.app"
-        }
-      ],
-      "destination": "https://care-hair-five.vercel.app/:path*",
-      "permanent": true
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }
