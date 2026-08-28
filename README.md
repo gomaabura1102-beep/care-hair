@@ -36,3 +36,5 @@ npm run dev
 ## 商品画像について
 
 `data/products.ts` の `image` を差し替えるだけで、商品画像を更新できます。Amazonへのリンクは各商品の検索リンクとして管理しています。
+
+<!-- Production sync: 2026-08-28 -->
