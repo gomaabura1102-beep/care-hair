@@ -7,9 +7,8 @@ const links = [
   { href: "/diagnosis", label: "髪質診断", description: "11の質問で診断" },
   { href: "/search", label: "商品を探す", description: "髪質や悩みで検索" },
   { href: "/reviews", label: "口コミ", description: "みんなの感想を見る" },
-  { href: "/mypage", label: "マイページ", description: "診断履歴を確認" },
-  { href: "/about", label: "Care Hairについて", description: "サービスへの想い" },
-  { href: "/admin", label: "運営者ページ", description: "診断写真と結果を管理" }
+  { href: "/mypage", label: "マイページ", description: "メールアドレスでログイン" },
+  { href: "/about", label: "Care Hairについて", description: "サービスへの想い" }
 ];
 
 export function SiteHeader() {

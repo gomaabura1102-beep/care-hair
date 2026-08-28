@@ -1,25 +1,22 @@
 import type { Metadata } from "next";
-import { SectionHeading } from "@/components/section-heading";
-import { MyPageContent } from "@/features/mypage/my-page-content";
+import { redirect } from "next/navigation";
+import { AdminLoginForm } from "@/features/admin/admin-login-form";
+import { getAdminFromCookies } from "@/lib/server/admin-auth";
 
 export const metadata: Metadata = {
-  title: "マイページ",
-  description: "Care Hairの使用開始日、再診断通知、診断履歴、ランキングを確認できます。"
+  title: "マイページログイン",
+  description: "Care Hair運営者専用のマイページログインです。",
+  robots: { index: false, follow: false }
 };
+export const dynamic = "force-dynamic";
 
-export default function MyPage() {
+export default async function MyPage() {
+  const admin = await getAdminFromCookies().catch(() => null);
+  if (admin) redirect("/admin");
+
   return (
-    <main className="pt-[var(--header-height)]">
-      <section className="bg-soft py-16 md:py-24">
-        <div className="mx-auto max-w-site px-4">
-          <SectionHeading
-            eyebrow="My page"
-            title="続けて使うためのマイページ"
-            lead="使い始めた日、再診断のタイミング、季節ごとのおすすめをまとめて確認できます。"
-          />
-          <MyPageContent />
-        </div>
-      </section>
+    <main className="grid min-h-screen place-items-center bg-soft px-4 pb-20 pt-[calc(var(--header-height)+5rem)]">
+      <AdminLoginForm />
     </main>
   );
 }

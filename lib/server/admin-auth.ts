@@ -32,7 +32,7 @@ export async function getAdminFromCookies(): Promise<AdminUser | null> {
 
 export async function requireAdminPage(): Promise<AdminUser> {
   const admin = await getAdminFromCookies().catch(() => null);
-  if (!admin) redirect("/admin/login");
+  if (!admin) redirect("/mypage");
   return admin;
 }
 

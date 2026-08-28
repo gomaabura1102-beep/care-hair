@@ -78,7 +78,7 @@ export async function getSignedDiagnosisImages(diagnosis: DiagnosisRecord) {
   return Promise.all(
     diagnosis.diagnosis_images.map(async (image) => ({
       ...image,
-      signedUrl: await createPrivateImageUrl(image.storage_path, 300)
+      signedUrl: await createPrivateImageUrl(image.storage_path, 60)
     }))
   );
 }

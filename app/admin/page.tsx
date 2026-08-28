@@ -6,7 +6,7 @@ import { AdminLogoutButton } from "@/features/admin/admin-logout-button";
 import { getRecentAuditLogs, getReview, listDiagnoses, type AdminFilters } from "@/lib/server/admin-data";
 import { requireAdminPage } from "@/lib/server/admin-auth";
 
-export const metadata: Metadata = { title: "診断データ管理", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "運営者マイページ", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
 
 type PageProps = { searchParams: AdminFilters & { query?: string } };
@@ -26,7 +26,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
         <div className="flex flex-col gap-5 rounded-brand border border-line bg-white p-6 shadow-brand sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 text-green"><ShieldCheck className="h-5 w-5" /><span className="text-xs font-bold uppercase tracking-[0.18em]">Admin only</span></div>
-            <h1 className="mt-2 text-3xl font-semibold">診断データ管理</h1>
+            <h1 className="mt-2 text-3xl font-semibold">運営者マイページ</h1>
             <p className="mt-2 text-sm text-muted">{admin.email} としてログイン中</p>
           </div>
           <AdminLogoutButton />

@@ -15,9 +15,11 @@ export function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.startsWith("/admin")) {
-    if (request.nextUrl.pathname === "/admin/login") return NextResponse.next();
+    if (request.nextUrl.pathname === "/admin/login") {
+      return NextResponse.redirect(new URL("/mypage", request.url));
+    }
     if (!request.cookies.has(adminAccessCookie)) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+      return NextResponse.redirect(new URL("/mypage", request.url));
     }
   }
 
