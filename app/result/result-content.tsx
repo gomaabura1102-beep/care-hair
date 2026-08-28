@@ -2,51 +2,74 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { DiagnosisSteps } from "@/components/diagnosis-steps";
 import { ProductCard } from "@/components/product-card";
 import { ScoreBars } from "@/components/score-bars";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardEyebrow } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { DeleteDiagnosisButton } from "@/features/result/delete-diagnosis-button";
 import { ShareResultCard } from "@/features/result/share-result-card";
-import { calculateScores, getDiagnosisResultFromScores, parseAnswers, rankPairedTreatments, rankProducts, scoreKeys } from "@/lib/diagnosis";
-import type { ScoreMap } from "@/types/diagnosis";
-import type { HairPhotoAnalysis } from "@/types/photo-diagnosis";
+import { rankPairedTreatments, rankProducts } from "@/lib/diagnosis";
+import type { PublicDiagnosis, ScoreMap } from "@/types/diagnosis";
 
 export function ResultContent() {
   const searchParams = useSearchParams();
-  const answers = parseAnswers(searchParams.get("answers"));
-  const [photoAnalysis, setPhotoAnalysis] = useState<HairPhotoAnalysis | null>(null);
-  const usesPhoto = searchParams.get("photo") === "1";
-  const result = useMemo(() => {
-    const scores = calculateScores(answers);
-    if (usesPhoto && photoAnalysis?.usable) {
-      scoreKeys.forEach((key) => {
-        scores[key] += photoAnalysis.scores[key] ?? 0;
-      });
+  const diagnosisId = searchParams.get("id");
+  const [diagnosis, setDiagnosis] = useState<PublicDiagnosis | null>(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!diagnosisId) {
+      setError("診断結果を表示するためのIDがありません。");
+      return;
     }
-    return getDiagnosisResultFromScores(scores);
-  }, [answers, photoAnalysis, usesPhoto]);
+    const controller = new AbortController();
+    fetch(`/api/diagnoses/${diagnosisId}/result`, { signal: controller.signal, cache: "no-store" })
+      .then(async (response) => {
+        const body = (await response.json()) as PublicDiagnosis & { error?: string };
+        if (!response.ok) throw new Error(body.error ?? "診断結果を読み込めませんでした。");
+        setDiagnosis(body);
+      })
+      .catch((fetchError) => {
+        if (fetchError instanceof DOMException && fetchError.name === "AbortError") return;
+        setError(fetchError instanceof Error ? fetchError.message : "診断結果を読み込めませんでした。");
+      });
+    return () => controller.abort();
+  }, [diagnosisId]);
+
+  if (error) {
+    return (
+      <main className="grid min-h-screen place-items-center px-4 pt-[var(--header-height)]">
+        <div className="max-w-lg rounded-brand border border-line bg-white p-8 text-center shadow-brand">
+          <h1 className="text-2xl font-semibold">診断結果を表示できません</h1>
+          <p className="mt-4 text-sm leading-7 text-muted">{error}</p>
+          <Link href="/diagnosis" className={`${buttonVariants()} mt-6`}>診断をはじめる</Link>
+        </div>
+      </main>
+    );
+  }
+
+  if (!diagnosis) {
+    return (
+      <main className="grid min-h-screen place-items-center pt-[var(--header-height)]">
+        <p className="text-sm text-muted">診断結果を安全に読み込んでいます。</p>
+      </main>
+    );
+  }
+
+  const result = diagnosis.result;
   const shampoos = rankProducts("shampoo", result.scores);
   const treatments = rankPairedTreatments(shampoos, result.scores);
   const features = getUserFeatures(result.scores);
 
-  useEffect(() => {
-    if (!usesPhoto) return;
-
-    const stored = sessionStorage.getItem("care-hair-photo-analysis");
-    if (!stored) return;
-
-    try {
-      setPhotoAnalysis(JSON.parse(stored) as HairPhotoAnalysis);
-    } catch {
-      setPhotoAnalysis(null);
-    }
-  }, [usesPhoto]);
-
   return (
     <main className="pt-[var(--header-height)]">
       <section className="bg-soft py-16 md:py-24">
+        <div className="mx-auto max-w-site px-4">
+          <DiagnosisSteps current={3} />
+        </div>
         <div className="mx-auto grid max-w-site gap-6 px-4 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-brand border border-line bg-white p-7 shadow-brand md:p-10">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-green">Your result</p>
@@ -58,11 +81,9 @@ export function ResultContent() {
               )}
             </h1>
             <p className="mt-6 text-muted">{result.feature}</p>
-            {usesPhoto && (
-              <p className="mt-4 rounded-brand bg-secondary px-4 py-3 text-sm font-semibold text-green">
-                {photoAnalysis?.usable ? "写真診断の結果も反映しています。" : "写真から髪質を正確に判断できませんでした。質問内容のみで診断します。"}
-              </p>
-            )}
+            <p className="mt-4 rounded-brand bg-secondary px-4 py-3 text-sm font-semibold text-green">
+              この結果は質問への回答だけから判定しています。写真の解析結果は使用していません。
+            </p>
             <ScoreBars scores={result.scores} />
           </div>
           <div className="rounded-brand border border-line bg-white p-7 md:p-10">
@@ -104,6 +125,8 @@ export function ResultContent() {
                 条件から探す
               </Link>
             </div>
+            <p className="mt-5 break-all text-xs text-muted">診断ID：{diagnosis.diagnosisId}</p>
+            <DeleteDiagnosisButton diagnosisId={diagnosis.diagnosisId} />
           </div>
         </div>
         <div className="mx-auto mt-6 grid max-w-site gap-6 px-4 lg:grid-cols-[.9fr_1.1fr]">

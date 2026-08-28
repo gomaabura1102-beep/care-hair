@@ -21,7 +21,8 @@ export function ProductSearch() {
       const matchesHairType = hairType === empty || product.insight.hairTypes.includes(hairType);
       const matchesConcern = concern === empty || product.insight.concerns.includes(concern);
       const matchesScent = scent === empty || product.insight.scentCategory === scent;
-      const matchesRating = product.insight.rating >= minRating;
+      const matchesRating =
+        rating === empty || (product.insight.rating !== null && product.insight.rating >= minRating);
 
       return matchesHairType && matchesConcern && matchesScent && matchesRating;
     });
@@ -47,7 +48,7 @@ export function ProductSearch() {
           <Select label="髪質" value={hairType} options={filterOptions.hairTypes} onChange={setHairType} />
           <Select label="髪の悩み" value={concern} options={filterOptions.concerns} onChange={setConcern} />
           <Select label="香り" value={scent} options={filterOptions.scents} onChange={setScent} />
-          <Select label="評価" value={rating} options={filterOptions.ratings} onChange={setRating} />
+          <Select label="Amazon評価" value={rating} options={filterOptions.ratings} onChange={setRating} />
         </div>
       </Card>
 

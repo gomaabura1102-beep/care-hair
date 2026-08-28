@@ -2,12 +2,13 @@ import { productsWithInsights } from "@/data/product-insights";
 import type { UserReview } from "@/data/reviews";
 
 export function summarizeProductReviews(productName: string) {
-  const product = productsWithInsights.find((item) => productName.includes(item.insight.brand) || item.name.includes(productName));
-  const highlights = product?.insight.reviewHighlights ?? [
-    "使いやすさを評価する声が多い傾向です",
-    "香りや仕上がりは好みによって分かれます",
-    "髪質に合わせて選ぶと満足度が上がりやすいです"
-  ];
+  const product = [...productsWithInsights]
+    .sort((a, b) => b.name.length - a.name.length)
+    .find((item) => {
+      const normalizedName = item.name.replace(/\s*シャンプー$/, "");
+      return productName.includes(normalizedName) || normalizedName.includes(productName);
+    });
+  const highlights = product?.insight.reviewHighlights ?? [];
 
   return highlights;
 }

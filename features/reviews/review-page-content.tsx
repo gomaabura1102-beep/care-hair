@@ -42,17 +42,20 @@ function ReviewCard({ review }: { review: UserReview }) {
         <Info label="評価"><Rating value={review.rating} /></Info>
         <Info label="良かったところ"><p className="leading-7 text-muted">{review.good}</p></Info>
         <Info label="気になったところ"><p className="leading-7 text-muted">{review.concern}</p></Info>
-        <div className="rounded-brand bg-secondary p-4">
-          <p className="font-semibold text-green">レビューをAIが要約</p>
-          <ul className="mt-3 grid gap-2 text-sm text-muted">
-            {summary.slice(0, 3).map((item) => (
-              <li key={item} className="flex gap-2">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {summary.length ? (
+          <div className="rounded-brand bg-secondary p-4">
+            <p className="font-semibold text-green">Amazon口コミの傾向</p>
+            <ul className="mt-3 grid gap-2 text-sm text-muted">
+              {summary.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs leading-5 text-muted">Amazon.co.jpのカスタマーレビューに見られる傾向をCare Hairが要約しています。</p>
+          </div>
+        ) : null}
       </div>
     </Card>
   );

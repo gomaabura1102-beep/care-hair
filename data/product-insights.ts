@@ -1,4 +1,5 @@
 import { getProductCareContent } from "@/data/product-care-content";
+import { getAmazonReviewSnapshot } from "@/data/amazon-reviews";
 import { products } from "@/data/products";
 import type { ScoreKey } from "@/types/diagnosis";
 import type { Product } from "@/types/product";
@@ -52,7 +53,7 @@ export function getProductInsight(product: Product) {
   const concerns = concernMap
     .filter(([key]) => (product.scores[key as ScoreKey] ?? 0) >= 4)
     .map(([, label]) => label);
-  const rating = Math.min(5, 3.8 + ((product.id.length % 9) / 10));
+  const amazonReview = getAmazonReviewSnapshot(product.id);
 
   return {
     brand: brandOf(product.name),
@@ -62,20 +63,11 @@ export function getProductInsight(product: Product) {
     scentCategory: categorizeScent(product.scent),
     finish: product.texture,
     washFeel: product.texture,
-    reviewCount: 18 + (product.id.length % 23),
-    rating: Number(rating.toFixed(1)),
+    reviewCount: amazonReview?.reviewCount ?? null,
+    rating: amazonReview?.rating ?? null,
+    amazonReview,
     priceValue: priceNumber(product.price),
-    aiReviewSummary: [
-      content.reviewSummary.good,
-      `${product.fit}の人に選ばれやすく、${product.texture}を求める人と相性が良い傾向です。`,
-      content.reviewSummary.concern
-    ],
-    reviewHighlights: [
-      "泡立ちや使いやすさを評価する声が目立ちます",
-      `${brandOf(product.name)}らしい香りと仕上がりが好まれています`,
-      `${hairTypes[0] ?? "普通毛"}の人から比較的選ばれています`,
-      `${concerns[0] ?? "毎日使い"}との相性が良い傾向です`
-    ]
+    reviewHighlights: amazonReview ? [amazonReview.goodSummary, amazonReview.concernSummary] : []
   };
 }
 

@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
-const notoSansJp = Noto_Sans_JP({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap"
-});
-
 const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID ?? "G-3P4Z4240B8";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://care-hair.example.com"),
+  metadataBase: new URL("https://care-hair.vercel.app"),
   title: {
     default: "Care Hair | 男子高校生のためのヘアケア診断",
     template: "%s | Care Hair"
@@ -35,7 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
-      <body className={notoSansJp.className}>
+      <body>
         <GoogleAnalytics measurementId={googleAnalyticsId} />
         <SiteHeader />
         {children}

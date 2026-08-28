@@ -1,13 +1,10 @@
-import type { ScoreMap } from "@/types/diagnosis";
+export const hairPhotoDirections = ["front", "side", "back", "top", "other"] as const;
 
-export type PhotoMetric = {
-  label: string;
-  value: string;
-};
+export type HairPhotoDirection = (typeof hairPhotoDirections)[number];
 
-export type HairPhotoAnalysis = {
-  usable: boolean;
-  message: string;
-  scores: Partial<ScoreMap>;
-  metrics: PhotoMetric[];
+export type PreparedHairPhoto = {
+  file: File;
+  previewUrl: string;
+  width: number;
+  height: number;
 };

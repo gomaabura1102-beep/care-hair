@@ -1,85 +1,122 @@
-import type { HairPhotoAnalysis } from "@/types/photo-diagnosis";
+import type { PreparedHairPhoto } from "@/types/photo-diagnosis";
 
-const fallbackMessage = "写真から髪質を正確に判断できませんでした。質問内容のみで診断します。";
+const blockedTypes = new Set(["image/svg+xml"]);
+const commonPhotoExtension = /\.(?:avif|bmp|gif|heic|heif|jpe?g|png|tiff?|webp)$/i;
+const maxSourceBytes = 25 * 1024 * 1024;
+const maxStoredBytes = 4 * 1024 * 1024;
+const maxDimension = 1600;
+const minDimension = 400;
 
-export async function analyzeHairPhoto(file: File): Promise<HairPhotoAnalysis> {
-  const image = await createImageBitmap(file);
+type LoadedImage = {
+  source: CanvasImageSource;
+  width: number;
+  height: number;
+  close: () => void;
+};
+
+/**
+ * ブラウザ上で画像を描き直し、位置情報を含むEXIF等を取り除きます。
+ * ここでは髪質を解析せず、保存に適した画像を作るだけです。
+ */
+export async function prepareHairPhoto(source: File): Promise<PreparedHairPhoto> {
+  const sourceType = source.type.toLowerCase();
+  const looksLikePhoto = sourceType.startsWith("image/") || (!sourceType && commonPhotoExtension.test(source.name));
+  if (!looksLikePhoto || blockedTypes.has(sourceType)) {
+    throw new Error("写真ファイルを選んでください。");
+  }
+  if (source.size === 0) {
+    throw new Error("空の写真ファイルは使用できません。");
+  }
+  if (source.size > maxSourceBytes) {
+    throw new Error("写真のサイズは25MB以下にしてください。");
+  }
+
+  const image = await loadImage(source);
+  if (Math.min(image.width, image.height) < minDimension) {
+    image.close();
+    throw new Error("髪全体が分かる、400px以上の写真を選んでください。");
+  }
+
+  const scale = Math.min(1, maxDimension / Math.max(image.width, image.height));
+  const width = Math.max(1, Math.round(image.width * scale));
+  const height = Math.max(1, Math.round(image.height * scale));
   const canvas = document.createElement("canvas");
-  const size = 160;
-  canvas.width = size;
-  canvas.height = size;
+  canvas.width = width;
+  canvas.height = height;
 
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d", { alpha: false });
   if (!context) {
-    return createFallbackResult();
+    image.close();
+    throw new Error("この端末では写真を処理できませんでした。");
   }
 
-  context.drawImage(image, 0, 0, size, size);
-  const pixels = context.getImageData(0, 0, size, size).data;
-  let brightnessTotal = 0;
-  let darkPixels = 0;
-  let highlightPixels = 0;
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, width, height);
+  context.drawImage(image.source, 0, 0, width, height);
+  image.close();
 
-  for (let i = 0; i < pixels.length; i += 4) {
-    const brightness = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
-    brightnessTotal += brightness;
-    if (brightness < 60) darkPixels += 1;
-    if (brightness > 190) highlightPixels += 1;
+  let blob = await canvasToJpeg(canvas, 0.88);
+  if (blob.size > maxStoredBytes) blob = await canvasToJpeg(canvas, 0.72);
+  if (blob.size > maxStoredBytes) {
+    throw new Error("写真を小さくできませんでした。別の写真を選んでください。");
   }
 
-  const pixelCount = pixels.length / 4;
-  const brightness = brightnessTotal / pixelCount;
-  const darkRatio = darkPixels / pixelCount;
-  const highlightRatio = highlightPixels / pixelCount;
+  const file = new File([blob], "hair-photo.jpg", {
+    type: "image/jpeg",
+    lastModified: Date.now()
+  });
 
-  if (image.width < 360 || image.height < 360 || file.size < 30_000) {
-    return createFallbackResult();
-  }
-
-  if (brightness < 45 || brightness > 235) {
-    return createFallbackResult();
-  }
-
-  if (darkRatio < 0.04 && highlightRatio > 0.78) {
-    return createFallbackResult();
-  }
-
-  const likelyDarkHair = darkRatio > 0.18;
-  const likelyShiny = highlightRatio > 0.16;
-  const likelyDry = highlightRatio < 0.08 && brightness > 120;
-  const likelyFrizzy = darkRatio > 0.28 || brightness < 95;
-
-  return {
-    usable: true,
-    message: "写真の状態を診断に反映します。",
-    scores: {
-      fine: likelyDarkHair ? 1 : 2,
-      normal: 2,
-      coarse: likelyFrizzy ? 2 : 0,
-      curly: likelyFrizzy ? 2 : 0,
-      straight: likelyFrizzy ? 0 : 2,
-      dry: likelyDry ? 3 : 1,
-      damage: likelyShiny ? 0 : 2,
-      frizz: likelyFrizzy ? 3 : 1,
-      smooth: likelyShiny ? 2 : 0
-    },
-    metrics: [
-      { label: "髪質", value: likelyFrizzy ? "やや広がりやすい傾向" : "扱いやすい傾向" },
-      { label: "くせ毛レベル", value: likelyFrizzy ? "中" : "低" },
-      { label: "ボリューム", value: likelyDarkHair ? "普通〜多め" : "普通" },
-      { label: "ダメージ具合", value: likelyShiny ? "少なめ" : "やや注意" },
-      { label: "ツヤ", value: likelyShiny ? "出やすい" : "控えめ" },
-      { label: "乾燥傾向", value: likelyDry ? "あり" : "少なめ" },
-      { label: "広がりやすさ", value: likelyFrizzy ? "あり" : "少なめ" }
-    ]
-  };
+  return { file, previewUrl: URL.createObjectURL(file), width, height };
 }
 
-function createFallbackResult(): HairPhotoAnalysis {
-  return {
-    usable: false,
-    message: fallbackMessage,
-    scores: {},
-    metrics: []
-  };
+async function loadImage(source: File): Promise<LoadedImage> {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const bitmap = await createImageBitmap(source, { imageOrientation: "from-image" });
+      return {
+        source: bitmap,
+        width: bitmap.width,
+        height: bitmap.height,
+        close: () => bitmap.close()
+      };
+    } catch {
+      // SafariなどではHTMLImageElementで開ける写真形式があるため、下の方法も試します。
+    }
+  }
+
+  const objectUrl = URL.createObjectURL(source);
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const element = new Image();
+      element.decoding = "async";
+      element.onload = () => resolve(element);
+      element.onerror = () => reject(new Error("この端末では写真を開けませんでした。別の写真を選んでください。"));
+      element.src = objectUrl;
+    });
+    return {
+      source: image,
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+      close: () => URL.revokeObjectURL(objectUrl)
+    };
+  } catch (error) {
+    URL.revokeObjectURL(objectUrl);
+    throw error;
+  }
+}
+
+function canvasToJpeg(canvas: HTMLCanvasElement, quality: number): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob || blob.type !== "image/jpeg") {
+          reject(new Error("この端末では写真を安全に変換できませんでした。"));
+          return;
+        }
+        resolve(blob);
+      },
+      "image/jpeg",
+      quality
+    );
+  });
 }

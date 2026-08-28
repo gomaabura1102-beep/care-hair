@@ -13,8 +13,7 @@ import {
   Sparkles,
   Star,
   UserRound,
-  Waves,
-  Wind
+  Waves
 } from "lucide-react";
 import { FadeIn } from "@/components/fade-in";
 import { getProductInsight, trendingProducts } from "@/data/product-insights";
@@ -29,8 +28,6 @@ const quickActions = [
 
 const concerns = [
   { label: "乾燥・パサつき", icon: Droplets },
-  { label: "ベタつき", icon: Waves },
-  { label: "抜け毛・薄毛", icon: Wind },
   { label: "うねり・くせ毛", icon: Waves },
   { label: "ダメージ", icon: Sparkles },
   { label: "フケ・かゆみ", icon: ShieldCheck }
@@ -41,7 +38,7 @@ const guides = [
     href: "/about",
     eyebrow: "CARE GUIDE",
     title: "自分の髪質を知ることから、ヘアケアは始まります。",
-    image: "/stylists/keisuke-goto.jpeg"
+    image: "/products/the-answer-shampoo.png"
   },
   {
     href: "/diagnosis",
@@ -61,16 +58,14 @@ export default function HomePage() {
   return (
     <main className="overflow-hidden pb-24 pt-[var(--header-height)] md:pb-0">
       <section className="relative isolate min-h-[520px] overflow-hidden bg-[#eff7fb] sm:min-h-[580px] lg:min-h-[650px]">
-        <div className="absolute inset-0 sm:left-auto sm:w-[64%] lg:w-[58%]">
-          <Image
-            src="/hero-home-user.jpg"
-            alt="料理を持つ短髪の男子"
-            fill
-            priority
-            sizes="(min-width: 1024px) 58vw, (min-width: 640px) 64vw, 100vw"
-            className="object-cover object-[66%_34%] sm:object-[62%_8%] lg:object-[65%_3%]"
-          />
-        </div>
+        <Image
+          src="/hero-care-hair.jpg"
+          alt="清潔感のあるヘアスタイルの男性"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[72%_center] sm:object-[68%_center] lg:object-center"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.90)_38%,rgba(255,255,255,0.18)_72%,rgba(255,255,255,0.02)_100%)] sm:bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.90)_42%,rgba(255,255,255,0.10)_72%)]" />
         <div className="relative mx-auto flex min-h-[520px] max-w-site items-center px-5 py-14 sm:min-h-[580px] sm:px-8 lg:min-h-[650px]">
           <FadeIn className="w-[78%] max-w-[650px] sm:w-[60%] lg:w-[52%]">
@@ -141,15 +136,23 @@ export default function HomePage() {
                     <div className="p-5">
                       <h2 className="line-clamp-2 min-h-12 text-base font-semibold leading-6 text-[#15324a]">{product.name}</h2>
                       <p className="mt-1 line-clamp-1 text-xs text-muted">{product.fit}</p>
-                      <div className="mt-4 flex items-center gap-2 text-xs text-[#29485f]">
-                        <span className="flex text-[#55a9da]" aria-label={`${insight.rating}点`}>
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star key={star} className="h-3.5 w-3.5 fill-current" />
-                          ))}
-                        </span>
-                        <span>{insight.rating}</span>
-                        <span className="text-muted">({insight.reviewCount})</span>
-                      </div>
+                      {insight.rating !== null && insight.reviewCount !== null ? (
+                        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-[#29485f]">
+                          <span className="font-semibold text-[#55a9da]">Amazon</span>
+                          <span className="flex text-[#55a9da]" aria-label={`Amazon評価 ${insight.rating}点`}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`h-3.5 w-3.5 ${star <= Math.round(insight.rating ?? 0) ? "fill-current" : "opacity-30"}`}
+                              />
+                            ))}
+                          </span>
+                          <span>{insight.rating}</span>
+                          <span className="text-muted">({insight.reviewCount})</span>
+                        </div>
+                      ) : (
+                        <p className="mt-4 text-xs text-muted">Amazon評価は商品ページで確認</p>
+                      )}
                       <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#55a9da]">
                         詳しく見る <ArrowRight className="h-4 w-4" />
                       </span>
@@ -165,7 +168,7 @@ export default function HomePage() {
       <section className="border-y border-[#e8f0f4] bg-[#f8fbfd] py-14 sm:py-18">
         <div className="mx-auto max-w-site">
           <SectionTitle title="悩みから探す" href="/search" />
-          <div className="flex snap-x gap-5 overflow-x-auto px-4 pb-3 [scrollbar-width:none] lg:grid lg:grid-cols-6 lg:overflow-visible lg:px-8 [&::-webkit-scrollbar]:hidden">
+          <div className="flex snap-x gap-5 overflow-x-auto px-4 pb-3 [scrollbar-width:none] lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-8 [&::-webkit-scrollbar]:hidden">
             {concerns.map((concern) => (
               <Link
                 key={concern.label}
@@ -223,7 +226,9 @@ export default function HomePage() {
                     alt=""
                     fill
                     sizes="112px"
-                    className="object-cover transition duration-500 group-hover:scale-105"
+                    className={`transition duration-500 group-hover:scale-105 ${
+                      guide.image.startsWith("/products/") ? "object-contain p-3" : "object-cover"
+                    }`}
                   />
                 </div>
                 <div className="flex flex-col justify-center p-4">

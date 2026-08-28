@@ -1,73 +1,98 @@
 "use client";
 
-import { Camera, CheckCircle2, ImageUp, Sparkles, Sun, XCircle } from "lucide-react";
+import { Camera, CheckCircle2, ImageUp, LockKeyhole, Sparkles, Sun } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Card, CardEyebrow } from "@/components/ui/card";
-import { analyzeHairPhoto } from "@/lib/photo-diagnosis";
-import type { HairPhotoAnalysis } from "@/types/photo-diagnosis";
+import { prepareHairPhoto } from "@/lib/photo-diagnosis";
+import type { PreparedHairPhoto } from "@/types/photo-diagnosis";
 
-type PhotoDiagnosisPanelProps = {
-  analysis: HairPhotoAnalysis | null;
-  onAnalysis: (analysis: HairPhotoAnalysis | null) => void;
+type Props = {
+  photo: PreparedHairPhoto | null;
+  onPhoto: (photo: PreparedHairPhoto | null) => void;
+  consent: boolean;
+  onConsent: (value: boolean) => void;
+  guardianConfirmation: boolean;
+  onGuardianConfirmation: (value: boolean) => void;
+  onContinue: () => void;
+  submitting: boolean;
+  error: string;
 };
 
 const guideItems = [
-  { icon: Sun, text: "明るい場所で撮影してください" },
-  { icon: Camera, text: "頭頂部から毛先まで写してください" },
-  { icon: Sparkles, text: "加工をしないでください" },
-  { icon: XCircle, text: "帽子やヘッドホンは外してください" },
-  { icon: CheckCircle2, text: "髪にピントを合わせてください" }
+  { icon: Sun, text: "明るい場所で、髪全体が分かるように撮影" },
+  { icon: Camera, text: "できるだけ顔ではなく髪を中心に写す" },
+  { icon: Sparkles, text: "加工・美肌補正・フィルターを使わない" },
+  { icon: CheckCircle2, text: "帽子を外し、髪が見える状態にする" }
 ];
 
-export function PhotoDiagnosisPanel({ analysis, onAnalysis }: PhotoDiagnosisPanelProps) {
-  const [loading, setLoading] = useState(false);
+export function PhotoDiagnosisPanel({
+  photo,
+  onPhoto,
+  consent,
+  onConsent,
+  guardianConfirmation,
+  onGuardianConfirmation,
+  onContinue,
+  submitting,
+  error
+}: Props) {
+  const [processing, setProcessing] = useState(false);
+  const [photoError, setPhotoError] = useState("");
 
-  const handleFile = async (file: File | undefined) => {
+  const handleFile = async (file?: File) => {
     if (!file) return;
-
-    setLoading(true);
+    setProcessing(true);
+    setPhotoError("");
     try {
-      const result = await analyzeHairPhoto(file);
-      onAnalysis(result);
-    } catch {
-      onAnalysis({
-        usable: false,
-        message: "写真から髪質を正確に判断できませんでした。質問内容のみで診断します。",
-        scores: {},
-        metrics: []
-      });
+      const prepared = await prepareHairPhoto(file);
+      if (photo) URL.revokeObjectURL(photo.previewUrl);
+      onPhoto(prepared);
+    } catch (processingError) {
+      setPhotoError(processingError instanceof Error ? processingError.message : "写真を処理できませんでした。");
     } finally {
-      setLoading(false);
+      setProcessing(false);
     }
   };
 
   return (
-    <Card as="section" className="mb-6 border-accent/30 bg-secondary/70">
-      <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+    <Card as="section" className="border-accent/30 bg-white/95 sm:p-8">
+      <div className="grid gap-7 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <CardEyebrow>Photo diagnosis</CardEyebrow>
-          <h2 className="mt-3 text-2xl font-semibold">髪の写真から診断する</h2>
+          <CardEyebrow>Step 1</CardEyebrow>
+          <h1 className="mt-3 text-2xl font-semibold sm:text-3xl">髪の写真をアップロード</h1>
           <p className="mt-3 text-sm leading-7 text-muted">
-            より正確に診断したい方は、写真診断がおすすめです。写真の判定結果と質問の回答を組み合わせて商品を提案します。
+            最初は正面または髪全体が分かる写真を1枚だけ使用します。データ構造は将来、横・後ろ・頭頂部の写真も追加できます。
           </p>
-          <label className="mt-6 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-brand border border-dashed border-accent bg-white px-5 py-6 text-center transition hover:-translate-y-0.5 hover:shadow-brand">
-            <ImageUp className="h-8 w-8 text-green" />
-            <span className="mt-3 font-semibold">{loading ? "写真を確認中..." : "髪の写真をアップロード"}</span>
-            <span className="mt-1 text-xs text-muted">スマホでは撮影してそのまま選べます</span>
+
+          <label className="mt-6 flex min-h-48 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-brand border border-dashed border-accent bg-soft px-5 py-6 text-center transition hover:border-green hover:bg-white">
+            {photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={photo.previewUrl} alt="アップロードする髪の写真" className="max-h-64 w-full rounded-lg object-contain" />
+            ) : (
+              <>
+                <ImageUp className="h-9 w-9 text-green" />
+                <span className="mt-3 font-semibold">{processing ? "位置情報などを除去しています..." : "撮影／写真を選択"}</span>
+                <span className="mt-1 text-xs text-muted">JPEG・PNG・WebPなど、25MBまで（端末対応形式）</span>
+              </>
+            )}
             <input
               type="file"
-              accept="image/*"
+              accept="image/*,.heic,.heif"
               capture="environment"
               className="sr-only"
+              disabled={processing || submitting}
               onChange={(event) => handleFile(event.target.files?.[0])}
             />
           </label>
+          {photo && <p className="mt-2 text-xs text-muted">{photo.width} × {photo.height}px・正面／髪全体</p>}
+          {photoError && <p className="mt-3 text-sm font-semibold text-red-700">{photoError}</p>}
         </div>
 
-        <div className="grid gap-4">
-          <div className="rounded-brand border border-line bg-white p-5">
-            <h3 className="font-semibold">撮影ガイド</h3>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="grid content-start gap-5">
+          <div className="rounded-brand border border-line bg-soft p-5">
+            <h2 className="font-semibold">撮影ガイド</h2>
+            <div className="mt-4 grid gap-3">
               {guideItems.map((item) => (
                 <div key={item.text} className="flex gap-3 text-sm leading-6 text-muted">
                   <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-green" />
@@ -77,22 +102,40 @@ export function PhotoDiagnosisPanel({ analysis, onAnalysis }: PhotoDiagnosisPane
             </div>
           </div>
 
-          {analysis && (
-            <div className="rounded-brand border border-line bg-white p-5">
-              <p className={`font-semibold ${analysis.usable ? "text-green" : "text-muted"}`}>{analysis.message}</p>
-              {analysis.metrics.length > 0 && (
-                <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                  {analysis.metrics.map((metric) => (
-                    <div key={metric.label} className="rounded-brand bg-soft px-4 py-3">
-                      <span className="block text-xs font-semibold text-green">{metric.label}</span>
-                      <span className="mt-1 block text-sm text-muted">{metric.value}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+          <div className="rounded-brand border border-accent/30 bg-secondary/60 p-5">
+            <div className="flex items-center gap-2 font-semibold text-green">
+              <LockKeyhole className="h-5 w-5" /> 写真と回答の利用について
             </div>
-          )}
+            <p className="mt-3 text-sm leading-7 text-muted">
+              アップロードした写真と診断回答を、Care Hairの髪質診断AIの精度向上・開発のために非公開データとして利用します。顔認識や本人識別、一般公開、自動学習には使用しません。画像は保存前に位置情報などのメタデータを除去します。
+            </p>
+            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg bg-white p-3 text-sm leading-6">
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(event) => onConsent(event.target.checked)}
+                className="mt-1 h-4 w-4 accent-[var(--primary)]"
+              />
+              <span>写真・質問回答・質問から算出したラベルを、上記のAI開発目的で保存・利用することに同意します。</span>
+            </label>
+            <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-lg bg-white p-3 text-sm leading-6">
+              <input
+                type="checkbox"
+                checked={guardianConfirmation}
+                onChange={(event) => onGuardianConfirmation(event.target.checked)}
+                className="mt-1 h-4 w-4 accent-[var(--primary)]"
+              />
+              <span>私は18歳以上です。18歳未満の場合は、保護者に説明し同意を得ています。</span>
+            </label>
+          </div>
         </div>
+      </div>
+
+      {error && <p className="mt-6 rounded-brand bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
+      <div className="mt-7 flex justify-end">
+        <Button type="button" onClick={onContinue} disabled={!photo || !consent || !guardianConfirmation || processing || submitting}>
+          {submitting ? "安全に保存しています..." : "質問へ進む"}
+        </Button>
       </div>
     </Card>
   );

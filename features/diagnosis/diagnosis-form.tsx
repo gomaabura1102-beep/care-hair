@@ -7,10 +7,8 @@ import { type CSSProperties, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { questions } from "@/data/questions";
-import { encodeAnswers } from "@/lib/diagnosis";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { HairPhotoAnalysis } from "@/types/photo-diagnosis";
 
 const formSchema = z.object({
   answers: z.array(z.array(z.number())).length(questions.length)
@@ -19,12 +17,14 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 type DiagnosisFormProps = {
-  photoAnalysis?: HairPhotoAnalysis | null;
+  diagnosisId: string;
 };
 
-export function DiagnosisForm({ photoAnalysis }: DiagnosisFormProps) {
+export function DiagnosisForm({ diagnosisId }: DiagnosisFormProps) {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const question = questions[current];
   const hasManualTitleBreak = question.title.includes("\n");
   const singleLineTitleMaxRem = Math.min(2.25, Math.max(0.95, 46 / question.title.length));
@@ -40,21 +40,27 @@ export function DiagnosisForm({ photoAnalysis }: DiagnosisFormProps) {
     defaultValues
   });
 
-  const goNext = () => {
+  const goNext = async () => {
     if (current < questions.length - 1) {
       setCurrent((value) => value + 1);
       return;
     }
 
-    const values = form.getValues();
-    if (photoAnalysis?.usable) {
-      sessionStorage.setItem("care-hair-photo-analysis", JSON.stringify(photoAnalysis));
-      router.push(`/result?answers=${encodeAnswers(values.answers)}&photo=1`);
-      return;
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const response = await fetch(`/api/diagnoses/${diagnosisId}/complete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form.getValues())
+      });
+      const body = (await response.json()) as { diagnosisId?: string; error?: string };
+      if (!response.ok || !body.diagnosisId) throw new Error(body.error ?? "診断結果を保存できませんでした。");
+      router.push(`/result?id=${body.diagnosisId}`);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "診断結果を保存できませんでした。");
+      setSubmitting(false);
     }
-
-    sessionStorage.removeItem("care-hair-photo-analysis");
-    router.push(`/result?answers=${encodeAnswers(values.answers)}`);
   };
 
   return (
@@ -116,9 +122,12 @@ export function DiagnosisForm({ photoAnalysis }: DiagnosisFormProps) {
                   )}
                   onClick={() => {
                     if (question.multiple) {
+                      const noneIndex = question.options.findIndex((item) => item.label === "特にない");
                       const next = selected
                         ? field.value.filter((value) => value !== optionIndex)
-                        : [...field.value, optionIndex];
+                        : optionIndex === noneIndex
+                          ? [optionIndex]
+                          : [...field.value.filter((value) => value !== noneIndex), optionIndex];
                       field.onChange(next);
                       return;
                     }
@@ -135,18 +144,22 @@ export function DiagnosisForm({ photoAnalysis }: DiagnosisFormProps) {
         )}
       />
 
+      {submitError && (
+        <p className="mt-6 rounded-brand bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{submitError}</p>
+      )}
+
       <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Button
           type="button"
           variant="outline"
           onClick={() => setCurrent((value) => Math.max(value - 1, 0))}
-          disabled={current === 0}
+          disabled={current === 0 || submitting}
         >
           <ArrowLeft className="h-4 w-4" /> 戻る
         </Button>
         {question.multiple ? (
-          <Button type="button" onClick={goNext} disabled={form.watch(`answers.${current}`).length === 0}>
-            結果を見る <ArrowRight className="h-4 w-4" />
+          <Button type="button" onClick={goNext} disabled={form.watch(`answers.${current}`).length === 0 || submitting}>
+            {submitting ? "診断結果を保存しています..." : "診断結果を見る"} <ArrowRight className="h-4 w-4" />
           </Button>
         ) : (
           <span className="text-sm text-muted">回答すると自動で次へ進みます</span>

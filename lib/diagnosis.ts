@@ -3,24 +3,7 @@ import { questions } from "@/data/questions";
 import type { DiagnosisAdvice, DiagnosisResult, ScoreKey, ScoreMap } from "@/types/diagnosis";
 import type { Product, ProductType } from "@/types/product";
 
-export const scoreKeys: ScoreKey[] = [
-  "fine",
-  "normal",
-  "coarse",
-  "straight",
-  "curly",
-  "dry",
-  "oily",
-  "damage",
-  "scalp",
-  "frizz",
-  "volume",
-  "moist",
-  "airy",
-  "smooth",
-  "refresh",
-  "repair"
-];
+export const DIAGNOSIS_LOGIC_VERSION = "question-v1.0.0";
 
 export const emptyScores: ScoreMap = {
   fine: 0,
@@ -40,21 +23,6 @@ export const emptyScores: ScoreMap = {
   refresh: 0,
   repair: 0
 };
-
-export function parseAnswers(value: string | null): number[][] {
-  if (!value) return [];
-
-  return value.split(".").map((group) =>
-    group
-      .split(",")
-      .map((item) => Number(item))
-      .filter((item) => Number.isInteger(item))
-  );
-}
-
-export function encodeAnswers(answers: number[][]): string {
-  return answers.map((group) => group.join(",")).join(".");
-}
 
 export function calculateScores(answers: number[][]): ScoreMap {
   const scores = { ...emptyScores };
@@ -79,6 +47,15 @@ export function calculateScores(answers: number[][]): ScoreMap {
 export function getDiagnosisResult(answers: number[][]): DiagnosisResult {
   const scores = calculateScores(answers);
   return getDiagnosisResultFromScores(scores);
+}
+
+export function getDiagnosisLabels(result: DiagnosisResult) {
+  return {
+    hairBody: result.hairBody,
+    hairShape: result.hairShape,
+    scalpState: result.scalpState,
+    condition: result.condition
+  };
 }
 
 export function getDiagnosisResultFromScores(scores: ScoreMap): DiagnosisResult {

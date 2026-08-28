@@ -47,3 +47,22 @@ export type DiagnosisResult = {
   reason: string;
   advices: DiagnosisAdvice[];
 };
+
+export type DiagnosisLabels = Pick<
+  DiagnosisResult,
+  "hairBody" | "hairShape" | "scalpState" | "condition"
+>;
+
+export type StoredAnswer = {
+  selectedOptionIndexes: number[];
+  selectedOptionLabels: string[];
+};
+
+export type StoredAnswers = Record<string, StoredAnswer>;
+
+export type PublicDiagnosis = {
+  diagnosisId: string;
+  result: DiagnosisResult;
+  diagnosisLogicVersion: string;
+  createdAt: string;
+};

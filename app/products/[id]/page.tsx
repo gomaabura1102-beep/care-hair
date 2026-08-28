@@ -8,6 +8,7 @@ import { getProductCareContent } from "@/data/product-care-content";
 import { getProductInsight } from "@/data/product-insights";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardEyebrow } from "@/components/ui/card";
+import { Star } from "lucide-react";
 
 type ProductDetailPageProps = {
   params: {
@@ -110,35 +111,50 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             </Card>
 
             <Card as="section" className="mt-8 md:p-8">
-              <h2 className="text-2xl font-medium">口コミまとめ</h2>
-              <p className="mt-2 text-sm text-muted">レビュー件数: {insight.reviewCount}件</p>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="rounded-brand bg-soft p-5">
-                  <h3 className="font-semibold text-green">良かったという声</h3>
-                  <p className="mt-3 leading-7 text-muted">{content.reviewSummary.good}</p>
+              <CardEyebrow>Amazon Customer Reviews</CardEyebrow>
+              <h2 className="mt-3 text-2xl font-medium">Amazon口コミまとめ</h2>
+              {insight.amazonReview ? (
+                <>
+                  <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
+                    <span className="flex text-[#55a9da]" aria-label={`Amazon評価 ${insight.amazonReview.rating}点`}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-5 w-5 ${star <= Math.round(insight.amazonReview?.rating ?? 0) ? "fill-current" : "opacity-30"}`}
+                        />
+                      ))}
+                    </span>
+                    <b>{insight.amazonReview.rating}</b>
+                    <span className="text-muted">{insight.amazonReview.reviewCount.toLocaleString("ja-JP")}件</span>
+                  </div>
+                  <p className="mt-2 text-xs text-muted">
+                    Amazon.co.jpの商品ページを{insight.amazonReview.checkedAt.replaceAll("-", "/")}に確認。評価・件数は変動します。
+                  </p>
+                  <div className="mt-6 grid gap-4 md:grid-cols-2">
+                    <div className="rounded-brand bg-soft p-5">
+                      <h3 className="font-semibold text-green">良かったという声</h3>
+                      <p className="mt-3 leading-7 text-muted">{insight.amazonReview.goodSummary}</p>
+                    </div>
+                    <div className="rounded-brand bg-soft p-5">
+                      <h3 className="font-semibold text-green">気になったという声</h3>
+                      <p className="mt-3 leading-7 text-muted">{insight.amazonReview.concernSummary}</p>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-xs leading-6 text-muted">
+                    Amazonのカスタマーレビューに見られる傾向をCare Hairが要約しています。口コミは個人の感想です。
+                  </p>
+                </>
+              ) : (
+                <div className="mt-5 rounded-brand bg-soft p-5">
+                  <p className="leading-7 text-muted">
+                    この商品はAmazonの評価と口コミをまだ確認できていません。仮の星や件数は表示していません。
+                  </p>
                 </div>
-                <div className="rounded-brand bg-soft p-5">
-                  <h3 className="font-semibold text-green">気になったという声</h3>
-                  <p className="mt-3 leading-7 text-muted">{content.reviewSummary.concern}</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card as="section" className="mt-8 border-accent/30 bg-secondary md:p-8">
-              <CardEyebrow>AI Review Summary</CardEyebrow>
-              <h2 className="mt-3 text-2xl font-medium">レビューから分かった特徴</h2>
-              <ul className="mt-5 grid gap-3 text-muted">
-                {insight.aiReviewSummary.map((item) => (
-                  <li key={item} className="flex gap-3 leading-7">
-                    <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+              )}
             </Card>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href={product.amazonUrl} target="_blank" rel="noopener noreferrer" className={buttonVariants({ size: "lg" })}>
+              <Link href={insight.amazonReview?.sourceUrl ?? product.amazonUrl} target="_blank" rel="noopener noreferrer" className={buttonVariants({ size: "lg" })}>
                 Amazonで詳しく見る
               </Link>
               <Link href="/search" className={buttonVariants({ variant: "outline" })}>
