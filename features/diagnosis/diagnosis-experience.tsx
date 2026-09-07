@@ -12,6 +12,8 @@ import type { PreparedHairPhoto } from "@/types/photo-diagnosis";
 type FlowStep = "intro" | "photo" | "questions";
 type DiagnosisMode = "questions" | "photo";
 
+const photoDiagnosisEnabled = process.env.NEXT_PUBLIC_PHOTO_DIAGNOSIS_ENABLED === "true";
+
 export function DiagnosisExperience() {
   const [step, setStep] = useState<FlowStep>("intro");
   const [mode, setMode] = useState<DiagnosisMode>("questions");
@@ -83,7 +85,7 @@ export function DiagnosisExperience() {
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-green">Hair diagnosis</p>
           <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">自分に合うケアを見つける</h1>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-muted sm:text-base">
-            11の質問から今の髪質と悩みを整理します。診断結果はどちらの方法でも質問回答だけから判定します。
+            11の質問から今の髪質と悩みを整理します。写真を使った診断は現在一時停止しています。
           </p>
         </div>
 
@@ -104,16 +106,27 @@ export function DiagnosisExperience() {
 
           <button
             type="button"
-            onClick={() => { setMode("photo"); setStep("photo"); setError(""); }}
-            disabled={submitting}
-            className="group rounded-[20px] border border-line bg-white p-6 text-left transition duration-200 hover:-translate-y-1 hover:border-green hover:shadow-hover disabled:opacity-50"
+            onClick={() => {
+              if (!photoDiagnosisEnabled) return;
+              setMode("photo");
+              setStep("photo");
+              setError("");
+            }}
+            disabled={!photoDiagnosisEnabled || submitting}
+            className="group rounded-[20px] border border-line bg-soft p-6 text-left transition duration-200 enabled:hover:-translate-y-1 enabled:hover:border-green enabled:hover:shadow-hover disabled:cursor-not-allowed disabled:opacity-70"
           >
-            <span className="inline-flex rounded-full bg-secondary px-3 py-1 text-[11px] font-semibold text-green">β版</span>
-            <Camera className="mt-4 h-8 w-8 text-green" />
+            <span className="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-muted">
+              {photoDiagnosisEnabled ? "β版" : "一時停止中"}
+            </span>
+            <Camera className="mt-4 h-8 w-8 text-muted" />
             <h2 className="mt-5 text-2xl font-semibold">写真＋質問で診断</h2>
-            <p className="mt-2 flex items-center gap-2 text-sm text-muted"><Clock3 className="h-4 w-4" /> 約3分</p>
-            <p className="mt-4 text-sm leading-7 text-muted">将来の診断精度向上に協力できます。写真は判定にはまだ使いません。</p>
-            <span className="mt-6 inline-flex items-center gap-2 font-semibold text-green">写真を使ってはじめる <ArrowRight className="h-4 w-4" /></span>
+            <p className="mt-2 flex items-center gap-2 text-sm text-muted"><Clock3 className="h-4 w-4" /> 現在利用できません</p>
+            <p className="mt-4 text-sm leading-7 text-muted">
+              写真の保存機能を調整しています。再開まで「質問だけで診断」をご利用ください。
+            </p>
+            <span className="mt-6 inline-flex items-center gap-2 font-semibold text-muted">
+              写真保存を停止しています
+            </span>
           </button>
         </div>
 
