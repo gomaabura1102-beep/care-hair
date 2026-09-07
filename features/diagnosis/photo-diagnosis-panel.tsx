@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Camera, CheckCircle2, ImageUp, LockKeyhole, Sparkles, Sun } from "lucide-react";
+import { ArrowLeft, Camera, CheckCircle2, ImageUp, Sparkles, Sun } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardEyebrow } from "@/components/ui/card";
@@ -92,17 +92,6 @@ export function PhotoDiagnosisPanel({
             </div>
           </div>
 
-          <div className="rounded-brand border border-accent/30 bg-secondary/60 p-5">
-            <div className="flex items-center gap-2 font-semibold text-green">
-              <LockKeyhole className="h-5 w-5" /> 写真と回答は保存しません
-            </div>
-            <p className="mt-3 text-sm leading-7 text-muted">
-              写真はこの端末の画面上だけで一時的に表示し、Care HairのサーバーやSupabaseへ送信・保存しません。質問への回答も送信・保存せず、診断結果はこの端末内で計算します。
-            </p>
-            <p className="mt-4 rounded-lg bg-white p-3 text-sm leading-6">
-              写真は診断の判定にもAI学習にも使用せず、質問へ進む時点で破棄します。
-            </p>
-          </div>
         </div>
       </div>
 
