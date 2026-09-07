@@ -15,9 +15,15 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const consentVersion = "ai-training-consent-v1.0";
+const photoDiagnosisEnabled = process.env.NEXT_PUBLIC_PHOTO_DIAGNOSIS_ENABLED === "true";
 
 export async function POST(request: NextRequest) {
   if (!hasSameOrigin(request)) return errorResponse("不正な送信元です。", 403);
+
+  const isQuestionOnlyRequest = request.headers.get("content-type")?.includes("application/json");
+  if (!isQuestionOnlyRequest && !photoDiagnosisEnabled) {
+    return errorResponse("写真を使った診断は現在一時停止しています。", 503);
+  }
 
   let storagePath: string | null = null;
   let diagnosisId: string | null = null;
@@ -27,7 +33,7 @@ export async function POST(request: NextRequest) {
     const rateLimitResponse = await checkRateLimit(anonymousUserId);
     if (rateLimitResponse) return rateLimitResponse;
 
-    if (request.headers.get("content-type")?.includes("application/json")) {
+    if (isQuestionOnlyRequest) {
       const body = (await request.json()) as { mode?: unknown };
       if (body.mode !== "questions") return errorResponse("診断方法が正しくありません。", 400);
 
