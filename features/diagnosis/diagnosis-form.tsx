@@ -9,7 +9,9 @@ import { z } from "zod";
 import { questions } from "@/data/questions";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { savePendingDiagnosisContext } from "@/lib/user-state";
+import { DIAGNOSIS_LOGIC_VERSION, getDiagnosisResult } from "@/lib/diagnosis";
+import { saveLocalDiagnosisResult, savePendingDiagnosisContext } from "@/lib/user-state";
+import type { PublicDiagnosis } from "@/types/diagnosis";
 
 const formSchema = z.object({
   answers: z.array(z.array(z.number())).length(questions.length)
@@ -52,17 +54,19 @@ export function DiagnosisForm({ diagnosisId, mode, currentProductId }: Diagnosis
     setSubmitting(true);
     setSubmitError("");
     try {
-      const response = await fetch(`/api/diagnoses/${diagnosisId}/complete`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form.getValues())
-      });
-      const body = (await response.json()) as { diagnosisId?: string; error?: string };
-      if (!response.ok || !body.diagnosisId) throw new Error(body.error ?? "診断結果を保存できませんでした。");
-      savePendingDiagnosisContext({ diagnosisId: body.diagnosisId, currentProductId, mode });
-      router.push(`/result?id=${body.diagnosisId}`);
+      const values = formSchema.parse(form.getValues());
+      const localDiagnosis: PublicDiagnosis = {
+        diagnosisId,
+        result: getDiagnosisResult(values.answers),
+        diagnosisLogicVersion: DIAGNOSIS_LOGIC_VERSION,
+        createdAt: new Date().toISOString(),
+        mode
+      };
+      saveLocalDiagnosisResult(localDiagnosis);
+      savePendingDiagnosisContext({ diagnosisId, currentProductId, mode });
+      router.push(`/result?id=${diagnosisId}`);
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : "診断結果を保存できませんでした。");
+      setSubmitError(error instanceof Error ? error.message : "診断結果を計算できませんでした。");
       setSubmitting(false);
     }
   };
@@ -165,7 +169,7 @@ export function DiagnosisForm({ diagnosisId, mode, currentProductId }: Diagnosis
         </Button>
         {question.multiple ? (
           <Button type="button" onClick={goNext} disabled={form.watch(`answers.${current}`).length === 0 || submitting}>
-            {submitting ? "診断結果を保存しています..." : "診断結果を見る"} <ArrowRight className="h-4 w-4" />
+            {submitting ? "診断結果を計算しています..." : "診断結果を見る"} <ArrowRight className="h-4 w-4" />
           </Button>
         ) : (
           <span className="text-sm text-muted">回答すると自動で次へ進みます</span>
