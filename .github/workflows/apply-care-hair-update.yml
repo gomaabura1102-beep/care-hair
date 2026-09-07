@@ -1,0 +1,25 @@
+name: Apply Care Hair improvement
+
+on:
+  push:
+    paths:
+      - care-hair-improvement.patch
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply verified local changes
+        run: |
+          git config user.name "Care Hair deployment"
+          git config user.email "actions@users.noreply.github.com"
+          git apply --index care-hair-improvement.patch
+          git rm care-hair-improvement.patch .github/workflows/apply-care-hair-update.yml
+          git commit -m "Improve diagnosis comparison reviews and care tracking"
+          git push
