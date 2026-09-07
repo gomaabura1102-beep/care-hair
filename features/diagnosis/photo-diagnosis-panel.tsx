@@ -10,14 +10,8 @@ import type { PreparedHairPhoto } from "@/types/photo-diagnosis";
 type Props = {
   photo: PreparedHairPhoto | null;
   onPhoto: (photo: PreparedHairPhoto | null) => void;
-  consent: boolean;
-  onConsent: (value: boolean) => void;
-  guardianConfirmation: boolean;
-  onGuardianConfirmation: (value: boolean) => void;
   onContinue: () => void;
   onBack: () => void;
-  submitting: boolean;
-  error: string;
 };
 
 const guideItems = [
@@ -30,14 +24,8 @@ const guideItems = [
 export function PhotoDiagnosisPanel({
   photo,
   onPhoto,
-  consent,
-  onConsent,
-  guardianConfirmation,
-  onGuardianConfirmation,
   onContinue,
-  onBack,
-  submitting,
-  error
+  onBack
 }: Props) {
   const [processing, setProcessing] = useState(false);
   const [photoError, setPhotoError] = useState("");
@@ -64,7 +52,7 @@ export function PhotoDiagnosisPanel({
           <CardEyebrow>Step 1</CardEyebrow>
           <h1 className="mt-3 text-2xl font-semibold sm:text-3xl">髪の写真をアップロード</h1>
           <p className="mt-3 text-sm leading-7 text-muted">
-            最初は正面または髪全体が分かる写真を1枚だけ使用します。データ構造は将来、横・後ろ・頭頂部の写真も追加できます。
+            正面または髪全体が分かる写真を1枚選んでください。写真はこの画面の一時プレビューだけに使います。
           </p>
 
           <label className="mt-6 flex min-h-48 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-brand border border-dashed border-accent bg-soft px-5 py-6 text-center transition hover:border-green hover:bg-white">
@@ -83,7 +71,7 @@ export function PhotoDiagnosisPanel({
               accept="image/*,.heic,.heif"
               capture="environment"
               className="sr-only"
-              disabled={processing || submitting}
+              disabled={processing}
               onChange={(event) => handleFile(event.target.files?.[0])}
             />
           </label>
@@ -106,40 +94,24 @@ export function PhotoDiagnosisPanel({
 
           <div className="rounded-brand border border-accent/30 bg-secondary/60 p-5">
             <div className="flex items-center gap-2 font-semibold text-green">
-              <LockKeyhole className="h-5 w-5" /> 写真と回答の利用について
+              <LockKeyhole className="h-5 w-5" /> 写真と回答は保存しません
             </div>
             <p className="mt-3 text-sm leading-7 text-muted">
-              アップロードした写真と診断回答を、Care Hairの髪質診断AIの精度向上・開発のために非公開データとして利用します。顔認識や本人識別、一般公開、自動学習には使用しません。画像は保存前に位置情報などのメタデータを除去します。
+              写真はこの端末の画面上だけで一時的に表示し、Care HairのサーバーやSupabaseへ送信・保存しません。質問への回答も送信・保存せず、診断結果はこの端末内で計算します。
             </p>
-            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg bg-white p-3 text-sm leading-6">
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(event) => onConsent(event.target.checked)}
-                className="mt-1 h-4 w-4 accent-[var(--primary)]"
-              />
-              <span>写真・質問回答・質問から算出したラベルを、上記のAI開発目的で保存・利用することに同意します。</span>
-            </label>
-            <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-lg bg-white p-3 text-sm leading-6">
-              <input
-                type="checkbox"
-                checked={guardianConfirmation}
-                onChange={(event) => onGuardianConfirmation(event.target.checked)}
-                className="mt-1 h-4 w-4 accent-[var(--primary)]"
-              />
-              <span>私は18歳以上です。18歳未満の場合は、保護者に説明し同意を得ています。</span>
-            </label>
+            <p className="mt-4 rounded-lg bg-white p-3 text-sm leading-6">
+              写真は診断の判定にもAI学習にも使用せず、質問へ進む時点で破棄します。
+            </p>
           </div>
         </div>
       </div>
 
-      {error && <p className="mt-6 rounded-brand bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
       <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-        <Button type="button" variant="outline" onClick={onBack} disabled={submitting}>
+        <Button type="button" variant="outline" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" /> 方法を選び直す
         </Button>
-        <Button type="button" onClick={onContinue} disabled={!photo || !consent || !guardianConfirmation || processing || submitting}>
-          {submitting ? "安全に保存しています..." : "質問へ進む"}
+        <Button type="button" onClick={onContinue} disabled={!photo || processing}>
+          質問へ進む
         </Button>
       </div>
     </Card>
