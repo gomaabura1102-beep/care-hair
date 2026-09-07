@@ -111,11 +111,6 @@ export function ResultContent() {
               )}
             </h1>
             <p className="mt-6 text-muted">{result.feature}</p>
-            <p className="mt-4 rounded-brand bg-secondary px-4 py-3 text-sm font-semibold text-green">
-              {isLocalResult
-                ? "この結果は質問への回答だけから、この端末内で計算しました。回答内容と写真は送信・保存していません。"
-                : "この結果は質問への回答だけから判定しています。写真の解析結果は使用していません。"}
-            </p>
             <ScoreBars scores={result.scores} />
           </div>
           <div className="rounded-brand border border-line bg-white p-7 md:p-10">
