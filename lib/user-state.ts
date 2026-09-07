@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type { DiagnosisResult } from "@/types/diagnosis";
+import type { DiagnosisResult, PublicDiagnosis } from "@/types/diagnosis";
 import type {
   CareHairState,
   PendingDiagnosisContext,
@@ -12,6 +12,7 @@ import type {
 
 const stateKey = "care-hair:user-state:v1";
 const pendingKey = "care-hair:pending-diagnosis:v1";
+const localResultKey = "care-hair:local-diagnosis-result:v1";
 const stateEvent = "care-hair-state-change";
 
 export const emptyCareHairState: CareHairState = {
@@ -119,6 +120,19 @@ export function readPendingDiagnosisContext(diagnosisId: string): PendingDiagnos
   try {
     const value = JSON.parse(window.sessionStorage.getItem(pendingKey) ?? "null") as PendingDiagnosisContext | null;
     return value?.diagnosisId === diagnosisId ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveLocalDiagnosisResult(diagnosis: PublicDiagnosis) {
+  window.sessionStorage.setItem(localResultKey, JSON.stringify(diagnosis));
+}
+
+export function readLocalDiagnosisResult(diagnosisId: string): PublicDiagnosis | null {
+  try {
+    const value = JSON.parse(window.sessionStorage.getItem(localResultKey) ?? "null") as PublicDiagnosis | null;
+    return value?.diagnosisId === diagnosisId && value.result ? value : null;
   } catch {
     return null;
   }
