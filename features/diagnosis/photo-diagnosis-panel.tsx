@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, CheckCircle2, ImageUp, LockKeyhole, Sparkles, Sun } from "lucide-react";
+import { ArrowLeft, Camera, CheckCircle2, ImageUp, LockKeyhole, Sparkles, Sun } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardEyebrow } from "@/components/ui/card";
@@ -15,6 +15,7 @@ type Props = {
   guardianConfirmation: boolean;
   onGuardianConfirmation: (value: boolean) => void;
   onContinue: () => void;
+  onBack: () => void;
   submitting: boolean;
   error: string;
 };
@@ -34,6 +35,7 @@ export function PhotoDiagnosisPanel({
   guardianConfirmation,
   onGuardianConfirmation,
   onContinue,
+  onBack,
   submitting,
   error
 }: Props) {
@@ -132,7 +134,10 @@ export function PhotoDiagnosisPanel({
       </div>
 
       {error && <p className="mt-6 rounded-brand bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
-      <div className="mt-7 flex justify-end">
+      <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+        <Button type="button" variant="outline" onClick={onBack} disabled={submitting}>
+          <ArrowLeft className="h-4 w-4" /> 方法を選び直す
+        </Button>
         <Button type="button" onClick={onContinue} disabled={!photo || !consent || !guardianConfirmation || processing || submitting}>
           {submitting ? "安全に保存しています..." : "質問へ進む"}
         </Button>

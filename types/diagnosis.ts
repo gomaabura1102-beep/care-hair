@@ -53,6 +53,13 @@ export type DiagnosisLabels = Pick<
   "hairBody" | "hairShape" | "scalpState" | "condition"
 >;
 
+export type ProductRecommendation = {
+  productId: string;
+  score: number;
+  label: "最有力" | "有力" | "候補";
+  reasons: string[];
+};
+
 export type StoredAnswer = {
   selectedOptionIndexes: number[];
   selectedOptionLabels: string[];
@@ -65,4 +72,5 @@ export type PublicDiagnosis = {
   result: DiagnosisResult;
   diagnosisLogicVersion: string;
   createdAt: string;
+  mode: "questions" | "photo";
 };

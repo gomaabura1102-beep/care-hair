@@ -58,7 +58,8 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       diagnosisId: params.id,
       result,
       diagnosisLogicVersion: DIAGNOSIS_LOGIC_VERSION,
-      createdAt: updated[0].created_at
+      createdAt: updated[0].created_at,
+      mode: "questions"
     };
     return NextResponse.json(payload, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {

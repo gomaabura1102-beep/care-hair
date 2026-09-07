@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
   try {
     const query = new URLSearchParams({
-      select: "id,result_snapshot,diagnosis_logic_version,created_at",
+      select: "id,result_snapshot,diagnosis_logic_version,created_at,diagnosis_images(id)",
       id: `eq.${params.id}`,
       anonymous_user_id: `eq.${anonymousUserId}`,
       data_status: "eq.completed",
@@ -25,6 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         result_snapshot: DiagnosisResult;
         diagnosis_logic_version: string;
         created_at: string;
+        diagnosis_images: Array<{ id: string }>;
       }>
     >(`/rest/v1/diagnoses?${query}`);
     if (!rows[0]) return errorResponse("診断結果が見つかりません。", 404);
@@ -33,7 +34,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       diagnosisId: rows[0].id,
       result: rows[0].result_snapshot,
       diagnosisLogicVersion: rows[0].diagnosis_logic_version,
-      createdAt: rows[0].created_at
+      createdAt: rows[0].created_at,
+      mode: rows[0].diagnosis_images.length > 0 ? "photo" : "questions"
     };
     return NextResponse.json(payload, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {

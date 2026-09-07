@@ -1,16 +1,22 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const steps = [
+const photoSteps = [
   { number: 1, label: "写真" },
   { number: 2, label: "質問" },
   { number: 3, label: "診断結果" }
 ] as const;
 
-export function DiagnosisSteps({ current }: { current: 1 | 2 | 3 }) {
+const questionSteps = [
+  { number: 1, label: "質問" },
+  { number: 2, label: "診断結果" }
+] as const;
+
+export function DiagnosisSteps({ current, mode = "photo" }: { current: 1 | 2 | 3; mode?: "questions" | "photo" }) {
+  const steps = mode === "photo" ? photoSteps : questionSteps;
   return (
     <div className="mb-7 rounded-brand border border-line bg-white/95 px-4 py-4 shadow-brand" aria-label="診断ステップ">
-      <ol className="grid grid-cols-3 gap-2">
+      <ol className={cn("grid gap-2", steps.length === 3 ? "grid-cols-3" : "grid-cols-2")}>
         {steps.map((step) => {
           const completed = step.number < current;
           const active = step.number === current;
@@ -26,7 +32,7 @@ export function DiagnosisSteps({ current }: { current: 1 | 2 | 3 }) {
               >
                 {completed ? <Check className="h-4 w-4" /> : step.number}
               </span>
-              {step.number} / 3 {step.label}
+              {step.number} / {steps.length} {step.label}
             </li>
           );
         })}

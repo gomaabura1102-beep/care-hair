@@ -24,6 +24,9 @@ supabase/migrations/202608170001_secure_diagnosis_dataset.sql
 
 ```text
 supabase/migrations/202608170002_restrict_rls_helper.sql
+supabase/migrations/202608210001_allow_jpeg_diagnosis_images.sql
+supabase/migrations/202608210002_allow_jpeg_diagnosis_image_records.sql
+supabase/migrations/202609050001_product_reviews.sql
 ```
 
 これらのSQLは以下を作成・設定します。
@@ -33,10 +36,12 @@ supabase/migrations/202608170002_restrict_rls_helper.sql
 - `diagnosis_images`
 - `admin_reviews`
 - `admin_audit_logs`
+- `product_reviews`
 - 非公開バケット `hair-diagnosis-images`
 - 元回答・元ラベルを上書きさせないトリガー
 - 追記専用の管理者操作ログ
 - 全診断テーブルのRLS
+- 公開前確認を行う口コミ保存領域と管理者レビュー項目
 
 一般ユーザー用のRLSポリシーは意図的に作成していません。診断データへ直接アクセスできるクライアントは存在せず、サーバーAPIだけが入力検証後にSecret keyで操作します。
 
@@ -90,6 +95,7 @@ npm run dev
 5. `/admin`が未ログイン・一般ユーザーを拒否する
 6. 管理者だけが画像、元回答、元ラベルを確認できる
 7. 「同意あり・使用可能・train/validation/test」のデータだけがエクスポートされる
+8. 口コミ投稿が`pending`で保存され、管理者が公開するまで一般画面へ出ない
 
 ## 運用前に決める事項
 

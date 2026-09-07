@@ -6,7 +6,7 @@ const instagramUrl = "https://www.instagram.com/carehair.1203?igsh=ZmI3eXBtbTc2Y
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line py-12 text-sm text-muted">
+    <footer className="border-t border-line pb-24 pt-12 text-sm text-muted md:pb-12">
       <div className="mx-auto flex max-w-site flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between">
         <Link href="/" className="block h-12 w-[132px]">
           <Image
@@ -18,7 +18,9 @@ export function SiteFooter() {
           />
         </Link>
         <div className="flex flex-wrap items-center gap-4">
-          <p>Hair care diagnosis for high school students.</p>
+          <Link href="/about-recommendation" className="transition hover:text-green">診断の仕組み</Link>
+          <Link href="/mypage" className="transition hover:text-green">マイページ</Link>
+          <p>Hair care diagnosis for students.</p>
           <a
             href={instagramUrl}
             target="_blank"

@@ -20,12 +20,12 @@ const panels = [
   {
     icon: MessageCircle,
     title: "高校生へのアンケート",
-    body: "約200人へのアンケートから、悩みや購入しやすい価格帯、商品選びの不安を整理しました。"
+    body: "高校生から集めた声をもとに、悩みや購入しやすい価格帯、商品選びの不安を整理しています。集計根拠を公開できる内容だけを今後掲載します。"
   },
   {
     icon: Scissors,
     title: "美容師インタビュー",
-    body: "men's hair SENSE、SKILL SHIBUYAの美容師の意見を参考に、髪質ごとの選び方を設計しました。"
+    body: "専門家情報は、氏名・所属・専門分野・取材日を確認できる場合だけ公開します。現在、公開用コンテンツを準備しています。"
   },
   {
     icon: Sparkles,
@@ -61,7 +61,7 @@ export default function AboutPage() {
               <span className="block whitespace-nowrap">もっと簡単に。</span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-8 text-muted sm:text-lg">
-              Care Hairは、高校のアントレプレナーシップ授業で生まれたヘアケア診断サービスです。男子高校生の声と美容師インタビューをもとに、無理なく続けやすい商品選びをサポートします。
+              Care Hairは、高校のアントレプレナーシップ授業で生まれたヘアケア診断サービスです。男子中高生が、無理なく続けやすい商品を理由と一緒に選べるようサポートします。
             </p>
             <Link href="/diagnosis" className={buttonVariants({ className: "mt-9" })}>
               診断を始める

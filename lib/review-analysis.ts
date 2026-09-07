@@ -21,6 +21,7 @@ export function analyzeReviews(reviews: UserReview[]) {
 
   return {
     satisfaction: `${Math.round((highRated / total) * 100)}%`,
+    highRatedCount: highRated,
     popularHairType,
     popularConcern,
     recommendedFor: `${popularHairType}で、${popularConcern}が気になる人からの評価が集まりやすい傾向です。`,

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { Download, Filter, ShieldCheck } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { AdminLogoutButton } from "@/features/admin/admin-logout-button";
-import { getRecentAuditLogs, getReview, listDiagnoses, type AdminFilters } from "@/lib/server/admin-data";
+import { AdminReviewModeration } from "@/features/admin/admin-review-moderation";
+import { getRecentAuditLogs, getReview, listDiagnoses, listProductReviewsForAdmin, type AdminFilters } from "@/lib/server/admin-data";
+import { products } from "@/data/products";
 import { requireAdminPage } from "@/lib/server/admin-auth";
 
 export const metadata: Metadata = { title: "運営者マイページ", robots: { index: false, follow: false } };
@@ -19,6 +21,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
     diagnoses = diagnoses.filter((item) => item.id.toLowerCase().includes(query) || item.anonymous_user_id.toLowerCase().includes(query));
   }
   const auditLogs = await getRecentAuditLogs();
+  const productReviews = await listProductReviewsForAdmin();
 
   return (
     <main className="min-h-screen bg-soft pb-20 pt-[calc(var(--header-height)+2rem)]">
@@ -96,6 +99,15 @@ export default async function AdminPage({ searchParams }: PageProps) {
             </tbody>
           </table>
         </div>
+
+        <section className="mt-8 rounded-brand border border-line bg-white p-6 shadow-brand">
+          <h2 className="text-xl font-semibold">商品口コミの確認</h2>
+          <p className="mt-2 text-sm leading-6 text-muted">個人情報や不適切な内容がないことを確認してから公開してください。</p>
+          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+            {productReviews.map((review) => <article key={review.id} className="rounded-xl border border-line bg-soft p-5"><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{review.nickname}・{review.age_group}</p><p className="mt-1 text-xs text-muted">{products.find((product) => product.id === review.product_id)?.name ?? review.product_id}</p></div><span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-green">{review.moderation_status}</span></div><p className="mt-4 text-sm leading-7"><strong>良い点：</strong>{review.positive}</p><p className="mt-2 text-sm leading-7"><strong>気になる点：</strong>{review.negative}</p><p className="mt-3 text-xs text-muted">評価 {review.rating} / 5・{review.hair_type}・{review.concerns.join("、")}</p><AdminReviewModeration review={review} /></article>)}
+            {productReviews.length === 0 ? <p className="text-sm text-muted">確認待ちの口コミはありません。</p> : null}
+          </div>
+        </section>
 
         <section className="mt-8 rounded-brand border border-line bg-white p-6 shadow-brand">
           <h2 className="text-xl font-semibold">最近の管理者操作</h2>

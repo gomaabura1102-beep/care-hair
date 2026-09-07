@@ -3,7 +3,7 @@ import { products } from "@/data/products";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://care-hair.vercel.app";
-  const pages = ["", "/diagnosis", "/search", "/reviews", "/about"];
+  const pages = ["", "/diagnosis", "/search", "/compare", "/reviews", "/mypage", "/about", "/about-recommendation"];
 
   return [
     ...pages.map((path) => ({

@@ -7,6 +7,7 @@ export type Product = {
   name: string;
   type: ProductType;
   price: string;
+  volumeMl?: number;
   image: string;
   tags: string[];
   feature: string;

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductReviewForm } from "@/features/reviews/product-review-form";
+import { ProductActions } from "@/features/products/product-actions";
 import { products } from "@/data/products";
 import { getProductCareContent } from "@/data/product-care-content";
 import { getProductInsight } from "@/data/product-insights";
@@ -130,19 +131,17 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   <p className="mt-2 text-xs text-muted">
                     Amazon.co.jpの商品ページを{insight.amazonReview.checkedAt.replaceAll("-", "/")}に確認。評価・件数は変動します。
                   </p>
-                  <div className="mt-6 grid gap-4 md:grid-cols-2">
-                    <div className="rounded-brand bg-soft p-5">
-                      <h3 className="font-semibold text-green">良かったという声</h3>
-                      <p className="mt-3 leading-7 text-muted">{insight.amazonReview.goodSummary}</p>
-                    </div>
-                    <div className="rounded-brand bg-soft p-5">
-                      <h3 className="font-semibold text-green">気になったという声</h3>
-                      <p className="mt-3 leading-7 text-muted">{insight.amazonReview.concernSummary}</p>
-                    </div>
-                  </div>
-                  <p className="mt-4 text-xs leading-6 text-muted">
-                    Amazonのカスタマーレビューに見られる傾向をCare Hairが要約しています。口コミは個人の感想です。
-                  </p>
+                  {insight.amazonReview.reviewCount >= 10 ? (
+                    <>
+                      <div className="mt-6 grid gap-4 md:grid-cols-2">
+                        <div className="rounded-brand bg-soft p-5"><h3 className="font-semibold text-green">良かったという声</h3><p className="mt-3 leading-7 text-muted">{insight.amazonReview.goodSummary}</p></div>
+                        <div className="rounded-brand bg-soft p-5"><h3 className="font-semibold text-green">気になったという声</h3><p className="mt-3 leading-7 text-muted">{insight.amazonReview.concernSummary}</p></div>
+                      </div>
+                      <p className="mt-4 text-xs leading-6 text-muted">Amazonのカスタマーレビューに見られる傾向をCare Hairが要約しています。口コミは個人の感想です。</p>
+                    </>
+                  ) : (
+                    <p className="mt-5 rounded-brand bg-soft p-5 text-sm leading-7 text-muted">口コミ数が10件未満のため、傾向の要約はまだ表示していません。</p>
+                  )}
                 </>
               ) : (
                 <div className="mt-5 rounded-brand bg-soft p-5">
@@ -162,7 +161,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               </Link>
             </div>
 
-            <ProductReviewForm />
+            <ProductActions productId={product.id} />
+
+            <ProductReviewForm defaultProductId={product.id} />
           </article>
         </div>
       </section>

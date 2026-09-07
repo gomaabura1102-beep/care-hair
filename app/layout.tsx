@@ -3,6 +3,7 @@ import "./globals.css";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { MobileNav } from "@/components/mobile-nav";
 
 const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID ?? "G-3P4Z4240B8";
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteHeader />
         {children}
         <SiteFooter />
+        <MobileNav />
       </body>
     </html>
   );

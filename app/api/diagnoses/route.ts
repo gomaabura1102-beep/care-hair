@@ -23,6 +23,28 @@ export async function POST(request: NextRequest) {
   let diagnosisId: string | null = null;
 
   try {
+    const anonymousUserId = ensureAnonymousUserId(request);
+    const rateLimitResponse = await checkRateLimit(anonymousUserId);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    if (request.headers.get("content-type")?.includes("application/json")) {
+      const body = (await request.json()) as { mode?: unknown };
+      if (body.mode !== "questions") return errorResponse("診断方法が正しくありません。", 400);
+
+      diagnosisId = crypto.randomUUID();
+      await createDiagnosisDraft({
+        diagnosisId,
+        anonymousUserId,
+        consent: false,
+        consentVersion: "question-only-v1.0",
+        guardianConfirmation: false
+      });
+      const response = NextResponse.json({ diagnosisId }, { status: 201 });
+      response.headers.set("Cache-Control", "no-store");
+      setAnonymousUserCookie(response, anonymousUserId);
+      return response;
+    }
+
     const form = await request.formData();
     const image = form.get("image");
     const direction = String(form.get("direction") ?? "front");
@@ -37,17 +59,6 @@ export async function POST(request: NextRequest) {
       return errorResponse("撮影方向が正しくありません。", 400);
     }
 
-    const anonymousUserId = ensureAnonymousUserId(request);
-    const cutoff = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const recentParams = new URLSearchParams({
-      select: "id",
-      anonymous_user_id: `eq.${anonymousUserId}`,
-      created_at: `gte.${cutoff}`,
-      limit: "5"
-    });
-    const recent = await serviceJson<Array<{ id: string }>>(`/rest/v1/diagnoses?${recentParams}`);
-    if (recent.length >= 5) return errorResponse("しばらく時間をおいてから、もう一度お試しください。", 429);
-
     const bytes = Buffer.from(await image.arrayBuffer());
     const inspectedImage = inspectSanitizedImage(bytes);
     diagnosisId = crypto.randomUUID();
@@ -55,19 +66,13 @@ export async function POST(request: NextRequest) {
     storagePath = `${anonymousUserId}/${diagnosisId}/${imageId}.${inspectedImage.extension}`;
 
     await uploadPrivateImage(storagePath, bytes, inspectedImage.mimeType);
-    await serviceJson("/rest/v1/diagnoses", {
-      method: "POST",
-      headers: { Prefer: "return=minimal" },
-      body: JSON.stringify({
-        id: diagnosisId,
-        anonymous_user_id: anonymousUserId,
-        diagnosis_logic_version: DIAGNOSIS_LOGIC_VERSION,
-        consent_ai_training: true,
-        consent_version: consentVersion,
-        consented_at: new Date().toISOString(),
-        guardian_confirmation: true,
-        data_status: "draft"
-      })
+    await createDiagnosisDraft({
+      diagnosisId,
+      anonymousUserId,
+      consent: true,
+      consentVersion,
+      guardianConfirmation: true,
+      createAdminReview: false
     });
     await serviceJson("/rest/v1/diagnosis_images", {
       method: "POST",
@@ -111,4 +116,46 @@ export async function POST(request: NextRequest) {
 
 function errorResponse(message: string, status: number) {
   return NextResponse.json({ error: message }, { status, headers: { "Cache-Control": "no-store" } });
+}
+
+async function checkRateLimit(anonymousUserId: string) {
+  const cutoff = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  const recentParams = new URLSearchParams({
+    select: "id",
+    anonymous_user_id: `eq.${anonymousUserId}`,
+    created_at: `gte.${cutoff}`,
+    limit: "5"
+  });
+  const recent = await serviceJson<Array<{ id: string }>>(`/rest/v1/diagnoses?${recentParams}`);
+  return recent.length >= 5 ? errorResponse("しばらく時間をおいてから、もう一度お試しください。", 429) : null;
+}
+
+async function createDiagnosisDraft(input: {
+  diagnosisId: string;
+  anonymousUserId: string;
+  consent: boolean;
+  consentVersion: string;
+  guardianConfirmation: boolean;
+  createAdminReview?: boolean;
+}) {
+  await serviceJson("/rest/v1/diagnoses", {
+    method: "POST",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify({
+      id: input.diagnosisId,
+      anonymous_user_id: input.anonymousUserId,
+      diagnosis_logic_version: DIAGNOSIS_LOGIC_VERSION,
+      consent_ai_training: input.consent,
+      consent_version: input.consentVersion,
+      consented_at: new Date().toISOString(),
+      guardian_confirmation: input.guardianConfirmation,
+      data_status: "draft"
+    })
+  });
+  if (input.createAdminReview === false) return;
+  await serviceJson("/rest/v1/admin_reviews", {
+    method: "POST",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify({ diagnosis_id: input.diagnosisId })
+  });
 }

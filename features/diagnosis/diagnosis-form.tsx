@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CircleHelp, CloudRain, Hand, RotateCcw, Ruler, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type CSSProperties, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -9,6 +9,7 @@ import { z } from "zod";
 import { questions } from "@/data/questions";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { savePendingDiagnosisContext } from "@/lib/user-state";
 
 const formSchema = z.object({
   answers: z.array(z.array(z.number())).length(questions.length)
@@ -18,9 +19,11 @@ type FormValues = z.infer<typeof formSchema>;
 
 type DiagnosisFormProps = {
   diagnosisId: string;
+  mode: "questions" | "photo";
+  currentProductId: string | null;
 };
 
-export function DiagnosisForm({ diagnosisId }: DiagnosisFormProps) {
+export function DiagnosisForm({ diagnosisId, mode, currentProductId }: DiagnosisFormProps) {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -56,6 +59,7 @@ export function DiagnosisForm({ diagnosisId }: DiagnosisFormProps) {
       });
       const body = (await response.json()) as { diagnosisId?: string; error?: string };
       if (!response.ok || !body.diagnosisId) throw new Error(body.error ?? "診断結果を保存できませんでした。");
+      savePendingDiagnosisContext({ diagnosisId: body.diagnosisId, currentProductId, mode });
       router.push(`/result?id=${body.diagnosisId}`);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "診断結果を保存できませんでした。");
@@ -65,14 +69,15 @@ export function DiagnosisForm({ diagnosisId }: DiagnosisFormProps) {
 
   return (
     <div className="mx-auto w-full max-w-4xl rounded-brand border border-line bg-white/95 p-4 shadow-brand sm:p-7 md:p-12">
-      <div className="mb-8 h-2 overflow-hidden rounded-full bg-line" aria-label="診断の進捗">
+      <div className="mb-3 flex items-center justify-between text-xs font-semibold text-muted">
+        <span>{current + 1} / {questions.length}</span>
+        <span>{Math.round(progress)}%</span>
+      </div>
+      <div className="mb-7 h-2 overflow-hidden rounded-full bg-line" aria-label={`診断の進捗 ${Math.round(progress)}%`}>
         <div className="h-full rounded-full bg-green transition-all duration-500" style={{ width: `${progress}%` }} />
       </div>
 
-      <div className="mb-8 flex items-center justify-between gap-4 text-sm text-muted">
-        <span>
-          {current + 1} / {questions.length}
-        </span>
+      <div className="mb-7 flex items-center justify-end gap-4 text-sm text-muted">
         <button
           type="button"
           className="text-green underline-offset-4 hover:underline"
@@ -86,6 +91,7 @@ export function DiagnosisForm({ diagnosisId }: DiagnosisFormProps) {
       </div>
 
       <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-green">Diagnosis</p>
+      <QuestionVisual questionId={question.id} />
       <h1
         className={cn(
           "jp-question-title max-w-full font-medium",
@@ -168,3 +174,24 @@ export function DiagnosisForm({ diagnosisId }: DiagnosisFormProps) {
     </div>
   );
 }
+
+function QuestionVisual({ questionId }: { questionId: string }) {
+  const visual = questionVisuals[questionId] ?? { icon: CircleHelp, label: "普段の状態を思い出して答えてください" };
+  return (
+    <div className="mb-5 flex min-h-24 items-center gap-4 rounded-2xl border border-line bg-soft p-4" aria-hidden="true">
+      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-white text-green shadow-sm">
+        <visual.icon className="h-7 w-7 stroke-[1.6]" />
+      </span>
+      <p className="text-sm font-semibold leading-6 text-muted">{visual.label}</p>
+    </div>
+  );
+}
+
+const questionVisuals: Record<string, { icon: typeof CircleHelp; label: string }> = {
+  "hair-shape-paper": { icon: Sparkles, label: "白い紙の上で、髪の曲がり方を上から見ます" },
+  touch: { icon: Hand, label: "根元から毛先へ、指をやさしく滑らせます" },
+  body: { icon: Ruler, label: "抜けた髪の片側だけをつまみ、横向きにします" },
+  "curl-memory": { icon: RotateCcw, label: "指に10秒巻き、外した直後の形を見ます" },
+  "wet-stretch": { icon: Ruler, label: "無理に引っ張らず、試せない場合は『よく分からない』でOKです" },
+  humidity: { icon: CloudRain, label: "雨の日や梅雨の髪を思い出してください" }
+};

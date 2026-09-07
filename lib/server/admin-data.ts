@@ -161,3 +161,36 @@ export async function getRecentAuditLogs() {
     }>
   >(`/rest/v1/admin_audit_logs?${query}`);
 }
+
+export type AdminProductReview = {
+  id: string;
+  nickname: string;
+  age_group: string;
+  product_id: string;
+  hair_type: string;
+  concerns: string[];
+  rating: number;
+  positive: string;
+  negative: string;
+  moderation_status: "pending" | "published" | "rejected";
+  created_at: string;
+};
+
+export async function listProductReviewsForAdmin() {
+  const query = new URLSearchParams({
+    select: "id,nickname,age_group,product_id,hair_type,concerns,rating,positive,negative,moderation_status,created_at",
+    order: "created_at.desc",
+    limit: "100"
+  });
+  return serviceJson<AdminProductReview[]>(`/rest/v1/product_reviews?${query}`);
+}
+
+export async function moderateProductReview(id: string, status: "published" | "rejected", admin: AdminUser) {
+  const query = new URLSearchParams({ id: `eq.${id}` });
+  await serviceJson(`/rest/v1/product_reviews?${query}`, {
+    method: "PATCH",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify({ moderation_status: status, reviewed_by: admin.id, reviewed_at: new Date().toISOString() })
+  });
+  await writeAuditLog(admin, `product_review.${status}`, null, { reviewId: id });
+}

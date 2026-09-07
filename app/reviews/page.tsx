@@ -16,6 +16,7 @@ export default function ReviewsPage() {
             eyebrow="Reviews"
             title="口コミ"
             lead="Care Hairを使った人の感想を、髪質や悩みとあわせて確認できます。自分に近い髪質の声を参考にしてください。"
+            level={1}
           />
           <ReviewPageContent />
         </div>

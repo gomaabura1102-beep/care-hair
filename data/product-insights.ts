@@ -28,6 +28,7 @@ const concernMap = [
   ["frizz", "広がり"],
   ["volume", "ボリューム不足"],
   ["damage", "ダメージ"],
+  ["oily", "ベタつき"],
   ["scalp", "フケ・かゆみ"]
 ] as const;
 
@@ -54,6 +55,18 @@ export function getProductInsight(product: Product) {
     .filter(([key]) => (product.scores[key as ScoreKey] ?? 0) >= 4)
     .map(([, label]) => label);
   const amazonReview = getAmazonReviewSnapshot(product.id);
+  const finishCategory = (product.scores.airy ?? 0) >= 5
+    ? "ふんわり"
+    : (product.scores.smooth ?? 0) >= 5
+      ? "さらさら"
+      : (product.scores.moist ?? 0) >= 5
+        ? "しっとり"
+        : "自然";
+  const weight = (product.scores.airy ?? 0) >= 5
+    ? "軽め"
+    : (product.scores.moist ?? 0) >= 6
+      ? "重め"
+      : "標準";
 
   return {
     brand: brandOf(product.name),
@@ -62,11 +75,15 @@ export function getProductInsight(product: Product) {
     scent: product.scent,
     scentCategory: categorizeScent(product.scent),
     finish: product.texture,
+    finishCategory,
+    weight,
     washFeel: product.texture,
     reviewCount: amazonReview?.reviewCount ?? null,
     rating: amazonReview?.rating ?? null,
     amazonReview,
     priceValue: priceNumber(product.price),
+    volumeMl: product.volumeMl ?? null,
+    pricePer100Ml: product.volumeMl ? Math.round((priceNumber(product.price) / product.volumeMl) * 100) : null,
     reviewHighlights: amazonReview ? [amazonReview.goodSummary, amazonReview.concernSummary] : []
   };
 }
@@ -79,7 +96,9 @@ export const productsWithInsights = products.map((product) => ({
 
 export const filterOptions = {
   hairTypes: ["細毛・軟毛", "普通毛", "硬毛・剛毛"],
-  concerns: ["パサつき", "くせ毛・うねり", "広がり", "ボリューム不足", "ダメージ", "フケ・かゆみ", "特になし"],
+  concerns: ["パサつき", "くせ毛・うねり", "広がり", "ボリューム不足", "ダメージ", "ベタつき", "フケ・かゆみ", "特になし"],
+  finishes: ["ふんわり", "さらさら", "しっとり", "自然"],
+  weights: ["軽め", "標準", "重め"],
   scents: [...scentCategories],
   ratings: ["4.5以上", "4.0以上", "3.5以上"],
   brands: Array.from(new Set(products.map((product) => brandOf(product.name)))),
@@ -92,7 +111,8 @@ export const filterOptions = {
 
 export const trendingProducts = productsWithInsights
   .filter((product) => ["the-answer-shampoo", "plus-eau-repair-shampoo", "qurap-wrapping-moist-shampoo", "mememe-smooth-boost-shampoo"].includes(product.id))
-  .map((product, index) => ({
+  .map((product) => ({
     product,
-    label: ["口コミ急上昇", "今月人気", "高校生人気", "AIおすすめ"][index] ?? "注目"
-  }));
+    label: product.insight.reviewCount !== null ? `Amazon ${product.insight.reviewCount}件` : "商品情報"
+  }))
+  .sort((a, b) => (b.product.insight.reviewCount ?? 0) - (a.product.insight.reviewCount ?? 0));

@@ -11,7 +11,9 @@ import { Card, CardEyebrow } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { DeleteDiagnosisButton } from "@/features/result/delete-diagnosis-button";
 import { ShareResultCard } from "@/features/result/share-result-card";
-import { rankPairedTreatments, rankProducts } from "@/lib/diagnosis";
+import { getPriorityCare, rankPairedTreatments, rankProductRecommendations, rankProducts } from "@/lib/diagnosis";
+import { products } from "@/data/products";
+import { readPendingDiagnosisContext, saveDiagnosisToDevice } from "@/lib/user-state";
 import type { PublicDiagnosis, ScoreMap } from "@/types/diagnosis";
 
 export function ResultContent() {
@@ -39,13 +41,27 @@ export function ResultContent() {
     return () => controller.abort();
   }, [diagnosisId]);
 
+  useEffect(() => {
+    if (!diagnosis) return;
+    const recommendations = rankProductRecommendations("shampoo", diagnosis.result.scores);
+    const pending = readPendingDiagnosisContext(diagnosis.diagnosisId);
+    saveDiagnosisToDevice({
+      diagnosisId: diagnosis.diagnosisId,
+      createdAt: diagnosis.createdAt,
+      result: diagnosis.result,
+      recommendedProductIds: recommendations.map((item) => item.productId),
+      mode: diagnosis.mode,
+      currentProductId: pending?.currentProductId ?? null
+    });
+  }, [diagnosis]);
+
   if (error) {
     return (
       <main className="grid min-h-screen place-items-center px-4 pt-[var(--header-height)]">
         <div className="max-w-lg rounded-brand border border-line bg-white p-8 text-center shadow-brand">
           <h1 className="text-2xl font-semibold">診断結果を表示できません</h1>
           <p className="mt-4 text-sm leading-7 text-muted">{error}</p>
-          <Link href="/diagnosis" className={`${buttonVariants()} mt-6`}>診断をはじめる</Link>
+          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={() => window.location.reload()} className={buttonVariants()}>もう一度読み込む</button><Link href="/diagnosis" className={buttonVariants({ variant: "outline" })}>診断をはじめる</Link></div>
         </div>
       </main>
     );
@@ -62,13 +78,19 @@ export function ResultContent() {
   const result = diagnosis.result;
   const shampoos = rankProducts("shampoo", result.scores);
   const treatments = rankPairedTreatments(shampoos, result.scores);
+  const shampooRecommendations = rankProductRecommendations("shampoo", result.scores);
+  const treatmentRecommendations = rankProductRecommendations("treatment", result.scores);
   const features = getUserFeatures(result.scores);
+  const priorityCare = getPriorityCare(result.scores);
+  const pending = readPendingDiagnosisContext(diagnosis.diagnosisId);
+  const currentProduct = pending?.currentProductId ? products.find((product) => product.id === pending.currentProductId) : null;
+  const currentProductIsRecommended = currentProduct ? shampooRecommendations.some((item) => item.productId === currentProduct.id) : false;
 
   return (
     <main className="pt-[var(--header-height)]">
       <section className="bg-soft py-16 md:py-24">
         <div className="mx-auto max-w-site px-4">
-          <DiagnosisSteps current={3} />
+          <DiagnosisSteps current={diagnosis.mode === "photo" ? 3 : 2} mode={diagnosis.mode} />
         </div>
         <div className="mx-auto grid max-w-site gap-6 px-4 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-brand border border-line bg-white p-7 shadow-brand md:p-10">
@@ -87,8 +109,13 @@ export function ResultContent() {
             <ScoreBars scores={result.scores} />
           </div>
           <div className="rounded-brand border border-line bg-white p-7 md:p-10">
-            <h2 className="text-2xl font-semibold">おすすめ理由</h2>
-            <p className="mt-4 text-muted">{result.reason}</p>
+            <h2 className="text-2xl font-semibold">優先したいケア TOP3</h2>
+            <ol className="mt-5 grid gap-3">
+              {priorityCare.map((item, index) => (
+                <li key={item.label} className="grid grid-cols-[36px_1fr] gap-3 rounded-brand bg-soft p-4"><span className="grid h-9 w-9 place-items-center rounded-full bg-green text-sm font-semibold text-white">{index + 1}</span><span><strong className="block">{item.label}</strong><span className="mt-1 block text-sm leading-6 text-muted">{item.detail}</span></span></li>
+              ))}
+            </ol>
+            <details className="mt-6 rounded-brand border border-line p-4"><summary className="cursor-pointer font-semibold text-green">判定の考え方を見る</summary><p className="mt-3 text-sm leading-7 text-muted">{result.reason}</p></details>
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               <Link
                 href={`/products/${shampoos[0].id}`}
@@ -117,6 +144,9 @@ export function ResultContent() {
                 <p className="mt-1">{result.scalpState}</p>
               </div>
             </div>
+            {currentProduct ? (
+              <div className="mt-5 rounded-brand border border-green/25 bg-secondary p-5"><p className="text-sm font-semibold text-green">今使っている商品について</p><p className="mt-2 font-semibold">{currentProduct.name}</p><p className="mt-2 text-sm leading-7 text-muted">{currentProductIsRecommended ? "今回の回答との重なりがあります。使用感に困っていなければ、急いで替える必要はありません。" : "今の悩みが続いている場合は、上位候補と特徴を比べてから変更を検討できます。"}</p></div>
+            ) : null}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/diagnosis" className={buttonVariants()}>
                 もう一度診断する
@@ -181,11 +211,11 @@ export function ResultContent() {
 
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-site px-4">
-          <SectionHeading eyebrow="Top 3" title="おすすめ商品" lead="診断結果に近いシャンプーとトリートメントを表示しています。" />
+          <SectionHeading eyebrow="Top 3" title="おすすめ商品" lead="回答と商品特徴の重なりが大きい順です。一致率ではなく、理由が確認できる3候補を表示しています。" />
           <h3 className="mb-5 text-xl font-semibold">おすすめシャンプー</h3>
           <div className="grid gap-6 md:grid-cols-3">
-            {shampoos.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {shampoos.map((product, index) => (
+              <ProductCard key={product.id} product={product} recommendation={{ label: shampooRecommendations[index].label, reasons: shampooRecommendations[index].reasons }} />
             ))}
           </div>
         </div>
@@ -195,8 +225,8 @@ export function ResultContent() {
         <div className="mx-auto max-w-site px-4">
           <SectionHeading eyebrow="Top 3" title="おすすめトリートメント" />
           <div className="grid gap-6 md:grid-cols-3">
-            {treatments.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {treatments.map((product, index) => (
+              <ProductCard key={product.id} product={product} recommendation={{ label: treatmentRecommendations.find((item) => item.productId === product.id)?.label ?? (["最有力", "有力", "候補"] as const)[index], reasons: treatmentRecommendations.find((item) => item.productId === product.id)?.reasons ?? ["おすすめシャンプーと同じシリーズで合わせやすい"] }} />
             ))}
           </div>
         </div>

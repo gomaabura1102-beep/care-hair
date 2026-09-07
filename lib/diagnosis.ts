@@ -1,9 +1,9 @@
 import { products } from "@/data/products";
 import { questions } from "@/data/questions";
-import type { DiagnosisAdvice, DiagnosisResult, ScoreKey, ScoreMap } from "@/types/diagnosis";
+import type { DiagnosisAdvice, DiagnosisResult, ProductRecommendation, ScoreKey, ScoreMap } from "@/types/diagnosis";
 import type { Product, ProductType } from "@/types/product";
 
-export const DIAGNOSIS_LOGIC_VERSION = "question-v1.0.0";
+export const DIAGNOSIS_LOGIC_VERSION = "question-v2.0.0";
 
 export const emptyScores: ScoreMap = {
   fine: 0,
@@ -166,6 +166,10 @@ function getDiagnosisAdvices(scores: ScoreMap): DiagnosisAdvice[] {
 }
 
 export function rankProducts(type: ProductType, scores: ScoreMap): Product[] {
+  return rankProductRecommendations(type, scores).map(({ productId }) => products.find((product) => product.id === productId)!);
+}
+
+export function rankProductRecommendations(type: ProductType, scores: ScoreMap): ProductRecommendation[] {
   return products
     .filter((product) => product.type === type)
     .map((product) => {
@@ -177,7 +181,55 @@ export function rankProducts(type: ProductType, scores: ScoreMap): Product[] {
     })
     .sort((a, b) => b.total - a.total)
     .slice(0, 3)
-    .map(({ product }) => product);
+    .map(({ product, total }, index) => ({
+      productId: product.id,
+      score: total,
+      label: (["最有力", "有力", "候補"] as const)[index],
+      reasons: getRecommendationReasons(product, scores)
+    }));
+}
+
+const reasonLabels: Array<[ScoreKey, string, string]> = [
+  ["dry", "乾燥・パサつき", "保湿との相性"],
+  ["frizz", "広がり", "まとまりやすさ"],
+  ["curly", "くせ・うねり", "湿気対策"],
+  ["damage", "ダメージ", "補修ケア"],
+  ["scalp", "頭皮の不快感", "頭皮への配慮"],
+  ["volume", "ボリューム不足", "軽い仕上がり"],
+  ["fine", "細毛・軟毛", "重くしにくい設計"],
+  ["coarse", "硬毛・剛毛", "まとまり重視"],
+  ["moist", "しっとり希望", "保湿感"],
+  ["airy", "ふんわり希望", "軽さ"],
+  ["smooth", "さらさら希望", "指通り"],
+  ["repair", "補修希望", "補修成分"],
+  ["refresh", "すっきり希望", "洗い上がり"],
+  ["oily", "ベタつき", "さっぱり感"]
+];
+
+export function getRecommendationReasons(product: Product, scores: ScoreMap) {
+  const matched = reasonLabels
+    .map(([key, userLabel, productLabel]) => ({
+      value: (scores[key] ?? 0) * (product.scores[key] ?? 0),
+      text: `${userLabel}の回答 × ${productLabel}`
+    }))
+    .filter((item) => item.value > 0)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 3)
+    .map((item) => item.text);
+
+  return matched.length ? matched : ["大きな偏りがない髪に合わせやすいバランス型"];
+}
+
+export function getPriorityCare(scores: ScoreMap) {
+  const priorities = [
+    { label: "乾燥を防ぐ", value: scores.dry, detail: "熱すぎないお湯と、毛先中心の保湿を意識" },
+    { label: "広がりを整える", value: scores.frizz + scores.curly, detail: "濡れたまま放置せず、早めに乾かす" },
+    { label: "ダメージを抑える", value: scores.damage, detail: "アイロン温度と使用頻度を見直す" },
+    { label: "頭皮をやさしく洗う", value: scores.scalp + scores.oily, detail: "爪を立てず、すすぎを丁寧にする" },
+    { label: "根元の軽さを保つ", value: scores.volume + scores.fine, detail: "トリートメントを根元につけすぎない" }
+  ].sort((a, b) => b.value - a.value);
+
+  return priorities.slice(0, 3);
 }
 
 function getProductAdjustment(product: Product, scores: ScoreMap): number {

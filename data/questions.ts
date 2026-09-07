@@ -8,7 +8,8 @@ export const questions: DiagnosisQuestion[] = [
     options: [
       { label: "うねりやねじれが目立つ", scores: { curly: 5, frizz: 2 } },
       { label: "少し曲がっている", scores: { curly: 3, normal: 1 } },
-      { label: "ほぼまっすぐ", scores: { straight: 5 } }
+      { label: "ほぼまっすぐ", scores: { straight: 5 } },
+      { label: "よく分からない", scores: {} }
     ]
   },
   {
@@ -17,7 +18,8 @@ export const questions: DiagnosisQuestion[] = [
     hint: "指通りや表面のざらつきを確認してください。",
     options: [
       { label: "表面がザラザラ・ゴワゴワしている", scores: { damage: 4, dry: 2, frizz: 2 } },
-      { label: "なめらかで指通りが良い", scores: { normal: 1, straight: 1 } }
+      { label: "なめらかで指通りが良い", scores: { normal: 1, straight: 1 } },
+      { label: "よく分からない", scores: {} }
     ]
   },
   {
@@ -26,7 +28,8 @@ export const questions: DiagnosisQuestion[] = [
     hint: "髪のハリや太さを判定します。",
     options: [
       { label: "しばらく横向きのまま立っている", scores: { coarse: 5 } },
-      { label: "すぐに垂れ下がる", scores: { fine: 5, volume: 3 } }
+      { label: "すぐに垂れ下がる", scores: { fine: 5, volume: 3 } },
+      { label: "よく分からない", scores: {} }
     ]
   },
   {
@@ -35,7 +38,8 @@ export const questions: DiagnosisQuestion[] = [
     hint: "形が残るかどうかを選んでください。",
     options: [
       { label: "すぐにまっすぐに戻る", scores: { straight: 4 } },
-      { label: "カールした状態がしばらく残る", scores: { curly: 4 } }
+      { label: "カールした状態がしばらく残る", scores: { curly: 4 } },
+      { label: "よく分からない", scores: {} }
     ]
   },
   {
@@ -44,7 +48,8 @@ export const questions: DiagnosisQuestion[] = [
     hint: "ダメージの出やすさを確認します。",
     options: [
       { label: "すぐに切れる", scores: { damage: 5, dry: 2 } },
-      { label: "なかなか切れない", scores: { normal: 1 } }
+      { label: "なかなか切れない", scores: { normal: 1 } },
+      { label: "よく分からない／試せない", scores: {} }
     ]
   },
   {
@@ -53,7 +58,8 @@ export const questions: DiagnosisQuestion[] = [
     hint: "湿気の日の広がり方を思い出してください。",
     options: [
       { label: "あまり変化しない", scores: { straight: 4 } },
-      { label: "うねりや広がりが出る", scores: { curly: 4, frizz: 5, dry: 1 } }
+      { label: "うねりや広がりが出る", scores: { curly: 4, frizz: 5, dry: 1 } },
+      { label: "よく分からない", scores: {} }
     ]
   },
   {
@@ -84,7 +90,8 @@ export const questions: DiagnosisQuestion[] = [
     options: [
       { label: "よくある", scores: { scalp: 8 } },
       { label: "ときどきある", scores: { scalp: 4 } },
-      { label: "ほとんどない", scores: {} }
+      { label: "ほとんどない", scores: {} },
+      { label: "よく分からない", scores: {} }
     ]
   },
   {

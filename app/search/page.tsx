@@ -16,6 +16,7 @@ export default function SearchPage() {
             eyebrow="Search"
             title="条件から、自分に近い商品を探す。"
             lead="診断結果を補助するための検索ページです。髪質や悩みを入れて、候補を絞り込めます。"
+            level={1}
           />
           <ProductSearch />
         </div>
