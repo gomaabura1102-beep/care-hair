@@ -13,13 +13,14 @@ import { DeleteDiagnosisButton } from "@/features/result/delete-diagnosis-button
 import { ShareResultCard } from "@/features/result/share-result-card";
 import { getPriorityCare, rankPairedTreatments, rankProductRecommendations, rankProducts } from "@/lib/diagnosis";
 import { products } from "@/data/products";
-import { readPendingDiagnosisContext, saveDiagnosisToDevice } from "@/lib/user-state";
+import { readLocalDiagnosisResult, readPendingDiagnosisContext, saveDiagnosisToDevice } from "@/lib/user-state";
 import type { PublicDiagnosis, ScoreMap } from "@/types/diagnosis";
 
 export function ResultContent() {
   const searchParams = useSearchParams();
   const diagnosisId = searchParams.get("id");
   const [diagnosis, setDiagnosis] = useState<PublicDiagnosis | null>(null);
+  const [isLocalResult, setIsLocalResult] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -27,11 +28,18 @@ export function ResultContent() {
       setError("診断結果を表示するためのIDがありません。");
       return;
     }
+    const localDiagnosis = readLocalDiagnosisResult(diagnosisId);
+    if (localDiagnosis) {
+      setDiagnosis(localDiagnosis);
+      setIsLocalResult(true);
+      return;
+    }
     const controller = new AbortController();
     fetch(`/api/diagnoses/${diagnosisId}/result`, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
         const body = (await response.json()) as PublicDiagnosis & { error?: string };
         if (!response.ok) throw new Error(body.error ?? "診断結果を読み込めませんでした。");
+        setIsLocalResult(false);
         setDiagnosis(body);
       })
       .catch((fetchError) => {
@@ -42,7 +50,7 @@ export function ResultContent() {
   }, [diagnosisId]);
 
   useEffect(() => {
-    if (!diagnosis) return;
+    if (!diagnosis || isLocalResult) return;
     const recommendations = rankProductRecommendations("shampoo", diagnosis.result.scores);
     const pending = readPendingDiagnosisContext(diagnosis.diagnosisId);
     saveDiagnosisToDevice({
@@ -53,7 +61,7 @@ export function ResultContent() {
       mode: diagnosis.mode,
       currentProductId: pending?.currentProductId ?? null
     });
-  }, [diagnosis]);
+  }, [diagnosis, isLocalResult]);
 
   if (error) {
     return (
@@ -104,7 +112,9 @@ export function ResultContent() {
             </h1>
             <p className="mt-6 text-muted">{result.feature}</p>
             <p className="mt-4 rounded-brand bg-secondary px-4 py-3 text-sm font-semibold text-green">
-              この結果は質問への回答だけから判定しています。写真の解析結果は使用していません。
+              {isLocalResult
+                ? "この結果は質問への回答だけから、この端末内で計算しました。回答内容と写真は送信・保存していません。"
+                : "この結果は質問への回答だけから判定しています。写真の解析結果は使用していません。"}
             </p>
             <ScoreBars scores={result.scores} />
           </div>
@@ -155,8 +165,14 @@ export function ResultContent() {
                 条件から探す
               </Link>
             </div>
-            <p className="mt-5 break-all text-xs text-muted">診断ID：{diagnosis.diagnosisId}</p>
-            <DeleteDiagnosisButton diagnosisId={diagnosis.diagnosisId} />
+            {isLocalResult ? (
+              <p className="mt-5 text-xs leading-6 text-muted">診断結果だけを現在のタブ内に一時保持しています。タブを閉じると消えます。</p>
+            ) : (
+              <>
+                <p className="mt-5 break-all text-xs text-muted">診断ID：{diagnosis.diagnosisId}</p>
+                <DeleteDiagnosisButton diagnosisId={diagnosis.diagnosisId} />
+              </>
+            )}
           </div>
         </div>
         <div className="mx-auto mt-6 grid max-w-site gap-6 px-4 lg:grid-cols-[.9fr_1.1fr]">
