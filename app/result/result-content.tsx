@@ -93,6 +93,11 @@ export function ResultContent() {
   const pending = readPendingDiagnosisContext(diagnosis.diagnosisId);
   const currentProduct = pending?.currentProductId ? products.find((product) => product.id === pending.currentProductId) : null;
   const currentProductIsRecommended = currentProduct ? shampooRecommendations.some((item) => item.productId === currentProduct.id) : false;
+  const aiContext = {
+    diagnosisId: diagnosis.diagnosisId,
+    scores: result.scores,
+    currentProductId: currentProduct?.id ?? null
+  };
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -226,7 +231,7 @@ export function ResultContent() {
           <h3 className="mb-5 text-xl font-semibold">おすすめシャンプー</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {shampoos.map((product, index) => (
-              <ProductCard key={product.id} product={product} recommendation={{ label: shampooRecommendations[index].label, reasons: shampooRecommendations[index].reasons }} />
+              <ProductCard key={product.id} product={product} recommendation={{ label: shampooRecommendations[index].label, reasons: shampooRecommendations[index].reasons }} aiContext={aiContext} />
             ))}
           </div>
         </div>
@@ -237,7 +242,7 @@ export function ResultContent() {
           <SectionHeading eyebrow="Top 3" title="おすすめトリートメント" />
           <div className="grid gap-6 md:grid-cols-3">
             {treatments.map((product, index) => (
-              <ProductCard key={product.id} product={product} recommendation={{ label: treatmentRecommendations.find((item) => item.productId === product.id)?.label ?? (["最有力", "有力", "候補"] as const)[index], reasons: treatmentRecommendations.find((item) => item.productId === product.id)?.reasons ?? ["おすすめシャンプーと同じシリーズで合わせやすい"] }} />
+              <ProductCard key={product.id} product={product} recommendation={{ label: treatmentRecommendations.find((item) => item.productId === product.id)?.label ?? (["最有力", "有力", "候補"] as const)[index], reasons: treatmentRecommendations.find((item) => item.productId === product.id)?.reasons ?? ["おすすめシャンプーと同じシリーズで合わせやすい"] }} aiContext={aiContext} />
             ))}
           </div>
         </div>
