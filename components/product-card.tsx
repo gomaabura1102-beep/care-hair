@@ -2,12 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowRight, Heart, Scale, Star } from "lucide-react";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { getProductInsight } from "@/data/product-insights";
 import { useCareHairState } from "@/lib/user-state";
+import type { AiExplanationContext } from "@/types/ai-explanation";
 import type { Product } from "@/types/product";
+
+const AiWhyRecommended = dynamic(() =>
+  import("@/components/ai-why-recommended").then((module) => module.AiWhyRecommended)
+);
 
 type ProductCardProps = {
   product: Product;
@@ -15,9 +21,10 @@ type ProductCardProps = {
     label: "最有力" | "有力" | "候補";
     reasons: string[];
   };
+  aiContext?: AiExplanationContext;
 };
 
-export function ProductCard({ product, recommendation }: ProductCardProps) {
+export function ProductCard({ product, recommendation, aiContext }: ProductCardProps) {
   const insight = getProductInsight(product);
   const { state, toggleFavorite, toggleComparison } = useCareHairState();
   const [message, setMessage] = useState("");
@@ -94,6 +101,7 @@ export function ProductCard({ product, recommendation }: ProductCardProps) {
             <ul className="mt-3 grid gap-2 text-xs leading-6 text-muted">
               {recommendation.reasons.map((reason) => <li key={reason}>・{reason}</li>)}
             </ul>
+            {aiContext ? <AiWhyRecommended productId={product.id} context={aiContext} /> : null}
           </details>
         ) : null}
 
