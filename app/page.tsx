@@ -3,10 +3,10 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
-  CheckCircle2,
   ClipboardList,
   Droplets,
   FlaskConical,
+  Instagram,
   MessageCircle,
   Search,
   ShieldCheck,
@@ -16,6 +16,7 @@ import {
 import { ProductCard } from "@/components/product-card";
 import { FadeIn } from "@/components/fade-in";
 import { productsWithInsights } from "@/data/product-insights";
+import { stylists } from "@/data/stylists";
 
 const diagnosisSteps = [
   { icon: ClipboardList, number: "01", title: "髪について答える", text: "11の質問に、今の状態に近いものを選びます。" },
@@ -124,10 +125,36 @@ export default function HomePage() {
 
       <section className="border-y border-line bg-[#f4f7f5] py-16 sm:py-24">
         <div className="mx-auto max-w-site px-4 lg:px-8">
-          <SectionIntro eyebrow="Expert content" title="美容師・専門家コンテンツ" lead="氏名・所属・専門・取材日を確認できる情報だけを掲載します。現在、公開できる監修者プロフィールは準備中です。" />
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {["髪質の見分け方", "商品表示の読み方", "毎日の正しい洗い方"].map((title) => (
-              <article key={title} className="rounded-[20px] border border-line bg-white p-6"><CheckCircle2 className="h-6 w-6 text-green" /><h3 className="mt-5 text-lg font-semibold">{title}</h3><p className="mt-3 text-sm leading-7 text-muted">監修情報を確認でき次第、取材日と一緒に公開します。</p></article>
+          <SectionIntro eyebrow="Professional supervision" title="美容師の意見を参考に設計" lead="美容師へのインタビューで確認した、髪質の見分け方と判断のポイントを診断設計に反映しました。" />
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {stylists.map((stylist) => (
+              <article key={stylist.name} className="flex min-h-40 items-center gap-4 rounded-[20px] border border-line bg-white p-5 shadow-[0_10px_28px_rgba(22,45,37,.05)] transition duration-200 hover:-translate-y-1 hover:border-green hover:shadow-brand sm:gap-5 sm:p-6">
+                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full bg-secondary sm:h-28 sm:w-28">
+                  <Image
+                    src={stylist.image}
+                    alt={`${stylist.shop} ${stylist.name}`}
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                    style={{ objectPosition: "imagePosition" in stylist ? stylist.imagePosition : "center" }}
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[11px] font-bold uppercase tracking-[0.16em] text-green sm:text-xs">{stylist.shop}</p>
+                  <h3 className="mt-2 text-xl font-semibold text-ink">{stylist.name}</h3>
+                  <p className="mt-1 text-sm text-muted">{stylist.role}</p>
+                  <Link
+                    href={stylist.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${stylist.name}さんのInstagram ${stylist.instagramHandle}`}
+                    className="mt-3 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-green transition hover:underline"
+                  >
+                    <Instagram className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{stylist.instagramHandle}</span>
+                  </Link>
+                </div>
+              </article>
             ))}
           </div>
         </div>
