@@ -12,7 +12,9 @@ export const maxDuration = 30;
 
 const MODEL = "gpt-5.6-luna";
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
+const AI_EXPLANATION_PROXY_URL = "https://care-hair-five.vercel.app/api/ai-explanation";
 const REQUEST_TIMEOUT_MS = 25_000;
+const PROXY_TIMEOUT_MS = 28_000;
 
 const scoreKeys = [
   "fine", "normal", "coarse", "straight", "curly", "dry", "oily", "damage",
@@ -91,11 +93,6 @@ export async function POST(request: NextRequest) {
     return jsonError("このページからもう一度お試しください。", 403);
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    return jsonError("AI説明は現在準備中です。時間をおいてもう一度お試しください。", 503);
-  }
-
   let parsedRequest: z.infer<typeof requestSchema>;
   try {
     parsedRequest = requestSchema.parse(await request.json());
@@ -106,6 +103,11 @@ export async function POST(request: NextRequest) {
   const candidateProduct = products.find((product) => product.id === parsedRequest.productId);
   if (!candidateProduct) {
     return jsonError("対象の商品が見つかりませんでした。", 404);
+  }
+
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return proxyAiExplanation(parsedRequest, request);
   }
 
   const currentProduct = parsedRequest.currentProductId
@@ -214,6 +216,53 @@ export async function POST(request: NextRequest) {
       return jsonError("AI説明の作成に時間がかかっています。もう一度お試しください。", 504);
     }
     console.error("AI explanation request failed");
+    return jsonError("AI説明を作成できませんでした。時間をおいてもう一度お試しください。", 502);
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function proxyAiExplanation(
+  payload: z.infer<typeof requestSchema>,
+  request: NextRequest
+) {
+  const proxyUrl = new URL(AI_EXPLANATION_PROXY_URL);
+  if (request.nextUrl.host === proxyUrl.host) {
+    return jsonError("AI説明は現在準備中です。時間をおいてもう一度お試しください。", 503);
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), PROXY_TIMEOUT_MS);
+
+  try {
+    const proxyResponse = await fetch(proxyUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: proxyUrl.origin
+      },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+      signal: controller.signal
+    });
+
+    const contentType = proxyResponse.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      return jsonError("AI説明を作成できませんでした。時間をおいてもう一度お試しください。", 502);
+    }
+
+    return new Response(await proxyResponse.text(), {
+      status: proxyResponse.status,
+      headers: {
+        "Cache-Control": "no-store",
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      return jsonError("AI説明の作成に時間がかかっています。もう一度お試しください。", 504);
+    }
+    console.error("AI explanation proxy request failed");
     return jsonError("AI説明を作成できませんでした。時間をおいてもう一度お試しください。", 502);
   } finally {
     clearTimeout(timeout);
