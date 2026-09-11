@@ -1,14 +1,11 @@
 import type { Product } from "@/types/product";
 
-const amazon = (keyword: string) => `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}`;
-
 export const products: Product[] = [
   {
     id: "plus-eau-mellow-shampoo",
     name: "プリュスオー メロウシャンプー",
     type: "shampoo",
     price: "約1,650円",
-    image: "/products/plus-eau-mellow-shampoo.jpeg",
     tags: ["細毛", "普通毛", "まとまり"],
     feature: "細い髪にも重くなりすぎず、自然なまとまりを出しやすいシャンプー。",
     point: "軽さと保湿のバランスが良く、ヘアケア初心者でも使いやすいです。",
@@ -17,7 +14,7 @@ export const products: Product[] = [
     texture: "軽く、きしみにくい洗い上がり",
     ingredients: "保湿・補修成分をバランスよく配合",
     review: "軽さとまとまりの両方を求める人に向いています。",
-    amazonUrl: amazon("プリュスオー メロウシャンプー"),
+    affiliateUrl: "",
     scores: { fine: 5, normal: 4, straight: 3, dry: 3, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
@@ -25,7 +22,6 @@ export const products: Product[] = [
     name: "MEMEME スムースブースト シャンプー",
     type: "shampoo",
     price: "約1,540円",
-    image: "/products/mememe-smooth-boost-shampoo.jpeg",
     tags: ["細毛", "軽い仕上がり", "サラサラ"],
     feature: "ぺたっとしやすい髪でも扱いやすい、軽さ重視のシャンプー。",
     point: "ボリューム不足が気になる髪を重くしすぎず整えます。",
@@ -34,7 +30,7 @@ export const products: Product[] = [
     texture: "軽めでサラッとした使用感",
     ingredients: "髪表面をなめらかに整える保湿成分",
     review: "重さを出さずに指通りを整えたい人に合いやすいです。",
-    amazonUrl: amazon("MEMEME スムースブースト シャンプー"),
+    affiliateUrl: "",
     scores: { fine: 6, normal: 2, straight: 2, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
@@ -42,7 +38,6 @@ export const products: Product[] = [
     name: "Sleek バランスエフェクト シャンプー",
     type: "shampoo",
     price: "約1,760円",
-    image: "/products/sleek-balance-effect-shampoo.jpeg",
     tags: ["細毛", "バランス", "毎日使い"],
     feature: "毎日使いやすいバランス型。細毛のペタつきを避けたい人に。",
     point: "強い悩みがない人にも提案しやすい、自然な仕上がりです。",
@@ -51,7 +46,7 @@ export const products: Product[] = [
     texture: "軽い泡立ちで自然な仕上がり",
     ingredients: "うるおいと軽さを両立するケア成分",
     review: "初めて選ぶ一本としても使いやすい印象です。",
-    amazonUrl: amazon("Sleek バランスエフェクト シャンプー"),
+    affiliateUrl: "",
     scores: { fine: 5, normal: 4, straight: 3, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
@@ -59,7 +54,6 @@ export const products: Product[] = [
     name: "THE ANSWER シャンプー",
     type: "shampoo",
     price: "約1,760円",
-    image: "/products/the-answer-shampoo.png",
     tags: ["普通毛", "癖毛", "補修"],
     feature: "パサつきやうねりが気になる髪を、扱いやすく整える定番候補。",
     point: "保湿と補修を重視し、悩みが複数ある髪にも合わせやすいです。",
@@ -68,7 +62,7 @@ export const products: Product[] = [
     texture: "なめらかでまとまりやすい",
     ingredients: "補修・保湿成分を重視した処方",
     review: "まとまりと補修感を重視する人に選びやすい商品です。",
-    amazonUrl: amazon("THE ANSWER シャンプー"),
+    affiliateUrl: "",
     scores: { normal: 6, coarse: 3, curly: 5, dry: 5, damage: 6, frizz: 4, moist: 4, smooth: 4, repair: 7 }
   },
   {
@@ -76,7 +70,6 @@ export const products: Product[] = [
     name: "アンレーベル KR コントロール シャンプー",
     type: "shampoo",
     price: "約1,650円",
-    image: "/products/unlabel-kr-control-shampoo.jpeg",
     tags: ["普通毛", "癖毛", "広がり"],
     feature: "湿気で広がりやすい髪を落ち着かせたいときに候補になる商品。",
     point: "重すぎない仕上がりで、自然なまとまりを作りやすいです。",
@@ -85,7 +78,7 @@ export const products: Product[] = [
     texture: "しっとりしすぎないコントロール感",
     ingredients: "うねり・広がりを整える保湿成分",
     review: "まとまりは欲しいけれど重すぎる仕上がりが苦手な人に。",
-    amazonUrl: amazon("アンレーベル KR コントロール シャンプー"),
+    affiliateUrl: "",
     scores: { normal: 6, curly: 5, frizz: 6, dry: 3, moist: 4, smooth: 3 }
   },
   {
@@ -93,7 +86,6 @@ export const products: Product[] = [
     name: "プリュスオー リポアシャンプー",
     type: "shampoo",
     price: "約1,650円",
-    image: "/products/plus-eau-repair-shampoo.jpeg",
     tags: ["硬毛", "ダメージ", "しっとり"],
     feature: "硬く広がりやすい髪や、アイロン・カラー後のケアに向いています。",
     point: "まとまりと補修感を重視したい人におすすめです。",
@@ -102,7 +94,7 @@ export const products: Product[] = [
     texture: "しっとりまとまりやすい",
     ingredients: "補修成分と保湿成分を重視",
     review: "まとまりが欲しい人には頼りやすい候補です。",
-    amazonUrl: amazon("プリュスオー リポアシャンプー"),
+    affiliateUrl: "",
     scores: { coarse: 6, dry: 6, damage: 6, frizz: 5, moist: 6, repair: 6, smooth: 2 }
   },
   {
@@ -110,7 +102,6 @@ export const products: Product[] = [
     name: "Qurap ラッピングモイスト シャンプー",
     type: "shampoo",
     price: "約1,540円",
-    image: "/products/qurap-wrapping-moist-shampoo.jpeg",
     tags: ["硬毛", "癖毛", "保湿"],
     feature: "乾燥で広がる髪を、しっとり落ち着かせたい人向け。",
     point: "乾燥・広がり・癖毛の点数が高い人に強く合います。",
@@ -119,7 +110,7 @@ export const products: Product[] = [
     texture: "しっとり包み込むような使用感",
     ingredients: "うるおいを閉じ込める保湿成分",
     review: "湿気や乾燥でまとまらない髪に提案しやすいです。",
-    amazonUrl: amazon("Qurap ラッピングモイスト シャンプー"),
+    affiliateUrl: "",
     scores: { coarse: 6, curly: 6, dry: 6, damage: 4, frizz: 6, moist: 7, repair: 4 }
   },
   {
@@ -127,7 +118,6 @@ export const products: Product[] = [
     name: "THE ANSWER SS シャンプー",
     type: "shampoo",
     price: "約1,760円",
-    image: "/products/the-answer-ss-shampoo.jpeg",
     tags: ["硬毛", "補修", "まとまり"],
     feature: "硬毛向けに、補修感とまとまりを重視したシャンプー。",
     point: "髪が太く、毛先がまとまりにくい人に合わせやすいです。",
@@ -136,7 +126,7 @@ export const products: Product[] = [
     texture: "しっとりなめらかな洗い上がり",
     ingredients: "補修系ケア成分と保湿成分",
     review: "硬い髪を扱いやすくしたい人向けです。",
-    amazonUrl: amazon("THE ANSWER SS シャンプー"),
+    affiliateUrl: "",
     scores: { coarse: 6, dry: 5, damage: 6, frizz: 5, moist: 5, repair: 7 }
   },
   {
@@ -144,7 +134,6 @@ export const products: Product[] = [
     name: "カウブランド 無添加 うるおいケア シャンプー",
     type: "shampoo",
     price: "約1,100円",
-    image: "/products/cow-moist-shampoo.jpeg",
     tags: ["頭皮", "かゆみ", "低刺激"],
     feature: "フケ・かゆみが気になるときに、まず候補に入れたい低刺激系。",
     point: "香りや刺激が強いものが苦手な人にも選びやすいです。",
@@ -153,7 +142,7 @@ export const products: Product[] = [
     texture: "やさしく洗える軽い使用感",
     ingredients: "頭皮へのやさしさを考えた無添加系",
     review: "頭皮状態を優先したい人に向いています。",
-    amazonUrl: amazon("カウブランド 無添加 うるおいケア シャンプー"),
+    affiliateUrl: "",
     scores: { scalp: 7, dry: 2, normal: 2, refresh: 4, moist: 2 }
   },
   {
@@ -161,7 +150,6 @@ export const products: Product[] = [
     name: "ミノン 薬用ヘアシャンプー",
     type: "shampoo",
     price: "約1,500円",
-    image: "/products/minon-shampoo.jpeg",
     tags: ["頭皮", "フケ", "薬用"],
     feature: "フケやかゆみが出やすい人の頭皮ケア候補。",
     point: "髪質よりも頭皮の不快感が気になるときに優先します。",
@@ -170,7 +158,7 @@ export const products: Product[] = [
     texture: "マイルドな泡で洗いやすい",
     ingredients: "頭皮トラブルを考えた薬用処方",
     review: "頭皮を優先して選びたいときに強い選択肢です。",
-    amazonUrl: amazon("ミノン 薬用ヘアシャンプー"),
+    affiliateUrl: "",
     scores: { scalp: 7, normal: 2, dry: 2, refresh: 5 }
   },
   {
@@ -178,7 +166,6 @@ export const products: Product[] = [
     name: "無印良品 スカルプケア シャンプー",
     type: "shampoo",
     price: "約1,290円",
-    image: "/products/muji-scalp-shampoo.jpeg",
     tags: ["頭皮", "スカルプ", "さっぱり"],
     feature: "頭皮をすっきり洗いたい人に向くスカルプ系。",
     point: "頭皮のベタつきや軽いかゆみが気になる人に提案しやすいです。",
@@ -187,7 +174,7 @@ export const products: Product[] = [
     texture: "さっぱりした洗い上がり",
     ingredients: "頭皮を整える植物由来成分",
     review: "すっきり感を求める人に向いています。",
-    amazonUrl: amazon("無印良品 スカルプケア シャンプー"),
+    affiliateUrl: "",
     scores: { scalp: 6, oily: 5, normal: 2, refresh: 7, airy: 2 }
   },
   {
@@ -195,7 +182,6 @@ export const products: Product[] = [
     name: "メルト モイストシャンプー",
     type: "shampoo",
     price: "約1,760円",
-    image: "/products/melt-moist-shampoo.jpeg",
     tags: ["癖毛", "乾燥", "まとまり"],
     feature: "うねりや乾燥が気になる髪を、しっとりまとまりやすく整えます。",
     point: "湿気で広がる髪のまとまりを重視したい人に。",
@@ -204,7 +190,7 @@ export const products: Product[] = [
     texture: "しっとりなめらか",
     ingredients: "保湿・補修成分",
     review: "まとまり感を求める癖毛の人に向いています。",
-    amazonUrl: amazon("メルト モイスト シャンプー"),
+    affiliateUrl: "",
     scores: { curly: 6, dry: 6, frizz: 6, damage: 3, moist: 7, smooth: 3, repair: 3 }
   },
   {
@@ -212,7 +198,6 @@ export const products: Product[] = [
     name: "プリュスオー メロウトリートメント",
     type: "treatment",
     price: "約1,650円",
-    image: "/products/plus-eau-mellow-treatment.jpeg",
     tags: ["細毛", "まとまり", "軽い"],
     feature: "細毛でも使いやすい軽めのまとまり感。",
     point: "重さを出さずに毛先のパサつきを整えます。",
@@ -221,7 +206,7 @@ export const products: Product[] = [
     texture: "重すぎず、毛先をなめらかに整える",
     ingredients: "保湿・補修成分をバランス配合",
     review: "軽さを残しながらケアしたい人向けです。",
-    amazonUrl: amazon("プリュスオー メロウトリートメント"),
+    affiliateUrl: "",
     scores: { fine: 6, normal: 4, dry: 4, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
@@ -229,7 +214,6 @@ export const products: Product[] = [
     name: "MEMEME スムースブースト トリートメント",
     type: "treatment",
     price: "約1,540円",
-    image: "/products/mememe-smooth-boost-treatment.jpeg",
     tags: ["細毛", "サラサラ", "軽い"],
     feature: "細毛を重くせず、さらっとした指通りに整えます。",
     point: "ボリュームを残しながら毛先だけ整えたい人に。",
@@ -238,7 +222,7 @@ export const products: Product[] = [
     texture: "軽くサラサラ",
     ingredients: "なめらかさを出す保湿成分",
     review: "軽い仕上がりを好む人に向いています。",
-    amazonUrl: amazon("MEMEME スムースブースト トリートメント"),
+    affiliateUrl: "",
     scores: { fine: 6, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
@@ -246,7 +230,6 @@ export const products: Product[] = [
     name: "Sleek バランスエフェクト トリートメント",
     type: "treatment",
     price: "約1,760円",
-    image: "/products/sleek-balance-effect-treatment.jpeg",
     tags: ["細毛", "普通毛", "バランス"],
     feature: "軽さとまとまりのバランスが良いトリートメント。",
     point: "強いダメージがない髪の毎日ケアに向いています。",
@@ -255,7 +238,7 @@ export const products: Product[] = [
     texture: "軽く自然な仕上がり",
     ingredients: "保湿ケア成分",
     review: "自然な清潔感を出したい人に向いています。",
-    amazonUrl: amazon("Sleek バランスエフェクト トリートメント"),
+    affiliateUrl: "",
     scores: { fine: 5, normal: 4, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
@@ -263,7 +246,6 @@ export const products: Product[] = [
     name: "プリュスオー リポアトリートメント",
     type: "treatment",
     price: "約1,650円",
-    image: "/products/plus-eau-repair-treatment.jpeg",
     tags: ["普通毛", "硬毛", "補修"],
     feature: "パサつきやダメージを感じる髪をしっとり整えます。",
     point: "普通毛から硬毛まで、まとまり重視の人におすすめです。",
@@ -272,7 +254,7 @@ export const products: Product[] = [
     texture: "しっとりまとまりやすい",
     ingredients: "補修・保湿成分",
     review: "毛先の乾燥が気になる人に選びやすいです。",
-    amazonUrl: amazon("プリュスオー リポアトリートメント"),
+    affiliateUrl: "",
     scores: { normal: 5, coarse: 6, dry: 6, damage: 6, frizz: 4, moist: 6, repair: 6, smooth: 2 }
   },
   {
@@ -280,7 +262,6 @@ export const products: Product[] = [
     name: "THE ANSWER トリートメント",
     type: "treatment",
     price: "約1,760円",
-    image: "/products/the-answer-treatment.png",
     tags: ["普通毛", "補修", "癖毛"],
     feature: "ダメージやうねりを感じる普通毛に合わせやすい万能タイプ。",
     point: "補修感・まとまり・扱いやすさのバランスが良いです。",
@@ -289,7 +270,7 @@ export const products: Product[] = [
     texture: "なめらかで補修感のある仕上がり",
     ingredients: "補修・保湿成分を重視",
     review: "迷ったときに選びやすいバランス型です。",
-    amazonUrl: amazon("THE ANSWER トリートメント"),
+    affiliateUrl: "",
     scores: { normal: 6, curly: 5, dry: 5, damage: 6, frizz: 4, moist: 4, smooth: 4, repair: 7 }
   },
   {
@@ -297,7 +278,6 @@ export const products: Product[] = [
     name: "アンレーベル KR コントロール トリートメント",
     type: "treatment",
     price: "約1,650円",
-    image: "/products/unlabel-kr-control-treatment.jpeg",
     tags: ["普通毛", "癖毛", "広がり"],
     feature: "うねりや広がりを自然に整えるトリートメント。",
     point: "湿気の日にまとまりにくい髪へ提案しやすいです。",
@@ -306,7 +286,7 @@ export const products: Product[] = [
     texture: "ほどよいしっとり感",
     ingredients: "保湿・うねりケア成分",
     review: "広がりを抑えたい人に向いています。",
-    amazonUrl: amazon("アンレーベル KR コントロール トリートメント"),
+    affiliateUrl: "",
     scores: { normal: 6, curly: 5, frizz: 6, dry: 3, moist: 4, smooth: 3 }
   },
   {
@@ -314,7 +294,6 @@ export const products: Product[] = [
     name: "Qurap ラッピングモイスト トリートメント",
     type: "treatment",
     price: "約1,540円",
-    image: "/products/qurap-wrapping-moist-treatment.jpeg",
     tags: ["硬毛", "乾燥", "広がり"],
     feature: "硬毛や乾燥による広がりを落ち着かせたい人に。",
     point: "毛量が多く、湿気で広がる人に合わせやすいです。",
@@ -323,7 +302,7 @@ export const products: Product[] = [
     texture: "しっとりまとまる濃厚な使用感",
     ingredients: "髪を包み込む保湿成分",
     review: "毛量が多く広がりやすい人に提案しやすいです。",
-    amazonUrl: amazon("Qurap ラッピングモイスト トリートメント"),
+    affiliateUrl: "",
     scores: { coarse: 6, curly: 6, dry: 6, damage: 4, frizz: 6, moist: 7, repair: 4 }
   },
   {
@@ -331,7 +310,6 @@ export const products: Product[] = [
     name: "THE ANSWER SS トリートメント",
     type: "treatment",
     price: "約1,760円",
-    image: "/products/the-answer-ss-treatment.jpeg",
     tags: ["硬毛", "補修", "まとまり"],
     feature: "硬い髪や広がりやすい髪をしっとり扱いやすくします。",
     point: "硬毛で、毛先のまとまり不足が気になる人に。",
@@ -340,7 +318,7 @@ export const products: Product[] = [
     texture: "しっとり濃厚",
     ingredients: "補修成分と高保湿成分",
     review: "しっかりケアしたい硬毛向けです。",
-    amazonUrl: amazon("THE ANSWER SS トリートメント"),
+    affiliateUrl: "",
     scores: { coarse: 6, dry: 5, damage: 6, frizz: 5, moist: 5, repair: 7 }
   },
   {
@@ -348,7 +326,6 @@ export const products: Product[] = [
     name: "カウブランド 無添加 うるおいケア トリートメント",
     type: "treatment",
     price: "約1,100円",
-    image: "/products/cow-moist-treatment.png",
     tags: ["頭皮", "低刺激", "うるおい"],
     feature: "頭皮にやさしい選択をしたい人向けのトリートメント。",
     point: "フケ・かゆみが気になる人は刺激の少なさを優先します。",
@@ -357,7 +334,7 @@ export const products: Product[] = [
     texture: "軽くやさしい仕上がり",
     ingredients: "低刺激を意識した保湿成分",
     review: "頭皮に不安がある人に選びやすいです。",
-    amazonUrl: amazon("カウブランド 無添加 うるおいケア トリートメント"),
+    affiliateUrl: "",
     scores: { scalp: 7, dry: 2, normal: 2, refresh: 4, moist: 2 }
   },
   {
@@ -365,7 +342,6 @@ export const products: Product[] = [
     name: "ミノン 薬用コンディショナー",
     type: "treatment",
     price: "約1,500円",
-    image: "/products/minon-treatment.png",
     tags: ["頭皮", "薬用", "フケ"],
     feature: "頭皮トラブルが気になる人のケア候補。",
     point: "髪の質感より頭皮の快適さを優先したいときに。",
@@ -374,7 +350,7 @@ export const products: Product[] = [
     texture: "マイルドで軽い",
     ingredients: "頭皮ケアを考えた薬用処方",
     review: "頭皮優先の人に向いています。",
-    amazonUrl: amazon("ミノン 薬用コンディショナー"),
+    affiliateUrl: "",
     scores: { scalp: 7, dry: 2, normal: 2, refresh: 5 }
   },
   {
@@ -382,7 +358,6 @@ export const products: Product[] = [
     name: "無印良品 スカルプケア コンディショナー",
     type: "treatment",
     price: "約1,290円",
-    image: "/products/muji-scalp-treatment.jpeg",
     tags: ["頭皮", "スカルプ", "さっぱり"],
     feature: "頭皮をすっきり保ちたい人向けのコンディショナー。",
     point: "ベタつきや頭皮の重さが気になるときに。",
@@ -391,7 +366,7 @@ export const products: Product[] = [
     texture: "さっぱり軽い",
     ingredients: "植物由来の整肌成分",
     review: "すっきり感を好む人に向いています。",
-    amazonUrl: amazon("無印良品 スカルプケア コンディショナー"),
+    affiliateUrl: "",
     scores: { scalp: 6, oily: 5, normal: 2, refresh: 7, airy: 2 }
   },
   {
@@ -399,7 +374,6 @@ export const products: Product[] = [
     name: "メルト モイストトリートメント",
     type: "treatment",
     price: "約1,760円",
-    image: "/products/melt-moist-treatment.jpeg",
     tags: ["癖毛", "乾燥", "まとまり"],
     feature: "癖毛や乾燥で広がる髪に、しっとりしたまとまりを与えます。",
     point: "うねりとパサつきが同時に気になる人に合いやすいです。",
@@ -408,7 +382,7 @@ export const products: Product[] = [
     texture: "しっとりなめらか",
     ingredients: "保湿・補修成分",
     review: "まとまりのある質感を求める人に。",
-    amazonUrl: amazon("メルト モイスト トリートメント"),
+    affiliateUrl: "",
     scores: { curly: 6, dry: 6, frizz: 6, damage: 3, moist: 7, smooth: 3, repair: 3 }
   }
 ];
