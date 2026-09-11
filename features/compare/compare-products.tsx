@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, Scale, X } from "lucide-react";
 import { getProductInsight } from "@/data/product-insights";
@@ -50,10 +49,16 @@ export function CompareProducts() {
               {compared.map((product) => (
                 <th key={product.id} className="border-l border-line p-4">
                   <button type="button" onClick={() => toggleComparison(product.id)} className="ml-auto grid h-9 w-9 place-items-center rounded-full border border-line text-muted hover:text-green" aria-label={`${product.name}を比較から外す`}><X className="h-4 w-4" /></button>
-                  <Link href={`/products/${product.id}`} className="block">
-                    <span className="relative mx-auto block h-36 w-full"><Image src={product.image} alt={product.name} fill className="object-contain p-2" sizes="240px" /></span>
-                    <span className="mt-3 block text-base font-semibold leading-6">{product.name}</span>
+                  <Link href={`/products/${product.id}`} className="mt-3 block rounded-xl bg-soft p-4 transition hover:bg-secondary">
+                    <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-green">{product.type === "shampoo" ? "Shampoo" : "Treatment"}</span>
+                    <span className="mt-2 block text-xs font-semibold text-muted">{getProductInsight(product).brand}</span>
+                    <span className="mt-2 block text-base font-semibold leading-6">{product.name}</span>
                   </Link>
+                  {product.affiliateUrl ? (
+                    <a href={product.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-full border border-green px-3 text-xs font-semibold text-green">
+                      商品を見る
+                    </a>
+                  ) : null}
                 </th>
               ))}
             </tr>
