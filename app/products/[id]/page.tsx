@@ -8,6 +8,7 @@ import { getProductCareContent } from "@/data/product-care-content";
 import { getProductInsight } from "@/data/product-insights";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardEyebrow } from "@/components/ui/card";
+import { AffiliateProductImage } from "@/components/affiliate-product-image";
 import { Star } from "lucide-react";
 
 type ProductDetailPageProps = {
@@ -50,12 +51,24 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-site px-4">
           <div className="relative mx-auto max-w-4xl overflow-hidden rounded-brand border border-line bg-[linear-gradient(135deg,#eef6f2_0%,#ffffff_100%)] p-7 shadow-brand sm:p-10 md:p-14">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-green">{product.type === "shampoo" ? "Shampoo" : "Treatment"}</span>
-            <p className="mt-5 text-sm font-semibold text-muted">{insight.brand}</p>
-            <h1 className="mt-3 max-w-3xl text-balance text-4xl font-medium leading-tight md:text-6xl">{product.name}</h1>
-            <p className="mt-6 text-xl font-semibold text-green">{product.price}</p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {product.tags.map((tag) => <span key={tag} className="rounded-full border border-green/15 bg-white px-3 py-1 text-xs font-semibold text-green">{tag}</span>)}
+            <div className={`relative z-10 grid items-center gap-8 ${product.affiliateImageUrl && product.affiliateUrl ? "md:grid-cols-[minmax(0,1fr)_280px]" : ""}`}>
+              <div>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-green">{product.type === "shampoo" ? "Shampoo" : "Treatment"}</span>
+                <p className="mt-5 text-sm font-semibold text-muted">{insight.brand}</p>
+                <h1 className="mt-3 max-w-3xl text-balance text-4xl font-medium leading-tight md:text-6xl">{product.name}</h1>
+                <p className="mt-6 text-xl font-semibold text-green">{product.price}</p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {product.tags.map((tag) => <span key={tag} className="rounded-full border border-green/15 bg-white px-3 py-1 text-xs font-semibold text-green">{tag}</span>)}
+                </div>
+              </div>
+              {product.affiliateImageUrl && product.affiliateUrl ? (
+                <AffiliateProductImage
+                  product={product}
+                  sizes="(max-width: 767px) 80vw, 280px"
+                  className="h-64 rounded-brand border border-line shadow-brand"
+                  imageClassName="p-5"
+                />
+              ) : null}
             </div>
             <span aria-hidden="true" className="absolute -bottom-20 -right-16 h-56 w-56 rounded-full border border-green/10 bg-white/50" />
           </div>
@@ -147,8 +160,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               {product.affiliateUrl ? (
-                <a href={product.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className={buttonVariants({ size: "lg" })}>
-                  公式・購入ページを見る
+                <a href={product.affiliateUrl} target="_blank" rel="nofollow noopener noreferrer sponsored" className={buttonVariants({ size: "lg" })}>
+                  楽天で商品を見る
                 </a>
               ) : null}
               <Link href="/search" className={buttonVariants({ variant: "outline" })}>
