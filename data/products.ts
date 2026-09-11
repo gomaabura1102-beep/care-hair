@@ -14,7 +14,7 @@ export const products: Product[] = [
     texture: "軽く、きしみにくい洗い上がり",
     ingredients: "保湿・補修成分をバランスよく配合",
     review: "軽さとまとまりの両方を求める人に向いています。",
-    affiliateUrl: "",
+    affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F0e9ea6d5bd301ea03cc57a811f18ef6e%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
     scores: { fine: 5, normal: 4, straight: 3, dry: 3, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
@@ -30,7 +30,7 @@ export const products: Product[] = [
     texture: "軽めでサラッとした使用感",
     ingredients: "髪表面をなめらかに整える保湿成分",
     review: "重さを出さずに指通りを整えたい人に合いやすいです。",
-    affiliateUrl: "",
+    affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2Fcb83b2aa55fba5159a85c0d6e80ca579%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
     scores: { fine: 6, normal: 2, straight: 2, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
@@ -46,7 +46,7 @@ export const products: Product[] = [
     texture: "軽い泡立ちで自然な仕上がり",
     ingredients: "うるおいと軽さを両立するケア成分",
     review: "初めて選ぶ一本としても使いやすい印象です。",
-    affiliateUrl: "",
+    affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F1524656d92fd67a956ceb356114c3516%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
     scores: { fine: 5, normal: 4, straight: 3, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
@@ -206,7 +206,7 @@ export const products: Product[] = [
     texture: "重すぎず、毛先をなめらかに整える",
     ingredients: "保湿・補修成分をバランス配合",
     review: "軽さを残しながらケアしたい人向けです。",
-    affiliateUrl: "",
+    affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F7ce883925524e122556c8d427683c655%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
     scores: { fine: 6, normal: 4, dry: 4, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
@@ -222,7 +222,7 @@ export const products: Product[] = [
     texture: "軽くサラサラ",
     ingredients: "なめらかさを出す保湿成分",
     review: "軽い仕上がりを好む人に向いています。",
-    affiliateUrl: "",
+    affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2Fe97495534abc8333ecc0d1cc8a6fab77%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
     scores: { fine: 6, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
@@ -238,7 +238,7 @@ export const products: Product[] = [
     texture: "軽く自然な仕上がり",
     ingredients: "保湿ケア成分",
     review: "自然な清潔感を出したい人に向いています。",
-    affiliateUrl: "",
+    affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F1524656d92fd67a956ceb356114c3516%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
     scores: { fine: 5, normal: 4, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
