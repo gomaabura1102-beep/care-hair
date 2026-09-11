@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductReviewForm } from "@/features/reviews/product-review-form";
@@ -33,8 +32,7 @@ export function generateMetadata({ params }: ProductDetailPageProps): Metadata {
     description: product.feature,
     openGraph: {
       title: `${product.name} | Care Hair`,
-      description: product.feature,
-      images: [{ url: product.image }]
+      description: product.feature
     }
   };
 }
@@ -51,23 +49,18 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     <main className="pt-[var(--header-height)]">
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-site px-4">
-          <div className="relative mx-auto aspect-[1/1.02] max-w-3xl overflow-hidden rounded-brand bg-white shadow-brand">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              priority
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              className="object-contain p-8"
-            />
+          <div className="relative mx-auto max-w-4xl overflow-hidden rounded-brand border border-line bg-[linear-gradient(135deg,#eef6f2_0%,#ffffff_100%)] p-7 shadow-brand sm:p-10 md:p-14">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-green">{product.type === "shampoo" ? "Shampoo" : "Treatment"}</span>
+            <p className="mt-5 text-sm font-semibold text-muted">{insight.brand}</p>
+            <h1 className="mt-3 max-w-3xl text-balance text-4xl font-medium leading-tight md:text-6xl">{product.name}</h1>
+            <p className="mt-6 text-xl font-semibold text-green">{product.price}</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {product.tags.map((tag) => <span key={tag} className="rounded-full border border-green/15 bg-white px-3 py-1 text-xs font-semibold text-green">{tag}</span>)}
+            </div>
+            <span aria-hidden="true" className="absolute -bottom-20 -right-16 h-56 w-56 rounded-full border border-green/10 bg-white/50" />
           </div>
 
-          <article className="mx-auto mt-12 max-w-4xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-green">
-              {product.type === "shampoo" ? "Shampoo" : "Treatment"}
-            </p>
-            <h1 className="text-balance text-4xl font-medium leading-tight md:text-6xl">{product.name}</h1>
-
+          <article className="mx-auto mt-10 max-w-4xl">
             <Card as="section" className="mt-10 md:p-8">
               <h2 className="text-2xl font-medium">こんな人におすすめ</h2>
               <ul className="mt-5 grid gap-3 text-muted sm:grid-cols-2">
@@ -153,9 +146,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             </Card>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href={insight.amazonReview?.sourceUrl ?? product.amazonUrl} target="_blank" rel="noopener noreferrer" className={buttonVariants({ size: "lg" })}>
-                Amazonで詳しく見る
-              </Link>
+              {product.affiliateUrl ? (
+                <a href={product.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className={buttonVariants({ size: "lg" })}>
+                  公式・購入ページを見る
+                </a>
+              ) : null}
               <Link href="/search" className={buttonVariants({ variant: "outline" })}>
                 条件検索へ
               </Link>
