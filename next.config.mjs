@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "hbb.afl.rakuten.co.jp",
+        pathname: "/hgb/**"
+      }
+    ]
   },
   async headers() {
     return [
