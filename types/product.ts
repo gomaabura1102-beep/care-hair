@@ -9,6 +9,7 @@ export type Product = {
   price: string;
   volumeMl?: number;
   affiliateUrl: string;
+  affiliateImageUrl?: string;
   tags: string[];
   feature: string;
   point: string;
