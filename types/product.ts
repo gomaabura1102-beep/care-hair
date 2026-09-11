@@ -8,7 +8,7 @@ export type Product = {
   type: ProductType;
   price: string;
   volumeMl?: number;
-  image: string;
+  affiliateUrl: string;
   tags: string[];
   feature: string;
   point: string;
@@ -17,7 +17,6 @@ export type Product = {
   texture: string;
   ingredients: string;
   review: string;
-  amazonUrl: string;
   scores: Partial<ScoreMap>;
 };
 
