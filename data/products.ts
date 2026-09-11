@@ -15,6 +15,7 @@ export const products: Product[] = [
     ingredients: "保湿・補修成分をバランスよく配合",
     review: "軽さとまとまりの両方を求める人に向いています。",
     affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F0e9ea6d5bd301ea03cc57a811f18ef6e%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
+    affiliateImageUrl: "https://hbb.afl.rakuten.co.jp/hgb/576c1176.481851c4.576c1177.bad58da0/?me_id=1314607&item_id=10017100&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fnanohanadrg%2Fcabinet%2Fp%2Fpoint_1%2F4582300063658a.jpg%3F_ex%3D240x240&s=240x240&t=picttext",
     scores: { fine: 5, normal: 4, straight: 3, dry: 3, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
@@ -31,6 +32,7 @@ export const products: Product[] = [
     ingredients: "髪表面をなめらかに整える保湿成分",
     review: "重さを出さずに指通りを整えたい人に合いやすいです。",
     affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2Fcb83b2aa55fba5159a85c0d6e80ca579%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
+    affiliateImageUrl: "https://hbb.afl.rakuten.co.jp/hgb/576bfc78.237f9be6.576bfc79.bc411314/?me_id=1274827&item_id=10115838&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Ftsuruha%2Fcabinet%2Fsyohin103%2F10184044.jpg%3F_ex%3D240x240&s=240x240&t=picttext",
     scores: { fine: 6, normal: 2, straight: 2, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
@@ -47,6 +49,7 @@ export const products: Product[] = [
     ingredients: "うるおいと軽さを両立するケア成分",
     review: "初めて選ぶ一本としても使いやすい印象です。",
     affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F1524656d92fd67a956ceb356114c3516%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
+    affiliateImageUrl: "https://hbb.afl.rakuten.co.jp/hgb/576c736c.da27cc8f.576c736d.6548f559/?me_id=1314165&item_id=10000130&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fna-tural-room%2Fcabinet%2Fsleek%2Fthumb%2Fbalance%2Fbalance_shtrset_n.jpg%3F_ex%3D240x240&s=240x240&t=picttext",
     scores: { fine: 5, normal: 4, straight: 3, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
@@ -207,6 +210,7 @@ export const products: Product[] = [
     ingredients: "保湿・補修成分をバランス配合",
     review: "軽さを残しながらケアしたい人向けです。",
     affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F7ce883925524e122556c8d427683c655%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
+    affiliateImageUrl: "https://hbb.afl.rakuten.co.jp/hgb/576c1176.481851c4.576c1177.bad58da0/?me_id=1314607&item_id=10017080&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fnanohanadrg%2Fcabinet%2Fp%2Fpoint_1%2F4582300063665a.jpg%3F_ex%3D240x240&s=240x240&t=picttext",
     scores: { fine: 6, normal: 4, dry: 4, damage: 3, volume: 4, airy: 4, smooth: 5, moist: 3 }
   },
   {
@@ -223,6 +227,7 @@ export const products: Product[] = [
     ingredients: "なめらかさを出す保湿成分",
     review: "軽い仕上がりを好む人に向いています。",
     affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2Fe97495534abc8333ecc0d1cc8a6fab77%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
+    affiliateImageUrl: "https://hbb.afl.rakuten.co.jp/hgb/576bfc78.237f9be6.576bfc79.bc411314/?me_id=1274827&item_id=10115833&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Ftsuruha%2Fcabinet%2Fsyohin103%2F10184046.jpg%3F_ex%3D240x240&s=240x240&t=picttext",
     scores: { fine: 6, volume: 6, dry: 2, airy: 7, smooth: 5 }
   },
   {
@@ -239,6 +244,7 @@ export const products: Product[] = [
     ingredients: "保湿ケア成分",
     review: "自然な清潔感を出したい人に向いています。",
     affiliateUrl: "https://hb.afl.rakuten.co.jp/ichiba/576bfbf3.1d3655e4.576bfbf5.2b62af66/?pc=https%3A%2F%2Fproduct.rakuten.co.jp%2Fproduct%2F-%2F1524656d92fd67a956ceb356114c3516%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjoxLCJhbXAiOmZhbHNlfQ%3D%3D",
+    affiliateImageUrl: "https://hbb.afl.rakuten.co.jp/hgb/576c6eba.b97e7963.576c6ebb.c15f7fd7/?me_id=1225147&item_id=10087321&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fzagzag%2Fcabinet%2Fitem1_03%2F4580341642184.jpg%3F_ex%3D240x240&s=240x240&t=picttext",
     scores: { fine: 5, normal: 4, volume: 4, dry: 2, airy: 5, smooth: 4, refresh: 2 }
   },
   {
