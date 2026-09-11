@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { MessageCircle, School, Scissors, Sparkles } from "lucide-react";
 import { FadeIn } from "@/components/fade-in";
@@ -36,16 +35,19 @@ const panels = [
 
 const heroProducts = [
   {
-    name: "Qurap ラッピングモイスト",
-    image: "/products/qurap-wrapping-moist-shampoo.jpeg"
+    category: "Shampoo",
+    brand: "Qurap",
+    name: "ラッピングモイスト"
   },
   {
-    name: "THE ANSWER",
-    image: "/products/the-answer-shampoo.png"
+    category: "Shampoo",
+    brand: "THE ANSWER",
+    name: "シャンプー"
   },
   {
-    name: "プリュスオー リポア",
-    image: "/products/plus-eau-repair-treatment.jpeg"
+    category: "Treatment",
+    brand: "プリュスオー",
+    name: "リポアトリートメント"
   }
 ];
 
@@ -69,35 +71,15 @@ export default function AboutPage() {
           </FadeIn>
           <FadeIn>
             <div className="relative overflow-hidden rounded-brand border border-line bg-soft p-5 shadow-brand sm:p-7">
-              <div className="grid aspect-[4/5] grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
-                <div className="relative overflow-hidden rounded-brand bg-white p-4">
-                  <Image
-                    src={heroProducts[0].image}
-                    alt={heroProducts[0].name}
-                    fill
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    className="object-contain p-5"
-                    priority
-                  />
-                </div>
-                <div className="relative overflow-hidden rounded-brand bg-white p-4">
-                  <Image
-                    src={heroProducts[1].image}
-                    alt={heroProducts[1].name}
-                    fill
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    className="object-contain p-5"
-                  />
-                </div>
-                <div className="relative col-span-2 overflow-hidden rounded-brand bg-white p-4">
-                  <Image
-                    src={heroProducts[2].image}
-                    alt={heroProducts[2].name}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-contain p-6"
-                  />
-                </div>
+              <div className="grid min-h-[420px] grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
+                {heroProducts.map((product, index) => (
+                  <article key={`${product.brand}-${product.name}`} className={`relative overflow-hidden rounded-brand border border-line bg-white p-5 sm:p-6 ${index === 2 ? "col-span-2" : ""}`}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-green">{product.category}</p>
+                    <p className="mt-5 text-sm font-semibold text-muted">{product.brand}</p>
+                    <p className="mt-2 max-w-[16rem] text-xl font-semibold leading-snug text-ink">{product.name}</p>
+                    <span aria-hidden="true" className="absolute -bottom-10 -right-8 h-28 w-28 rounded-full border border-green/10 bg-secondary" />
+                  </article>
+                ))}
               </div>
             </div>
           </FadeIn>
