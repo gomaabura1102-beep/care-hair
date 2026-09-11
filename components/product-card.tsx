@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ArrowRight, Heart, Scale, Star } from "lucide-react";
+import { ArrowRight, ExternalLink, Heart, Scale, Star } from "lucide-react";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { getProductInsight } from "@/data/product-insights";
@@ -54,21 +53,19 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
         <Heart className={`h-5 w-5 ${favorite ? "fill-current" : ""}`} />
       </button>
 
-      <Link href={`/products/${product.id}`} className="group block">
-        <div className="relative aspect-[4/3] overflow-hidden bg-white">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-contain p-5 transition duration-300 group-hover:scale-105"
-          />
+      <Link href={`/products/${product.id}`} className="group block border-b border-line">
+        <div className="relative min-h-36 overflow-hidden bg-[linear-gradient(135deg,#eef6f2_0%,#f8faf8_100%)] px-5 pb-6 pt-16 sm:px-6">
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-green">
+            {product.type === "shampoo" ? "Shampoo" : "Treatment"}
+          </span>
+          <p className="mt-3 text-lg font-semibold text-ink transition group-hover:text-green">{insight.brand}</p>
+          <p className="mt-2 text-xs text-muted">{product.tags.slice(0, 3).join(" / ")}</p>
+          <span aria-hidden="true" className="absolute -bottom-12 -right-10 h-32 w-32 rounded-full border border-green/10 bg-white/55" />
         </div>
       </Link>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">{insight.brand}</p>
-        <Link href={`/products/${product.id}`} className="mt-2 text-lg font-semibold leading-snug transition hover:text-green">
+        <Link href={`/products/${product.id}`} className="text-lg font-semibold leading-snug transition hover:text-green">
           {product.name}
         </Link>
         <p className="mt-2 font-semibold text-green">{product.price}</p>
@@ -118,6 +115,16 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
             詳しく見る <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
+        {product.affiliateUrl ? (
+          <a
+            href={product.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-green px-4 text-sm font-semibold text-green transition hover:bg-secondary"
+          >
+            商品を見る <ExternalLink className="h-4 w-4" />
+          </a>
+        ) : null}
         {message ? <p className="mt-3 text-center text-xs font-semibold text-green" role="status">{message}</p> : null}
       </div>
     </Card>
