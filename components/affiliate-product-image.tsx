@@ -5,6 +5,7 @@ type AffiliateProductImageProps = {
   product: Pick<Product, "affiliateImageUrl" | "affiliateUrl" | "name">;
   className?: string;
   imageClassName?: string;
+  priority?: boolean;
   sizes: string;
 };
 
@@ -12,6 +13,7 @@ export function AffiliateProductImage({
   product,
   className = "",
   imageClassName = "",
+  priority = false,
   sizes
 }: AffiliateProductImageProps) {
   if (!product.affiliateUrl || !product.affiliateImageUrl) return null;
@@ -31,6 +33,7 @@ export function AffiliateProductImage({
         src={product.affiliateImageUrl}
         alt={`${product.name}の商品画像`}
         fill
+        priority={priority}
         sizes={sizes}
         className={`object-contain ${imageClassName}`}
       />
