@@ -2,6 +2,16 @@ import type { ScoreMap } from "@/types/diagnosis";
 
 export type ProductType = "shampoo" | "treatment";
 
+/** Only populate from an authorized API response after verifying the exact item. */
+export type OfficialProductImage = {
+  url: string;
+  itemId: string;
+  affiliateUrl: string;
+} & (
+  | { source: "amazon"; obtainedVia: "creators-api" }
+  | { source: "rakuten"; obtainedVia: "rakuten-ichiba-api" }
+);
+
 export type Product = {
   id: string;
   name: string;
@@ -13,6 +23,8 @@ export type Product = {
   affiliateImageUrl?: string;
   /** Original Rakuten-generated image-only HTML (240 x 240), pasted without edits. */
   rakutenImageHtml?: string;
+  /** In display preference order; never infer these from existing affiliate URLs. */
+  officialImages?: OfficialProductImage[];
   tags: string[];
   feature: string;
   point: string;
