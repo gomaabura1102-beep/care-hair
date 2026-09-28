@@ -3,6 +3,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
+      { protocol: "https", hostname: "image.rakuten.co.jp" },
+      { protocol: "https", hostname: "thumbnail.image.rakuten.co.jp" },
       {
         protocol: "https",
         hostname: "hbb.afl.rakuten.co.jp",

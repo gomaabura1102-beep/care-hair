@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { getRakutenImageSrc } from "@/lib/rakuten-image";
 import type { Product } from "@/types/product";
 
 type AffiliateProductImageProps = {
@@ -20,7 +21,7 @@ export function AffiliateProductImage({
   sizes
 }: AffiliateProductImageProps) {
   const [failedSrc, setFailedSrc] = useState<string>();
-  const imageSrc = product.affiliateImageUrl;
+  const imageSrc = getRakutenImageSrc(product.affiliateImageUrl);
   if (!product.affiliateUrl) return null;
 
   return (
@@ -35,7 +36,8 @@ export function AffiliateProductImage({
         PR
       </span>
       {imageSrc && failedSrc !== imageSrc ? <Image
-        // Load the official affiliate image directly, without a local copy or proxy.
+        // Use the supplied Rakuten photo URL so image loading does not depend on
+        // the affiliate tracking host. The purchase link retains its affiliate tag.
         src={imageSrc}
         alt={`${product.name}の商品画像`}
         fill
