@@ -54,7 +54,7 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
         <Heart className={`h-5 w-5 ${favorite ? "fill-current" : ""}`} />
       </button>
 
-      {product.affiliateImageUrl && product.affiliateUrl ? (
+      {product.affiliateUrl ? (
         <div className="relative border-b border-line bg-white pt-12">
           <span className={`absolute left-5 z-10 text-[11px] font-bold uppercase tracking-[0.2em] text-green ${recommendation ? "top-14" : "top-5"}`}>
             {product.type === "shampoo" ? "Shampoo" : "Treatment"}
@@ -80,7 +80,7 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
       )}
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        {product.affiliateImageUrl && product.affiliateUrl ? (
+        {product.affiliateUrl ? (
           <p className="mb-2 text-xs font-semibold text-muted">{insight.brand}</p>
         ) : null}
         <Link href={`/products/${product.id}`} className="text-lg font-semibold leading-snug transition hover:text-green">

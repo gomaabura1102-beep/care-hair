@@ -53,7 +53,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             <div
               data-testid="product-detail-hero"
               className={`relative z-10 grid items-center gap-8 ${
-                product.affiliateUrl && product.affiliateImageUrl
+                product.affiliateUrl
                   ? "md:grid-cols-[minmax(0,1fr)_280px]"
                   : ""
               }`}
@@ -91,7 +91,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   </div>
                 ) : null}
               </div>
-              {product.affiliateUrl && product.affiliateImageUrl ? (
+              {product.affiliateUrl ? (
                 <AffiliateProductImage
                   product={product}
                   priority
@@ -148,7 +148,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               </div>
             </Card>
 
-            {product.affiliateUrl && product.affiliateImageUrl ? (
+            {product.affiliateUrl ? (
               <Card as="section" className="mt-8 md:p-8">
                 <div className="grid items-center gap-7 md:grid-cols-[240px_minmax(0,1fr)]">
                   <AffiliateProductImage
