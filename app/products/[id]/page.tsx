@@ -53,7 +53,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             <div
               data-testid="product-detail-hero"
               className={`relative z-10 grid items-center gap-8 ${
-                product.affiliateUrl
+                product.rakutenImageHtml
                   ? "md:grid-cols-[minmax(0,1fr)_280px]"
                   : ""
               }`}
@@ -91,13 +91,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   </div>
                 ) : null}
               </div>
-              {product.affiliateUrl ? (
+              {product.rakutenImageHtml ? (
                 <AffiliateProductImage
                   product={product}
-                  priority
-                  sizes="(max-width: 767px) calc(100vw - 64px), 280px"
-                  className="h-64 rounded-brand border border-line shadow-brand"
-                  imageClassName="p-5"
                 />
               ) : null}
             </div>
@@ -150,12 +146,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
             {product.affiliateUrl ? (
               <Card as="section" className="mt-8 md:p-8">
-                <div className="grid items-center gap-7 md:grid-cols-[240px_minmax(0,1fr)]">
+                <div className={`grid items-center gap-7 ${product.rakutenImageHtml ? "md:grid-cols-[264px_minmax(0,1fr)]" : ""}`}>
                   <AffiliateProductImage
                     product={product}
-                    sizes="(max-width: 767px) calc(100vw - 64px), 240px"
-                    className="h-60 rounded-brand border border-line"
-                    imageClassName="p-5"
                   />
                   <div>
                     {product.amazonAffiliateUrl ? (
@@ -176,7 +169,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                     <CardEyebrow>Rakuten Affiliate</CardEyebrow>
                     <h2 className="mt-3 text-2xl font-medium">楽天の商品ページで見る</h2>
                     <p className="mt-4 leading-7 text-muted">
-                      商品画像と購入先リンクは、楽天アフィリエイトから提供されたものを使用しています。
+                      楽天市場で商品の詳細を確認できます。
                     </p>
                     <a
                       href={product.affiliateUrl}

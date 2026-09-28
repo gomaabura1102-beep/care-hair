@@ -11,6 +11,8 @@ export type Product = {
   amazonAffiliateUrl?: string;
   affiliateUrl: string;
   affiliateImageUrl?: string;
+  /** Original Rakuten-generated image-only HTML (240 x 240), pasted without edits. */
+  rakutenImageHtml?: string;
   tags: string[];
   feature: string;
   point: string;

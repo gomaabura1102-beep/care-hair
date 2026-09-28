@@ -54,16 +54,13 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
         <Heart className={`h-5 w-5 ${favorite ? "fill-current" : ""}`} />
       </button>
 
-      {product.affiliateUrl ? (
+      {product.rakutenImageHtml ? (
         <div className="relative border-b border-line bg-white pt-12">
           <span className={`absolute left-5 z-10 text-[11px] font-bold uppercase tracking-[0.2em] text-green ${recommendation ? "top-14" : "top-5"}`}>
             {product.type === "shampoo" ? "Shampoo" : "Treatment"}
           </span>
           <AffiliateProductImage
             product={product}
-            sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 45vw, 360px"
-            className="h-52"
-            imageClassName="p-5 transition duration-300 hover:scale-[1.03]"
           />
         </div>
       ) : (
@@ -80,7 +77,7 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
       )}
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        {product.affiliateUrl ? (
+        {product.rakutenImageHtml ? (
           <p className="mb-2 text-xs font-semibold text-muted">{insight.brand}</p>
         ) : null}
         <Link href={`/products/${product.id}`} className="text-lg font-semibold leading-snug transition hover:text-green">
