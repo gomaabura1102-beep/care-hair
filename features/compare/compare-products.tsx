@@ -50,9 +50,12 @@ export function CompareProducts() {
               {compared.map((product) => (
                 <th key={product.id} className="border-l border-line p-4">
                   <button type="button" onClick={() => toggleComparison(product.id)} className="ml-auto grid h-9 w-9 place-items-center rounded-full border border-line text-muted hover:text-green" aria-label={`${product.name}を比較から外す`}><X className="h-4 w-4" /></button>
-                  {product.rakutenImageHtml ? (
+                  {product.affiliateImageUrl && product.affiliateUrl ? (
                     <AffiliateProductImage
                       product={product}
+                      sizes="160px"
+                      className="mx-auto mt-3 h-36 max-w-44 rounded-xl border border-line"
+                      imageClassName="p-3"
                     />
                   ) : null}
                   <Link href={`/products/${product.id}`} className="mt-3 block rounded-xl bg-soft p-4 transition hover:bg-secondary">

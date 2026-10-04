@@ -1,23 +1,42 @@
+import Image from "next/image";
 import type { Product } from "@/types/product";
 
 type AffiliateProductImageProps = {
-  product: Pick<Product, "name" | "rakutenImageHtml">;
+  product: Pick<Product, "affiliateImageUrl" | "affiliateUrl" | "name">;
+  className?: string;
+  imageClassName?: string;
+  priority?: boolean;
+  sizes: string;
 };
 
-export function AffiliateProductImage({ product }: AffiliateProductImageProps) {
-  if (!product.rakutenImageHtml?.trim()) return null;
+export function AffiliateProductImage({
+  product,
+  className = "",
+  imageClassName = "",
+  priority = false,
+  sizes
+}: AffiliateProductImageProps) {
+  if (!product.affiliateUrl || !product.affiliateImageUrl) return null;
 
   return (
-    <div className="mx-auto w-full max-w-[264px] overflow-x-auto bg-white">
-      <p className="mb-2 text-center text-xs text-muted">PR・楽天市場</p>
-      <iframe
-        title={`${product.name}の楽天商品画像リンク`}
-        srcDoc={product.rakutenImageHtml}
-        width={264}
-        height={280}
-        sandbox="allow-popups allow-popups-to-escape-sandbox"
-        className="block border-0"
+    <a
+      href={product.affiliateUrl}
+      target="_blank"
+      rel="nofollow noopener noreferrer sponsored"
+      aria-label={`${product.name}を楽天で見る`}
+      className={`relative block overflow-hidden bg-white ${className}`}
+    >
+      <span className="absolute right-2 top-2 z-10 rounded-full bg-white/95 px-2 py-1 text-[10px] font-semibold tracking-wide text-muted shadow-sm">
+        PR
+      </span>
+      <Image
+        src={product.affiliateImageUrl}
+        alt={`${product.name}の商品画像`}
+        fill
+        priority={priority}
+        sizes={sizes}
+        className={`object-contain ${imageClassName}`}
       />
-    </div>
+    </a>
   );
 }
