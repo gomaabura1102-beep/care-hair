@@ -54,35 +54,20 @@ export function ProductCard({ product, recommendation, aiContext }: ProductCardP
         <Heart className={`h-5 w-5 ${favorite ? "fill-current" : ""}`} />
       </button>
 
-      {product.affiliateImageUrl && product.affiliateUrl ? (
-        <div className="relative border-b border-line bg-white pt-12">
-          <span className={`absolute left-5 z-10 text-[11px] font-bold uppercase tracking-[0.2em] text-green ${recommendation ? "top-14" : "top-5"}`}>
-            {product.type === "shampoo" ? "Shampoo" : "Treatment"}
-          </span>
-          <AffiliateProductImage
-            product={product}
-            sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 45vw, 360px"
-            className="h-52"
-            imageClassName="p-5 transition duration-300 hover:scale-[1.03]"
-          />
-        </div>
-      ) : (
-        <Link href={`/products/${product.id}`} className="group block border-b border-line">
-          <div className="relative min-h-36 overflow-hidden bg-[linear-gradient(135deg,#eef6f2_0%,#f8faf8_100%)] px-5 pb-6 pt-16 sm:px-6">
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-green">
-              {product.type === "shampoo" ? "Shampoo" : "Treatment"}
-            </span>
-            <p className="mt-3 text-lg font-semibold text-ink transition group-hover:text-green">{insight.brand}</p>
-            <p className="mt-2 text-xs text-muted">{product.tags.slice(0, 3).join(" / ")}</p>
-            <span aria-hidden="true" className="absolute -bottom-12 -right-10 h-32 w-32 rounded-full border border-green/10 bg-white/55" />
-          </div>
-        </Link>
-      )}
+      <div className="relative border-b border-line bg-white pt-16">
+        <span className="absolute left-5 top-12 text-[11px] font-bold uppercase tracking-[0.2em] text-green">
+          {product.type === "shampoo" ? "Shampoo" : "Treatment"}
+        </span>
+        <AffiliateProductImage
+          product={product}
+          sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 45vw, 360px"
+          className="h-40 sm:h-44"
+          imageClassName="p-5"
+        />
+      </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        {product.affiliateImageUrl && product.affiliateUrl ? (
-          <p className="mb-2 text-xs font-semibold text-muted">{insight.brand}</p>
-        ) : null}
+        <p className="mb-2 text-xs font-semibold text-muted">{insight.brand}</p>
         <Link href={`/products/${product.id}`} className="text-lg font-semibold leading-snug transition hover:text-green">
           {product.name}
         </Link>

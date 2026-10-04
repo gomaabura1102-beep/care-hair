@@ -2,6 +2,15 @@ import type { ScoreMap } from "@/types/diagnosis";
 
 export type ProductType = "shampoo" | "treatment";
 
+/** Populate only from an authorized provider response, after matching the exact item. */
+export type OfficialProductImage = {
+  url: string;
+  itemId: string;
+} & (
+  | { source: "amazon"; obtainedVia: "amazon-associates-api" }
+  | { source: "rakuten"; obtainedVia: "rakuten-ichiba-api" | "rakuten-affiliate" }
+);
+
 export type Product = {
   id: string;
   name: string;
@@ -11,6 +20,8 @@ export type Product = {
   amazonAffiliateUrl?: string;
   affiliateUrl: string;
   affiliateImageUrl?: string;
+  /** Preferred image first. Legacy affiliateImageUrl alone is not proof of permission. */
+  officialImages?: OfficialProductImage[];
   tags: string[];
   feature: string;
   point: string;
